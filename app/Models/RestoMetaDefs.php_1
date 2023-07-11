@@ -1,0 +1,11 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class RestoMetaDefs extends Model
+{
+    protected $table = "tb_dm_bussiness_meta_def";
+    protected $primaryKey="meta_id";
+}

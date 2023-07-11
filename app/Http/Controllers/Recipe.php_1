@@ -1,0 +1,430 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Categories;
+use App\MapRecipeCategories;
+use App\Photos;
+use App\Recipes;
+use App\Restaurants;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Uuid;
+use App\ClothOptions;
+use Str;
+use File;
+use Illuminate\Support\Facades\Hash;
+use Image;
+
+use App\Helpers\CommonMethods;
+
+class Recipe extends Controller
+{
+    public function inventory(){
+         $recipes = Auth::user()->restaurants->recipes();;
+         $data = [
+            'recipes' => $recipes->get()
+        ];
+        return view('recipes.inventory',$data);
+    }
+
+
+    //
+    public function recipes(){
+        Toastr::success('Post added successfully :)','Success');
+        $recipes = Auth::user()->restaurants->recipes;
+        $data = [
+            'recipes' => $recipes
+        ];
+        return view('recipes.recipes',$data);
+    }
+
+    public function new_recipe(){
+        if( Auth::user()->role=="restaurant")
+            $categories = Categories::whereNull('deleted_at')->where('is_active',1)->whereIn('resto_id',[0,Auth::user()->restaurants->id])->get();
+        else
+            $categories = Categories::where('is_active',1)->whereNull('deleted_at')->get();
+
+        $data = [
+         'categories' => $categories
+     ];
+        return view('recipes.recipe_form',$data);
+    }
+
+    public function edit($id){
+        if( Auth::user()->role=="restaurant")
+            $categories = Categories::whereNull('deleted_at')->where('is_active',1)->whereIn('resto_id',[0,Auth::user()->restaurants->id])->get();
+        else
+            $categories = Categories::where('is_active',1)->whereNull('deleted_at')->get();
+
+        $recipe = Recipes::find($id);
+        $data = [
+            'categories' => $categories,
+            'recipe' =>$recipe
+        ];
+        return view('recipes.recipe_form',$data);
+    }
+
+ public function save(Request $request){
+        $id = $request->id;
+
+        if(empty($id)){
+            $recipe = new Recipes();
+            $recipe->unique_shared_key = Str::uuid(); 
+        }
+
+        else
+            $recipe = Recipes::find($id);
+
+        $recipe->name = $request->name;
+        $recipe->arabic_name = $request->arabic_name;
+        $recipe->status = '1';
+
+
+        $recipe->resto_id = Auth::user()->restaurants->id;
+        $recipe->price = $request->price;
+        $recipe->show_recipe_main_price = isset($request->show_recipe_main_price)?1:0;
+        $recipe->short_description = $request->short_description;
+        $recipe->is_customized = isset($request->is_customized)?1:0;
+        $recipe->status = isset($request->status)?1:0;
+
+
+        $recipe->save();
+
+        $recipe_id = $recipe->id;
+
+        if($recipe_id > 0){
+
+            $categories = $request->category;
+            //dd($categories);
+            MapRecipeCategories::where('recipe_id',$recipe_id)->delete();
+
+            if(count($categories) > 0){
+                foreach($categories as $category){
+                    $m_c = new MapRecipeCategories();
+                    $m_c->category_id = $category;
+                    $m_c->recipe_id =  $recipe_id;
+                    $m_c->resto_id =   Auth::user()->restaurants->id;;
+                    $m_c->save();
+                }
+
+
+            }
+
+
+            if($request->hasFile('main_image')){
+                $logo = $request->file('main_image');
+
+
+
+                $file_name = Str::slug($request->name)."-main_image".'-'.time();
+                $extension = $logo->getClientOriginalExtension();
+
+
+
+                Storage::disk('main_image')->put($file_name.'.'.$extension,  File::get($logo));
+
+                $destinationPath = public_path('/uploads/main_image/');
+
+
+                /*$img = Image::make($destinationPath . '/' . $file_name.'.'.$extension)->resize(1400, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });*/
+
+               // $img->save($destinationPath . '/' . $file_name.'.'.$extension);
+                $file = public_path('uploads/main_image/'.$file_name.'.'.$extension);
+                $result = CommonMethods::uploadFileToAWSCDN('meemapp-order',Auth::user()->restaurants->id, Auth::user()->restaurants->resto_unique_name,$file,$file_name);
+/*
+                $img = Image::make($destinationPath . '/' . $file_name.'.'.$extension)->resize(200, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $img->save($destinationPath . '/thumbnails/' . $file_name.'.'.$extension);*/
+
+
+
+                $main_image = Photos::where('recipe_id',$recipe_id)->where('photo_type','main_image')->first();
+                if(!$main_image)
+                    $main_image = new Photos();
+
+
+                $main_image->file_name = $result['url'];
+                $main_image->aws_cdn = $result['url'];
+                $main_image->recipe_id = $recipe_id;
+                $main_image->photo_type = 'main_image';
+                $main_image->resto_id =  Auth::user()->restaurants->id;;;
+
+                $main_image->save();
+
+                //$resto->text =
+            }
+        if($request->business_type=="ClothsStore"){
+
+                $option = ClothOptions::where('resto_id',Auth::user()->restaurants->id)->where('product_id',$recipe_id)->delete();
+                $colors  = !empty($request->color)?$request->color:NULL;
+                $sizes   = !empty($request->size)?$request->size:NULL; 
+
+                if(isset($colors) && count($colors) > 0){
+                    foreach($colors as $color){
+                      $options = new ClothOptions(); 
+                      $options->resto_id =  Auth::user()->restaurants->id;
+                      $options->product_id = $recipe_id;
+                      $options->name = $color;
+                      $options->type="color";
+
+                      $options->save();
+                    }
+                    
+
+
+
+                }
+
+                if(isset($sizes) && count($sizes) > 0){
+                    foreach($sizes as $size){
+                      $options = new ClothOptions(); 
+                      $options->resto_id =  Auth::user()->restaurants->id;
+                      $options->product_id = $recipe_id;
+                      $options->name = $size;
+                      $options->type="size";
+
+                      $options->save();
+                    }
+                    
+
+
+
+                }
+            }
+
+            echo json_encode(array('type' => 'success', 'message'=>"Recipe's data is saved successfully."));
+        }
+
+        else
+            echo json_encode(array('type' => 'error', 'message'=>"Recipe's data is not saved successfully."));
+
+
+
+    }
+   /* public function save(Request $request){
+        $id = $request->id;
+
+        if(empty($id)){
+            $recipe = new Recipes();
+            $recipe->unique_shared_key = Str::uuid();
+        }
+
+        else
+            $recipe = Recipes::find($id);
+
+        $recipe->name = $request->name;
+        $recipe->status = '1';
+
+
+        $recipe->resto_id = Auth::user()->restaurants->id;
+        $recipe->price = $request->price;
+        $recipe->short_description = $request->short_description;
+        $recipe->is_customized = isset($request->is_customized)?1:0;
+        $recipe->status = isset($request->status)?1:0;
+
+
+        $recipe->save();
+
+        $recipe_id = $recipe->id;
+
+        if($recipe_id > 0){
+
+            $categories = $request->category;
+            //dd($categories);
+            MapRecipeCategories::where('recipe_id',$recipe_id)->delete();
+
+            if(count($categories) > 0){
+                foreach($categories as $category){
+                    $m_c = new MapRecipeCategories();
+                    $m_c->category_id = $category;
+                    $m_c->recipe_id =  $recipe_id;
+                    $m_c->resto_id =   Auth::user()->restaurants->id;;
+                    $m_c->save();
+                }
+
+
+            }
+
+
+            if($request->hasFile('main_image')){
+                $logo = $request->file('main_image');
+
+
+
+                $file_name = Str::slug($request->name)."-main_image".'-'.time();
+                $extension = $logo->getClientOriginalExtension();
+
+
+
+                Storage::disk('main_image')->put($file_name.'.'.$extension,  File::get($logo));
+
+                $destinationPath = public_path('/uploads/main_image/');
+
+
+                $img = Image::make($destinationPath . '/' . $file_name.'.'.$extension)->resize(1400, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $img->save($destinationPath . '/' . $file_name.'.'.$extension);
+
+                $img = Image::make($destinationPath . '/' . $file_name.'.'.$extension)->resize(200, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $img->save($destinationPath . '/thumbnails/' . $file_name.'.'.$extension);
+
+
+                $main_image = Photos::where('recipe_id',$recipe_id)->where('photo_type','main_image')->first();
+                if(!$main_image)
+                    $main_image = new Photos();
+
+
+                $main_image->file_name = $file_name.'.'.$extension;
+                $main_image->recipe_id = $recipe_id;
+                $main_image->photo_type = 'main_image';
+                $main_image->resto_id =  Auth::user()->restaurants->id;;;
+
+                $main_image->save();
+
+                //$resto->text =
+            }
+
+
+            echo json_encode(array('type' => 'success', 'message'=>"Recipe's data is saved successfully."));
+        }
+
+        else
+            echo json_encode(array('type' => 'error', 'message'=>"Recipe's data is not saved successfully."));
+
+
+
+    }*/
+
+    public function delete($id){
+        $recipe = Recipes::find($id);
+        $recipe->deleted_at = date('Y-m-d H:i:s');
+        $recipe->save();
+    }
+
+    public function upload_gallery(Request $request){
+        $files =  $request->file('files');;
+
+        $recipe_id = $request->recipe_id;
+
+
+
+        if(isset($files) && count($files) > 0){
+
+            foreach($files as $file){
+                $photo = new Photos();
+                $extension = $file->getClientOriginalExtension();
+                $original_name = $file->getClientOriginalName();
+                // $original_name = str_replace(' ', '-', $original_name);
+                $extension_array = ['jpg', 'jpeg', 'bmp', 'png'];
+                $image_array = ['jpg', 'jpeg', 'bmp', 'png'];
+                if (in_array($extension, $extension_array)) {
+                    $file_name = 'recipe-gallery-'.$recipe_id. '-' . time().rand(1000,9999) . '.' . $extension;
+
+
+
+                    $destinationPath = public_path('/uploads/resto-gallery/');
+                    $file->move($destinationPath, $file_name);
+                    $file = public_path('uploads/resto-gallery/'.$file_name);
+                     $result = CommonMethods::uploadFileToAWSCDN('meemapp-order',Auth::user()->restaurants->id, Auth::user()->restaurants->resto_unique_name,$file,$file_name);
+
+                   /* $img = Image::make($destinationPath . '/' . $file_name)->resize(1400, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img->save($destinationPath . '/' . $file_name);
+
+                    $img = Image::make($destinationPath . '/' . $file_name)->resize(85, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $img->save($destinationPath . '/thumbnails/' . $file_name);
+*/
+                    // dd($request->file('attachment'));
+
+
+                    $photo->recipe_id = $recipe_id;
+                     $photo->file_name = $result['url'];
+                    $photo->aws_cdn = $result['url'];
+                    $photo->photo_type = "gallery";
+                    $photo->resto_id =  Auth::user()->restaurants->id;;;
+                    $photo->save();
+
+
+                }
+            }
+        }
+    }
+
+    public function show($id){
+        $recipe = Recipes::find($id);
+        $categories = isset($recipe->categories)?$recipe->categories->pluck('category_id'):NULL;
+        if($categories){
+
+            $categories = Categories::whereIn('id',$categories)->pluck('name')->toArray();
+            $categories = implode(', ',$categories);
+
+        }
+        $data = [
+            'recipe' => $recipe,
+            'categories' => $categories
+        ];
+
+        return view('recipes.show',$data);
+    }
+
+    public function remove_main_image(Request $request){
+        $id = $request->id;
+
+        $photo = Photos::where('recipe_id',$id)->where('photo_type','main_image')->first();
+
+        $photo->delete();
+    }
+
+     public function exclude_outlet(Request $request){
+        $is_exclude = $request->is_exclude;
+        $outlet_id = $request->outlet_id;
+        $recipe_id = $request->recipe_id;
+
+        $recipe = Recipes::find($recipe_id);
+
+        $exclude_outlets = $recipe->exclude_outlets;
+       
+
+
+
+        if(empty($exclude_outlets)){
+            $o = explode(',',$exclude_outlets);
+            $o[$outlet_id] = $outlet_id;
+         //   dump($o);
+            $recipe->exclude_outlets = $outlet_id;
+        }else{
+            $o = explode(',',$exclude_outlets);
+            if($is_exclude=="true"){
+               
+                $key = array_search($outlet_id, $o);
+
+                unset($o[$key]);
+                
+            }
+            else
+            $o[] =  $outlet_id;
+            $o = array_unique($o);
+             $recipe->exclude_outlets = implode(',',$o);
+        }
+      
+
+        $recipe->save();
+    }
+}

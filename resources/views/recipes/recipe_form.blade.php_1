@@ -1,0 +1,1054 @@
+@extends('layouts.app')
+@section('css')
+    <link href="{!! env('APP_ASSETS') !!}vendor_components/dropzone/dist/dropzone.css" rel="stylesheet">
+    
+    @endsection
+@section('content')
+
+<style>
+          .alert{
+            display: none;
+        }
+         .container-full,.content-wrapper{
+            background-color: transparent !important;
+        }
+        .card-header{
+            display: inline-block;
+        }
+        #image-preview {
+            width: 700px;
+            border-radius: 20px;
+            height: 341px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            color: #ecf0f1;
+            background-position: center !important;
+    background-size: cover !important;
+        }
+        #image-preview input {
+            line-height: 200px;
+            font-size: 200px;
+            position: absolute;
+            opacity: 0;
+            z-index: 10;
+        }
+        #image-preview label {
+            position: absolute;
+            z-index: 5;
+            opacity: 0.8;
+            cursor: pointer;
+            background-color: #bdc3c7;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+            line-height: 50px;
+            text-transform: uppercase;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            text-align: center;
+        }
+        .form-control, .form-select {
+                    height: 46px !important;
+                    border-color: #E4E6EB !important;
+                    border-radius: 7px !important;
+                }
+    </style>
+
+ <div class="content-wrapper">
+        <div class="container-full">
+            <section class="content">
+                <div class="row">
+            <div class="col-xl-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fa fa-plus mr-1"></i>
+                       @if(isset($recipe))
+                            Edit {!! $recipe->name !!}
+                            @else
+                        New Recipe
+                            @endif
+                    </div>
+                    <div class="card-body">
+                        <form id="restaurant-form" method="POST" action="{!! env('APP_URL') !!}recipe/save" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="id" value="{!! isset($recipe)?$recipe->id:'' !!}" />
+
+                            <div class="row mb-4 main-cover-image">
+                                <div class="col-sm-12">
+                                    <p style="font-size: 14px">Cover Image</p>
+                                <div id="image-preview" @if(isset($recipe) && isset($recipe->main_images) && !empty($recipe->main_images->file_name)) style="background: url({!! $recipe->main_images->file_name !!})" @endif>
+                                    <label for="image-upload" id="image-label">Choose File</label>
+                                    <input type="file" name="main_image" id="image-upload" />
+                                </div>
+
+                                 @if(isset($recipe) && isset($recipe->main_images) && !empty($recipe->main_images->file_name))
+                                <a href="#!" class="text-center text-danger remove-image" data-recipe-id="{!! isset($recipe)?$recipe->id:'' !!}">Remove Image</a>
+                                @endif
+                                
+                                </div>
+                            </div>
+                        <div class="row">
+                            <div class="col-sm-4 col-md-6">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input type="text" class="form-control" placeholder="" name="name" value="{!! isset($recipe)?$recipe->name:'' !!}" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-4 col-md-6">
+                                <div class="form-group">
+                                    <label>Arabic Name</label>
+                                    <input type="text" class="form-control" placeholder="" name="arabic_name" value="{!! isset($recipe)?$recipe->arabic_name:'' !!}" required>
+                                </div>
+                            </div>
+                        </div>
+                            @php
+                            $c = [];
+                            if(isset($recipe)){
+                            $c = $recipe->categories->pluck('category_id')->toArray();
+
+                            }
+                            @endphp
+
+                            <div class="row">
+                            <div class="col-sm-4 col-md-6">
+                                <div class="form-group">
+                                    <label>Category</label>
+                                  <select class="custom-select" name="category[]" multiple>
+                                      <option value="">Select Category</option>
+                                      @if(isset($categories) && $categories->count() > 0)
+                                        @foreach($categories as $category)
+                                            <option value="{!! $category->id !!}" @if(isset($recipe) && in_array($category->id,$c)) selected @endif>{!! $category->name !!}</option>
+                                            @endforeach
+                                      @endif
+                                  </select>
+                                </div>
+                            </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4 col-md-4">
+                                    <div class="form-group">
+                                        <label>Price</label>
+                                        <input type="number" class="form-control" placeholder="" name="price" value="{!! isset($recipe)?$recipe->price:'' !!}" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 col-md-4" style="margin-top:2.2rem">
+                                    <div class="form-group">
+                                     <label style="visibility: hidden;">Price</label>
+                                        @if(isset($recipe))
+                                        <input type="checkbox" id="basic_checkbox_2" class="filled-in"  name="show_recipe_main_price"  @if($recipe->show_recipe_main_price==1) checked @endif>
+                                        <label for="basic_checkbox_2">Show Recipe Price</label>
+                                        @else
+                                         <input type="checkbox" id="basic_checkbox_2" class="filled-in"  name="show_recipe_main_price">
+                                        <label for="basic_checkbox_2">Show Recipe Pricec</label>
+                                         @endif
+                                    </div>
+                                </div>
+                        </div>
+
+                        
+
+                        <div class="row">
+                            <div class="col-sm-4 col-md-6">
+                                <div class="form-group">
+                                    <label>Description</label> 
+                                    <textarea  class="form-control" placeholder="" name="short_description">{!! isset($recipe)?$recipe->short_description:'' !!}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                            
+
+
+                            <div class="row">
+                                <div class="col-sm-4 col-md-6">
+                                   <div class="form-group">
+                                        <label>Gallery</label>
+                                       
+                                    </div>
+
+                                    @if(isset($recipe)  && isset($recipe->galleries))
+                                        <div class="row mb-2">
+                                            @foreach($recipe->galleries as $gallery)
+                                                <div class="col-sm-2 gallery">
+                                                    <div class="mb-1" style="width: 100px; height: 100px; background-image: url({!! $gallery->file_name !!}); background-position: center; background-size: contain">
+
+
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <a href="#!" class="delete-image" data-id="{!! $gallery->id !!}"><i class="fa fa-trash-alt"></i> </a>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+                                    @endif
+                                </div>
+                            </div>
+
+
+                         @if(isset($recipe->extra_options) && $recipe->extra_options->count() > 0)
+                             <h3>Extra Options</h3>
+                             <hr />
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-8">
+                             <table class="table table-bordered">
+                                 <thead>
+                                    <tr>
+                                        <th>Option Name</th>
+                                        <th>Price</th>
+                                        <th>Items</th>
+                                        <th>Is Mandatory?</th>
+                                        <th></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    @foreach($recipe->extra_options as $option)
+                                        <tr>
+                                            <td>{!! $option->name !!}</td>
+                                            <td>{!! $option->price !!}</td>
+                                            <td>
+                                             @if(isset($option->extra_option_items) && $option->extra_option_items->count() > 0)
+                                                <a href="#!" class="badge badge-success view-items" data-id="{!! $option->id !!}" >{!! $option->extra_option_items->count() !!}</a>
+
+                                              @endif
+                                                 <a href="#!" class="badge badge-danger add-new-items"  data-id="{!! $option->id !!}"><i class="glyphicon glyphicon-plus"></i> </a>
+                                            </td>
+                                            <td>
+                                                @if(isset($option->extra_option_items) && $option->extra_option_items->count() > 0)
+                                                <input type="checkbox" class="is_mandatory" @if($option->is_mandatory==1) checked @endif value="" data-id="{!! $option->id !!}" />
+                                                    @if($option->is_mandatory==1) User can select <span class="badge badge-success">{!! $option->mandatory_amount !!}</span> items must  @endif
+                                                    @endif
+                                            </td>
+                                            <td>
+
+                                                <a href="#!" class="btn btn-sm btn-primary edit-option" data-id="{!! $option->id !!}"  data-toggle="tooltip" data-placement="top" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a>
+                                                <a href="javascript:;" data-id="{!! $option->id !!}" class="btn btn-sm btn-danger delete-option"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>
+
+
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                 </tbody>
+                             </table>
+                                    </div>
+                                </div>
+                         @endif
+
+
+
+                        <div class="row">
+                            <div class="col-sm-4 col-md-6">
+
+
+
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" id="is_customized"  @if(isset($recipe) && $recipe->is_customized=="1")   checked @endif  name="is_customized" type="checkbox" />
+                                        <label class="custom-control-label" for="is_customized">Customizedable</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" id="status" @if(isset($recipe) && $recipe->status=="1")   checked @endif name="status" type="checkbox" />
+                                        <label class="custom-control-label" for="status">Active?</label>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <a href="#!" class="btn btn-primary save">Save</a>
+                                    @if( isset($recipe))
+                                    <a href="#!" class="btn btn-primary upload-gallery">Upload Gallery</a>
+
+                                        <a href="#!" class="btn btn-primary add-options">Add Extra Options</a>
+                                    @endif
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col-md-12">
+                                    <div class="alert alert-success success"></div>
+                                    <div class="alert alert-danger error"></div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </section>
+        </div>
+</div>
+
+
+
+
+
+    <div class="container-fluid">
+        <h1 class="mt-4">Recipe</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="{!! env('APP_URL') !!}dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item active">  @if(isset($recipe)) Edit Recipe @else New Recipe @endif</li>
+        </ol>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-plus mr-1"></i>
+                        
+                    </div>
+                    <div class="card-body">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @if( isset($recipe))
+  
+
+
+    <div class="modal" id="upload-gallery" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Recipe Gallery</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="row">
+                        <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                                <label>Gallery</label>
+                                <div class="dropzone dz-clickable" id="gallery">
+                                    <div class="dz-default dz-message" data-dz-message="">
+                                        <span>Drop files here to upload</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+      </div>
+      <div class="modal-footer">
+                    <button type="button" class="btn btn-primary upload">Upload</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+      
+  </div>
+</div>
+</div>
+
+
+     <div class="modal" id="extra-options" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Order Detail</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="extra-options-form" method="POST" action="{!! env('APP_URL') !!}save/extra/options">
+                            @csrf
+                            <input type="hidden" name="recipe_id" value="{!! $recipe->id !!}" />
+                                <input type="hidden" name="resto_id" value="{!! $recipe->resto_id !!}" />
+                                                <div class="row">
+                                                    <div class="col-sm-9">
+                                                        <input class="form-control" name="option" placeholder="Name of option" required />
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <input class="form-control" name="price" placeholder="Price if it has" />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-right"><a href="#!" class="btn btn-sm btn-danger mt-1 add-extra-items">Add Extra Item</a> </div>
+                                                </div>
+
+                                                <div id="items-list">
+
+                                                </div>
+                            </form>
+      </div>
+      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary save-extra-options">Add</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+ <div class="modal" id="edit-extra-option" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Edit Option</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{!! env('APP_URL') !!}update/option" id="edit-form">
+                        <input type="hidden" name="id" />
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <input class="form-control" name="option" placeholder="Name of option" required />
+                            </div>
+                            <div class="col-sm-3">
+                                <input class="form-control" name="price" placeholder="Price" />
+                            </div>
+                            <div class="col-sm-1">
+                               <a href="#!" style="margin-top: 2px" class="btn btn-sm btn-success update-option"><i class="fa fa-save"></i> </a>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <div class="alert alert-success success"></div>
+                                <div class="alert alert-danger error"></div>
+                            </div>
+                        </div>
+                    </form>
+      </div>
+      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary save-extra-options">Add</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<div class="modal" id="extra-option-item" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Customized Items List</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered" id="item-table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Item type</th>
+                            <th>Customized Sub Items List</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+
+                    </table>
+      </div>
+      
+  </div>
+</div>
+</div>
+
+   
+            
+
+   <div class="modal" id="edit-extra-item-option" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Edit Item</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{!! env('APP_URL') !!}update/item" id="edit-item-form">
+                        <input type="hidden" name="id" />
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <input class="form-control" name="option" placeholder="Name of Item" required />
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-control" name="item_type">
+                                    <option value="">Choose Button type</option>
+                                    <option value="option">Option Button</option>
+                                    <option value="check-box">Checkbox</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <input class="form-control" name="price" placeholder="Price" />
+                            </div>
+                            <div class="col-sm-1">
+                                <a href="#!" style="margin-top: 2px" class="btn btn-sm btn-success update-item"><i class="fa fa-save"></i> </a>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <div class="alert alert-success success"></div>
+                                <div class="alert alert-danger error"></div>
+                            </div>
+                        </div>
+                    </form>
+      </div>
+      
+  </div>
+</div>
+</div>
+
+
+ <div class="modal" id="mandatory-extra-item-option" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Make Mandatory options</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{!! env('APP_URL') !!}update/mandatory/item" id="mandatory-item-form">
+                        <input type="hidden" name="id" />
+                        @csrf
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <input class="form-control" type="number" name="mandatory_amount" placeholder="Enter quantity of items" required />
+                            </div>
+
+                            <div class="col-sm-1">
+                                <a href="#!" style="margin-top: 2px" class="btn btn-sm btn-success make-mandatory-item"><i class="fa fa-save"></i> </a>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-md-12">
+                                <div class="alert alert-success success"></div>
+                                <div class="alert alert-danger error"></div>
+                            </div>
+                        </div>
+                    </form>
+      </div>
+      
+  </div>
+</div>
+</div>
+
+
+   
+ <div class="modal" id="add-new-items" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Add more Items</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <form id="extra-items-form" method="POST" action="{!! env('APP_URL') !!}save/add/items">
+                        @csrf
+                        <input type="hidden" name="extra_option_id"/>
+
+                        <input type="hidden" name="parent_id" />
+
+                        <div class="row">
+                            <div class="col-sm-12 text-right"><a href="#!" class="btn btn-sm btn-danger mt-1 add-extra-items-2">Add Extra Item</a> </div>
+                        </div>
+
+                        <div id="items-list-2">
+                            <div class="row" style="margin-top: 10px">
+                                <div class="col-sm-6">
+                                    <input class="form-control" name="item_name[]" placeholder="Name of item">
+                                </div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" name="item_type[]"><option value="option">Option Button</option><option value="check-box">Checkbox</option> </select>
+                                </div>
+                                <div class="col-sm-2">
+                                    <input class="form-control" name="item_price[]" placeholder="Price if it has">
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+      </div>
+      
+  </div>
+</div>
+</div>
+
+
+
+
+
+ 
+
+    @endif
+@endsection
+
+@section('js')
+
+    <script src="{!! env('APP_ASSETS') !!}vendor_components/dropzone/dist/min/dropzone.min.js"></script> 
+    <script src="{!! env('APP_ASSETS') !!}vendor_components/select2/dist/js/select2.min.js"></script>
+    <script>
+       Dropzone.autoDiscover = false;
+        var extra_option_id = 0;
+        $(function () {
+
+            $("body").on("click",".remove-image",function(){
+                var id = $(this).data('recipe-id');
+                var _this = $(this);
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}remove/recipe/main-image",
+                    type:"POST",
+                    data:{
+                        id:id,
+                        '_token':"{!! csrf_token() !!}"
+                    },
+                    success:function(){
+                        _this.parents('.main-cover-image').find("#image-preview").removeAttr('style');
+                    }
+                });
+            });
+
+              $.uploadPreview({
+                input_field: "#image-upload",   // Default: .image-upload
+                preview_box: "#image-preview",  // Default: .image-preview
+                label_field: "#image-label",    // Default: .image-label
+                label_default: "Choose File",   // Default: Choose File
+                label_selected: "Change File",  // Default: Change File
+                no_label: true    ,
+                success_callback: function() {
+                  
+                }// Default: false
+            });
+
+            $(".custom-select").select2();
+
+            $("body").on("click",".make-mandatory-item",function () {
+                $(".alert").hide();
+                if($("#mandatory-item-form").valid()){
+                    $("#mandatory-item-form").ajaxForm(function (response) {
+                        response = $.parseJSON(response);
+                        if(response){
+
+                            if(response.type=="success"){
+                                $('#mandatory-item-form .alert.success').html(response.message);
+                                $('#mandatory-item-form .alert.success').show();
+
+                                setTimeout(function(){
+                                   location.reload();
+                                },2000)
+                            }else{
+                                $('#mandatory-item-form .alert.error').html(response.message);
+                                $('#mandatory-item-form .alert.error').show();
+                            }
+                        }
+                    }).submit();
+                }
+            });
+
+            $("body").on("click",".is_mandatory",function () {
+                var id = $(this).data('id');
+
+                if($(this).is(":checked")){
+                    $("#mandatory-extra-item-option").modal('show');
+
+                    $("#mandatory-extra-item-option input[name=id]").val(id);
+                }else{
+                    if(confirm("Do you want disable this option?")){
+                            $.ajax({
+                                url:"{!! env('APP_URL') !!}remove/mandatory/"+id,
+                                success:function () {
+                                 location.reload();
+                                }
+                            });
+                    }else{
+                        return false;
+                    }
+                }
+            });
+
+            $("body").on('click','.save',function () {
+                if($("#restaurant-form").valid()){
+
+                    $("#restaurant-form").ajaxForm(function (response) {
+                        response = $.parseJSON(response);
+                        if(response){
+
+                            if(response.type=="success"){
+                                $('#restaurant-form .alert.success').html(response.message);
+                                $('#restaurant-form .alert.success').show();
+
+                                setTimeout(function(){
+                                    window.location = '{!! env('APP_URL') !!}recipes';
+                                },2000)
+                            }else{
+                                $('#restaurant-form .alert.error').html(response.message);
+                                $('#restaurant-form .alert.error').show();
+                            }
+                        }
+                    }).submit();
+                }
+            });
+            @if( isset($recipe))
+            $("body").on("click",".upload-gallery",function () {
+                $("#upload-gallery").modal('show');
+            });
+
+            $("body").on("click",".add-options",function () {
+                $("#extra-options").modal('show');
+            });
+
+            $("body").on("click",".add-new-items",function () {
+                var id = $(this).data('id');
+                $("input[name=extra_option_id]").val(id);
+                $("#add-new-items").modal('show');
+            });
+            $("body").on("click",".add-sub-item",function () {
+                var id = $(this).data('id');
+                var extra_option_id = $(this).data('extra-option-id');
+                $("input[name=parent_id]").val(id);
+                $("input[name=extra_option_id]").val(extra_option_id);
+                $("#add-new-items").modal('show');
+            });
+
+            $("body").on("click",".add-extra-items",function () {
+               var new_item = add_new_item();
+
+               $("#items-list").append(new_item);
+            });
+
+            $("body").on("click",".add-extra-items-2",function () {
+                var new_item = add_new_item();
+
+                $("#items-list-2").append(new_item);
+            });
+
+            $("body").on("click",".delete-item",function () {
+
+
+                var _this = $(this);
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}extra/item/delete/"+id,
+                    success:function (response) {
+                        _this.parent().parent().remove();
+                    }
+                });
+            });
+
+            $("body").on("click",".delete-new-item",function () {
+
+
+                $(this).parent().parent().remove();
+            });
+
+            $("body").on("click",".delete-option",function () {
+
+                var _this = $(this);
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}extra/option/delete/"+id,
+                    success:function (response) {
+                       _this.parent().parent().remove();
+                    }
+                });
+                //
+            });
+
+            $("body").on("click",".update-option",function () {
+
+
+               if($("#edit-form").valid()){
+                   $("#edit-form").ajaxForm(function (response) {
+                       location.reload();
+                   }).submit();
+               }
+            });
+
+
+            $("body").on("click",".update-item",function () {
+
+
+                if($("#edit-item-form").valid()){
+                    $("#edit-item-form").ajaxForm(function (response) {
+                        var id = extra_option_id;
+                        $.ajax({
+                            url:"{!! env('APP_URL') !!}view/items/"+id,
+                            success:function (response) {
+                                response = response.data;
+                                var row = "";
+                                $.each(response,function (i,v) {
+
+
+                                    row+=show_item(v);
+                                });
+
+                                $("#item-table > tbody").html(row);
+
+                                $("#edit-extra-item-option").modal('hide');
+
+                            }
+                        });
+                    }).submit();
+                }
+            });
+
+
+            $("body").on("click",".edit-option",function () {
+
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}edit/option/"+id,
+                    success:function (response) {
+                        response = response.data;
+                        $("#edit-form input[name=id]").val(response.id);
+                        $("#edit-form input[name=option]").val(response.name);
+                        $("#edit-form input[name=price]").val(response.price);
+
+                        $("#edit-extra-option").modal();
+
+                    }
+                });
+
+            });
+
+            $("body").on("click",".edit-item",function () {
+
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}edit/item/"+id,
+                    success:function (response) {
+                        response = response.data;
+                        $("#edit-item-form input[name=id]").val(response.id);
+                        $("#edit-item-form input[name=item_type]").val(response.item_type);
+                        $("#edit-item-form input[name=option]").val(response.name);
+                        $("#edit-item-form input[name=price]").val(response.price);
+
+                        $("#edit-extra-item-option").modal('show');
+
+                    }
+                });
+
+            });
+
+
+            $("body").on("click",".view-items",function () {
+
+                    var id = $(this).data('id');
+                extra_option_id = id;
+                    $.ajax({
+                        url:"{!! env('APP_URL') !!}view/items/"+id,
+                        success:function (response) {
+                            response = response.data;
+                            var row = "";
+                            $.each(response,function (i,v) {
+
+
+                                row+=show_item(v);
+                            });
+
+                            $("#item-table > tbody").html(row);
+
+                            $("#extra-option-item").modal('show');
+
+                        }
+                    });
+
+            });
+
+            $("body").on("click",".save-extra-options",function () {
+
+
+                    if($("#extra-options-form").valid()){
+                        $("#extra-options-form").ajaxForm(function (response) {
+                            response = $.parseJSON(response);
+                            if(response){
+
+                                if(response.type=="success"){
+                                    $('#extra-options .alert.success').html(response.message);
+                                    $('#extra-options .alert.success').show();
+
+                                    setTimeout(function(){
+                                        window.location.reload();
+                                    },2000)
+                                }else{
+                                    $('#extra-options .alert.error').html(response.message);
+                                    $('#extra-options .alert.error').show();
+                                }
+                            }
+                        }).submit();
+                    }
+                        
+
+
+            });
+
+            $("body").on("click",".save-extra-items",function () {
+
+
+                if($("#extra-items-form").valid()){
+                    $("#extra-items-form").ajaxForm(function (response) {
+                        response = $.parseJSON(response);
+                        if(response){
+
+                            if(response.type=="success"){
+                                $('#extra-items-form .alert.success').html(response.message);
+                                $('#extra-items-form .alert.success').show();
+
+                                setTimeout(function(){
+                                    window.location.reload();
+                                },2000)
+                            }else{
+                                $('#extra-items-form .alert.error').html(response.message);
+                                $('#extra-items-form .alert.error').show();
+                            }
+                        }
+                    }).submit();
+                }
+
+
+
+            });
+
+var gallery = new Dropzone("div#gallery",
+                {
+                    paramName: "files", // The name that will be used to transfer the file
+                    addRemoveLinks: true,
+                    uploadMultiple: true,
+                    autoProcessQueue: false,
+                    parallelUploads: 50,
+                    maxFilesize: 5, // MB
+                    acceptedFiles: ".png, .jpeg, .jpg,",
+                    url: "{!! env('APP_URL') !!}upload/gallery/recipe",
+                });
+
+            gallery.on("sending", function(file, xhr, formData) {
+                var filenames = [];
+
+                $('.dz-preview .dz-filename').each(function() {
+                    filenames.push($(this).find('span').text());
+                });
+
+                formData.append('filenames', filenames);
+
+                formData.append('_token','{!! csrf_token() !!}');
+                formData.append('recipe_id',"{!! $recipe->id !!}");
+
+            });
+
+            /* Add Files Script*/
+            gallery.on("success", function(file, message){
+                $("#msg").html(message);
+                //setTimeout(function(){window.location.href="index.php"},200);
+            });
+
+            gallery.on("error", function (data) {
+                $("#msg").html('<div class="alert alert-danger">There is some thing wrong, Please try again!</div>');
+            });
+
+            gallery.on("complete", function(file) {
+                gallery.removeFile(file);
+               location.reload();
+            });
+
+            $(".upload").on("click",function (e){
+                gallery.processQueue();
+                e.preventDefault();
+            });
+
+            $("body").on("click",".delete-image",function () {
+                var _this = $(this);
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}delete/image/"+id+"?type=recipe",
+                    success:function (response) {
+                        _this.parents(".gallery").remove();
+                    }
+                });
+            });
+
+          
+
+            $("body").on("click",".delete-image",function () {
+                var _this = $(this);
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}delete/image/"+id+"?type=recipe",
+                    success:function (response) {
+                        _this.parents(".gallery").remove();
+                    }
+                });
+            });
+@endif
+        });
+
+        function add_new_item() {
+            return '<div class="row" style="margin-top: 10px">\n' +
+                '                        <div class="col-sm-6">\n' +
+                '                            <input class="form-control" name="item_name[]" placeholder="Name of item">\n' +
+                '                        </div>\n' +
+                '<div class="col-sm-3">\n' +
+            '                            <select class="form-control" name="item_type[]">' +
+                '<option value="option">Option Button</option>' +
+                '<option value="check-box">Checkbox</option> </select>\n' +
+            '                        </div>\n' +
+                '                        <div class="col-sm-2">\n' +
+                '                            <input class="form-control" name="item_price[]" placeholder="Price if it has">\n' +
+                '                        </div>\n' +
+
+                '                        <div class="col-sm-1">\n' +
+                '                            <a href="#!" class="delete-new-item btn btn-sm btn-danger" style="margin-top: 3px"><i class="fa fa-trash-alt"></i> </a> \n' +
+                '                        </div>\n' +
+                '                    </div>'
+        }
+
+        function show_item(item) {
+            var str = "<tr>";
+
+                str+='<td>'+item.name+'</td>';
+                str+='<td>'+item.price+'</td>';
+                str+='<td>'+(item.item_type?item.item_type:"")+'</td>';
+
+                str+='<td>';
+            var list = "";
+                if(item.childern){
+                    if(item.childern.length > 0){
+                         list = '<ul class="list-group">';
+                        $.each(item.childern,function (i,v) {
+                            list += '<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#!" class="edit-item" data-id="'+v.id+'"> '+v.name+'</a>' +
+                                '<span class="badge badge-primary badge-pill">'+v.price+'</span>' +
+                                '</li>';
+                        });
+                        list += "</ul>";
+                    }
+                }
+                str+=list;
+                str+='</td>';
+
+                str+='<td>' +
+                    '<a href="#!" class="btn btn-sm btn-primary edit-item" data-id="'+item.id+'"  data-toggle="tooltip" data-placement="top" title="Edit"><i class="glyphicon glyphicon-edit"></i> </a>'+
+           ' <a href="javascript:;" data-id="'+item.id+'" class="btn btn-sm btn-danger delete-item"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="top" title="Delete"></i></a>'+
+            ' <a href="javascript:;" data-id="'+item.id+'"  data-extra-option-id="'+item.extra_option_id+'" class="btn btn-sm btn-warning add-sub-item"><i class="glyphicon glyphicon-th-list" data-toggle="tooltip" data-placement="top" title="Add sub items"></i></a>'
+            '</td>';
+            str+='</tr>';
+
+            return str;
+        }
+    </script>
+    @endsection

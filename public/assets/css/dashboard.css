@@ -1,0 +1,306 @@
+:root {
+  --orange: #ffab00;
+}
+body{
+	background-color:#ffffff;
+	font-family: 'Open Sans';
+}
+ form.row div:hover {
+	background-color:#fff7eb !important;
+}
+form.row div:not(:last-child) {
+	
+}
+.ct-bar, .ct-line, .ct-point, .ct-slice-donut {
+	stroke: var(--orange);
+}
+[type="radio"]:not(:checked) + label:before, [type="radio"]:not(:checked) + label:after {
+    border: 2px solid #5a5a5a;
+    background: white;
+}
+.iqd_small{
+	color:black !important;
+	margin-right:5px;
+}
+.theme-primary [type=radio]:checked + label:after{
+	border: 2px solid var(--orange) !important;
+    background-color: var(--orange) !important;
+    z-index: 0;
+	border: solid 3px white !important;
+}
+.table{
+	font-family: 'Open Sans', sans-serif;
+}
+.table thead{
+      border-bottom: solid 2px #e2e2e2 !important;
+	  
+}
+.table > tfoot > tr > td, .table > tfoot > tr > th{
+	font-weight:bold;
+}
+.table tbody{
+	background-color:#FFFFFF !important;
+}
+.table tfoot{
+	background-color:#FAFBFF;
+}
+.tbl_h4_title
+{
+	position: relative;
+    top: calc(10% - 70px/2);
+	font-size:16px;
+}
+.tb_row_fdiv
+{
+  margin:0px;
+  padding:0px;  
+}
+#chart{
+	background-color:#FFFAF2;
+	border-radius:10px;
+}
+#yearly-comparison{
+	background-color:#FAFBFF;
+	border-radius:10px;
+}
+.box-header{
+  background-color:#FFFAF2;
+  border-bottom: 0px solid transparent;  
+}
+.with-border2
+{
+ background-color:#FAFBFF;
+ border-bottom: 0px solid transparent;	
+}
+.h-350{
+	height: 339px !important;
+}
+.count_title{
+ font-size:initial;
+ color:#000000;
+ font-weight:700;
+}
+.count_h3{
+	text-align:center;
+	font-weight:100;
+	margin:0;
+	padding:0;
+	font-size:26px;
+	/*font-size:x-large;*/
+	/*font-size:4vw;*/
+	font-weight:bold;
+	color:#484848;
+}
+small.active
+{
+  color: var(--orange) !important;	
+}
+a.count_atag{
+	text-align:center !important;
+}
+.count_small_tag
+{
+  color: #010101 !important;	
+  font-style: normal;
+  font-weight: 100;
+  font-size:13px;
+  text-align:center;
+}
+.tbl_row
+{
+  background-color:#FAFBFF;
+   /* border: 1px solid transparent;
+    margin-left: 0px;
+	margin-right: 0px;*/
+	margin:0px;
+    border-radius: 15px;
+}
+.right_text_div{
+	margin: calc(100% - 100%);
+}
+.count_div{
+    padding: 25px;
+    background: #FFFAF2;
+    border-radius: 15px;
+    margin: 0px;
+    margin-top: 10px;
+	font-family: 'Open Sans', sans-serif;
+	
+}
+/*start radio button*/
+.cust-col ,.form-check{
+	/*background:#f9fbff !important;*/
+}
+.role-row{
+	
+	background:#fafbff !important;
+	border-radius: 5px;
+}
+.table  thead th{
+	font-weight: bold !important
+}
+.table > thead > tr > td, .table > thead > tr > th {
+    
+    vertical-align: middle;
+	
+	text-align:center;
+	background:#FFFFFF;
+	font-size: 15px;
+    
+}
+.theme-primary [type=radio]:checked + label:after{}
+.bg-dark {
+  background-color: #000 !important;
+  color: #ffffff !important;
+}
+
+.bg-yellow {
+  background: #ffd684;
+  padding-top: 7px !important;
+  padding-bottom: 7px !important;
+}
+.title {
+  font-weight: 100;
+}
+.form-label {
+  font-size: 15px;
+  font-weight: 600;
+  
+}
+.btn-md {
+  color: black !important;
+  border: solid 1px black !important;
+}
+
+input[type=text],input[type=email],input[type=password]{
+	 height: 46px !important;
+ /* height: 40px !important;
+  width:262px !important;*/
+}
+.btn-primary{
+	background-color: #f2f2f2 !important;
+	 border-color:white !important;
+	 color:#9b9b9b !important;
+}
+/*========================*/
+.theme-primary .btn-primary:hover, .theme-primary .btn-primary:active, .theme-primary .btn-primary:focus, .theme-primary .btn-primary.active{
+	 color: balck !important;
+	 border-color:var(--orange)!important;
+	 background-color:white !important;
+}
+.form-control:active,
+.form-select:active {
+  height: 46px !important;
+  border-color: var(--orange)!important;
+  color:var(--orange)!important;
+}
+.form-control, .form-select {
+    height: 46px !important;
+    border-radius: 10px !important;
+	border-color:#E4E6EB !important;
+}
+select:focus{
+	border-color: var(--orange) !important;
+	color: var(--orange) !important;
+}
+
+.frow .btn-md{
+	background:transparent !important;
+	color: var(--orange) !important;
+    border-color:  var(--orange) !important;
+}
+.frow .btn-md:hover {
+  background-color: var(--orange) !important;
+  border-color:var(--orange) !important;
+  color:white !important;
+}
+
+.btn-md:hover {
+  background-color: var(--orange) !important;
+  border-color:var(--orange) !important;
+  color:white !important;
+}
+
+}
+/*====start table=======*/
+
+
+/*.table-striped > tbody > tr:nth-of-type(2) {
+	 background:#FFF8EC !important;
+    --bs-table-accent-bg: rgb(246 246 246 / 5%);
+    color: var(--bs-table-striped-color);
+.table-striped > tbody > tr {
+  --bs-table-accent-bg: #fff8ec;
+  color: var(--bs-table-striped-color);
+ 
+}*/
+.table-striped > tbody > tr:nth-of-type(odd) {
+    --bs-table-accent-bg: transparent;
+    color: var(--bs-table-striped-color);
+}
+.row_background{
+	background:#FFF8EC !important;
+	 --bs-table-accent-bg: rgb(246 246 246 / 5%);
+    color: var(--bs-table-striped-color);
+.table-striped > tbody > tr {
+  --bs-table-accent-bg: #fff8ec;
+  color: var(--bs-table-striped-color);
+}
+.table > thead  tr  td,
+.table > thead  tr  th {
+ background-color:#FAFBFF;  
+}
+.table > tbody > tr > td,
+.table > tbody > tr > th {
+  font-size: 15px;
+}
+.table > tbody > tr > td {
+  border-bottom-width: 0;
+  padding: 1.5rem;
+}
+.table tfoot tr th{
+	font-weight:600 !important;
+	color:black;
+}
+.table .btn{
+	border-color: var(--orange) !important;
+	background-color: transparent !important;
+	color:var(--orange) !important;
+}
+.table .btn:hover{
+	 background-color: var(--orange) !important;
+	 border-color:var(--orange) !important;
+	 color:white !important;
+}
+
+/*====end table=======*/
+
+.btn-toggle.btn-sm, .btn-toggle.btn-sm > .handle {
+    border-radius: 16px;
+}
+.orange_text
+{
+  color:var(--orange) !important;	
+  text-width:bold;
+}
+.add-outlet::before{
+	background-image:url('../images/icons/plushape.png')
+}
+.h3largetext{
+	font-size: x-large !important;
+}
+
+
+@media (max-width: 767px) {
+  .btn-md {
+    width: 100%;
+  }
+  .full-nav-width{
+   width:100% !important;
+  }
+  
+}
+@media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1) 
+ { 
+   
+ }

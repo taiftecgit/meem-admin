@@ -1,0 +1,302 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\DMCities;
+use App\Restaurants;
+use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Session;
+use Auth;
+use File;
+use Image;
+use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Support\Facades\Redis;
+class HomeController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    public function marketings(){
+
+        return view('marketing.marketings');
+    }
+
+    public function test_redis(){
+        Redis::set("user:mujtaba","It is testing code");
+
+        dd(Redis::get('user:mujtaba'));
+    }
+
+    public function create_link(Request $request){
+        $campaign_name = $request->campaign_name;
+        $campaign_date = $request->campaign_date;
+        $campaign_type = $request->campaign_type;
+        $site_url = $request->site_url;
+
+        $link = '?a='.$campaign_type.'&c='.Str::slug($campaign_name).'&cd='.$campaign_date;
+
+        return $site_url.($link);
+
+    }
+
+    public function make_slug(){
+        $resto = Restaurants::all();
+
+        foreach($resto as $r){
+            $rr = Restaurants::find($r->id);
+
+            $rr->resto_unique_name = Str::slug($r->name);
+            $rr->save();
+        }
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function index()
+    {
+        return view('auth.login');
+    }
+
+    public function dashboard(){
+
+
+
+        if(Auth::user()->role=="administrator")
+        return view('dashboards.admin_dashboard');
+        return view('dashboards.resto_dashboard');
+    }
+
+    public function getLogout()
+    {
+        Session::flush();
+        Auth::logout();
+
+        return redirect('/');
+    }
+
+    public function change_password(){
+        return view('password');
+    }
+
+    public function update_password(Request $request){
+        $old_password = $request->old_password;
+
+        $new_password = $request->password;
+        $confirm_password = $request->confirm_password;
+        $user = Auth::user();
+        if ($user && Hash::check($old_password, $user->password)) {
+
+            if($new_password==$confirm_password){
+
+                $u = User::find($user->id);
+                $u->password = Hash::make($new_password);
+                $u->save();
+
+                echo json_encode(array('type'=>'success','message'=>'Password changed successfully.'));
+
+
+            }else{
+                echo json_encode(array('type'=>'error','message'=>'new password and confirm password are not matched.'));
+                exit;
+            }
+
+        }else{
+            echo json_encode(array('type'=>'error','message'=>'Old password is incorrect, enter correct password.'));
+            exit;
+        }
+    }
+
+    public function download_image(Request $request){
+        $data = $request->data;
+
+        $data = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $data));
+        file_put_contents(public_path('/uploads/qrcode/qrcode.png'), $data);
+
+        $this->image_recreate(public_path('/uploads/qrcode/qrcode.png'));
+
+        echo env('APP_PUBLIC_URL').'uploads/qrcode/qrcode.png';
+    }
+
+
+    public function image_recreate($sourceFile){
+        $orig_filename = $sourceFile;
+        $new_filename = $orig_filename;
+
+        list($orig_w, $orig_h) = getimagesize($orig_filename);
+
+        $orig_img = imagecreatefromstring(file_get_contents($orig_filename));
+
+        $output_w = 2200;
+        $output_h = 2200;
+
+// determine scale based on the longest edge
+        if ($orig_h > $orig_w) {
+            $scale = $output_h/$orig_h;
+        } else {
+            $scale = $output_w/$orig_w;
+        }
+
+        $scale = $scale-0.1;
+
+        // calc new image dimensions
+        $new_w =  ($orig_w * $scale);
+        $new_h =  ($orig_h * $scale);
+
+
+
+// determine offset coords so that new image is centered
+        $offest_x = (($output_w - $new_w) / 2);
+        $offest_y = (($output_h - $new_h) / 2);
+
+        // create new image and fill with background colour
+        $new_img = imagecreatetruecolor($output_w, $output_h);
+        $bgcolor = imagecolorallocate($new_img, 255, 255, 255); // red
+        imagefill($new_img, 0, 0, $bgcolor); // fill background colour
+
+        // copy and resize original image into center of new image
+        imagecopyresampled($new_img, $orig_img, $offest_x, $offest_y, 0, 0, $new_w, $new_h, $orig_w, $orig_h);
+
+        //save it
+        imagejpeg($new_img, $new_filename, 80);
+
+    }
+
+    public function resizeMainRecipeImages(){
+        $path = public_path('uploads/main_image');
+
+        ini_set('max_execution_time', '300');
+
+        $files = File::allfiles($path);
+
+
+
+        foreach($files as $file){
+
+           $pth = ($file->getRealPath());
+            $file_name = $file->getFileName();
+            echo "Main Image: ".$file_name."<br />";
+            $destinationPath = public_path('/uploads/main_image/');
+            if($file->getExtension()!="jfif") {
+                $img = Image::make($destinationPath . '/' . $file_name)->resize(85, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $img->save($destinationPath . '/thumbnails/' . $file_name);
+            }
+        }
+    }
+
+
+
+    public function resizeLogo(){
+        $path = public_path('uploads/logo');
+
+        ini_set('max_execution_time', '300');
+
+        $files = File::allfiles($path);
+
+
+
+        foreach($files as $file){
+
+            $pth = ($file->getRealPath());
+            $file_name = $file->getFileName();
+            echo "Main Image: ".$file_name."<br />";
+            $destinationPath = public_path('/uploads/logo/');
+            if($file->getExtension()!="jfif") {
+                $img = Image::make($destinationPath . '/' . $file_name)->resize(50, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $img->save($destinationPath . '/thumbnails/' . $file_name);
+            }
+        }
+    }
+
+
+    public function resizeGalleryRecipeImages(){
+        $path = public_path('uploads/resto-gallery');
+
+
+
+        $files = File::allfiles($path);
+
+
+
+        foreach($files as $file){
+
+            $pth = ($file->getRealPath());
+            $file_name = $file->getFileName();
+            echo "Gallery: ".$file_name."<br />";
+            $destinationPath = public_path('/uploads/resto-gallery/');
+            if($file->getExtension()!="jfif"){
+                $img = Image::make($destinationPath . '/' . $file_name)->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $img->save($destinationPath . '/thumbnails/' . $file_name);
+            }
+
+        }
+    }
+
+
+    public function resizeGalleryRecipeImagesToGallery(){
+        $path = public_path('uploads/resto-gallery');
+
+
+
+        $files = File::allfiles($path);
+
+
+
+        foreach($files as $file){
+
+            $pth = ($file->getRealPath());
+            $file_name = $file->getFileName();
+            echo "Gallery: ".$file_name."<br />";
+            $destinationPath = public_path('/uploads/resto-gallery/');
+            if($file->getExtension()!="jfif"){
+                $img = Image::make($destinationPath . '/' . $file_name)->resize(800, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $img->save($destinationPath . '/gallery-resized/' . $file_name);
+            }
+
+        }
+    }
+
+    public function load_json(){
+        $jsonString = file_get_contents("https://api.chatfood.io/api/v1/businesses/ceeba7a3-5dd4-48a7-9a07-96111efab2e4/areas");
+
+        $data = json_decode($jsonString, true);
+      //  dd($data);
+
+        foreach($data as $city){
+            foreach($city as $cc){
+               // dump($cc);
+                $c = new DMCities();
+
+                $c->city_name = $cc['name'];
+                $c->city_unique_id = $cc['id'];
+
+                $c->save();
+            }
+           /* */
+        }
+    }
+}

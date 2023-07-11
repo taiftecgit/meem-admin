@@ -1,0 +1,1110 @@
+@extends('layouts.app')
+@section('css')
+    <link href="{!! env('APP_ASSETS') !!}css/liveorder.css" rel="stylesheet" type="text/css">
+
+@endsection
+@section('content')
+    <style>
+        body {
+            background-color: #FFF;
+        }
+        #show-recipes .box-header{
+            padding: 15px 1.5rem 5px;
+        }
+        @-webkit-keyframes special {
+            from { background-color: rgba(255, 121, 77, 0.27); }
+            to { background-color: inherit; }
+        }
+        @-moz-keyframes special {
+            from { background-color: rgba(255, 121, 77, 0.27);; }
+            to { background-color: inherit; }
+        }
+        @-o-keyframes special {
+            from { background-color: rgba(255, 121, 77, 0.27);; }
+            to { background-color: inherit; }
+        }
+        @keyframes special {
+            from { background-color: rgba(255, 121, 77, 0.27);; }
+            to { background-color: inherit; }
+        }
+        .special {
+            -webkit-animation: special 1s infinite; /* Safari 4+ */
+            -moz-animation:    special 1s infinite; /* Fx 5+ */
+            -o-animation:      special 1s infinite; /* Opera 12+ */
+            animation:         special 1s infinite; /* IE 10+ */
+        }
+        .mlist_li.selected .media, .mlist_li.selected .box{
+            /*background-color: transparent !important;*/
+        }
+
+        .mlist_li.selected p{
+            color:#fff !important;
+        }
+
+        .labelcenter { width: auto}
+        .gap-items p.status{ font-size: 12px}
+        .gap-items p.min{
+            line-height: 13px;
+            padding-top: 11px;
+            font-size: 11px;
+        }
+
+        .bg-danger p.min, .bg-danger .gap-items p.status{
+            display: none;}
+
+        .bg-danger .circle-div{ height: 10px; width: 10px; background: #fff !important; margin-right: 15px;}
+
+
+        .mlist_li.selected .media-list-hover > .media:not(.media-list-header):not(.media-list-footer):hover,.mlist_li.selected .media-list-hover .media-list-body > .media:hover{
+            background-color: transparent; !important;
+        }
+
+
+
+        .sidebar-mini.sidebar-collapse .content-wrapper {
+            width: calc(100% - 60px) !important;
+            margin-left: 60px !important;
+        }
+        .no-order-found{
+
+            background-color: #000;
+            background-image: url({!! env('APP_ASSETS') !!}images/no-order.png);
+            background-repeat: no-repeat;
+            background-position: center;
+        ;
+        }
+        @media screen and (min-device-width: 1200px) and (max-device-width: 1600px) and (-webkit-min-device-pixel-ratio: 1){
+            body {
+                padding: 0px !important;
+            }
+        }
+
+    </style>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <div id="countdown"></div>
+
+        <div class="container-full">
+            <section class="content p-0">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <nav class="navbar navbar-static-top  ">
+                            <!-- Sidebar toggle button-->
+                            <div class="row">
+
+
+                                <div class="col-md-12 tab-bar-section">
+                                    <div class="app">
+                                        <ul class="hs full nav nav-tabs" role="tablist">
+                                            <li class="item nav-item d-flex align-items-start">
+                                                <div class="gap-items-4  d-flex justify-content-end">
+                                                    <a class="nav-link p-0 active" data-bs-toggle="tab" href="#all-orders" data-status="all" role="tab">All
+                                                        <span class="labelcenter label-default all">0</span></a>
+
+                                                </div>
+                                            </li>
+                                            <li class="item nav-item d-flex align-items-start ">
+                                                <div class="gap-items-4  d-flex justify-content-end">
+
+                                                    <a class="nav-link p-0" data-bs-toggle="tab" href="#new-orders"  data-status="new" role="tab">New
+                                                        <span class="labelcenter label-default new">0</span></a>
+
+
+                                                </div>
+
+                                            </li>
+                                            <li class="item nav-item d-flex align-items-start">
+                                                <div class="gap-items-4  d-flex justify-content-end">
+
+                                                    <a class="nav-link p-0" data-bs-toggle="tab" href="#in-kitchen"  data-status="kitchen" role="tab">In Prep
+                                                        <span class="labelcenter label-default kitchen">0</span></a>
+
+                                                </div>
+
+                                            </li>
+                                            <li class="item nav-item d-flex align-items-start">
+                                                <div class="gap-items-4 d-flex justify-content-end">
+                                                    <a class="nav-link p-0" data-bs-toggle="tab" href="#in-route"  data-status="route" role="tab" >In Route/Ready
+                                                        <span class="labelcenter label-default route">0</span></a>
+
+                                                </div>
+
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                            <!-- <div class="app-menu"></div> -->
+
+                            <a href="#" class="d-inline-block btn right-bar-btn waves-effect waves-circle btn btn-circle btn-danger btn-sm right-close-btn">
+                                <i class="mdi mdi-close"></i>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-4 order-sections-list" style="background-color: #f1f1f1">
+                        <div class="row p-10">
+                            <div class="col-md-12 mt-5">
+                                <div class="search-bx mx-5">
+                                    <form>
+                                        <div class="input-group search-div">
+                                            <input type="search" class="form-control" style="background-color: transparent" placeholder="Search by order id" aria-label="Search" aria-describedby="button-addon2">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sarch" type="submit" id="button-addon3"><i class="ti-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-5 list_row">
+                            <div class=" col-md-12 p-0">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade in active all-orders" id="all-orders" role="tabpanel" style="max-height: 82vh; min-height: 82vh; overflow: auto;">
+                                        <div class="p-0">
+                                            <ul class="list-group list-ul list-unstyled orders-list"  id="orders-list">
+
+                                                {{--<li class="mlist_li p-5 mb-5 pl-15">
+                                                    <div class="d-grid gap-2 d-flex justify-content-center">
+                                                        <button class="btn btn-md btn-primary ref-btn">Refresh</button>
+                                                    </div>
+                                                </li>--}}
+                                            </ul>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 box-shadowed">
+                        <div class="no-order" style="padding-top: 50%; height: 90vh ;">
+                            <h3 class="text-center text-light">No order selected</h3>
+                        </div>
+                        <div class="order-section" style="display: none; height: 90vh ; overflow-x: auto">
+                            <div class="row back-to-orders d-md-none d-lg-none">
+                                <div class="col-sm-12 text-center">
+                                    <svg style="    filter: drop-shadow(1px 0px 0px black);" xmlns="http://www.w3.org/2000/svg" width="13.917" height="9.785" viewBox="0 0 13.917 9.785">
+  <path id="Shape_878" data-name="Shape 878" d="M301.31,1645.861h-7.36v2.854l-6.557-4.9,6.548-4.889v2.853h7.369Zm-8.177,1.227v-2.051h7.354v-2.443h-7.364v-2.036l-4.368,3.261Z" transform="translate(-287.393 -1638.93)"/>
+</svg> 
+ Live Orders
+ @php
+$restuarant1 = \Illuminate\Support\Facades\Auth::user()->restaurants;
+        $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
+         $resto_metas = [];
+            $billing = [];
+            if(isset($resto_meta)){
+                foreach($resto_meta as $meta){
+                  //  dump($meta->resto_meta_defs);
+                    if($meta->resto_meta_defs->meta_def_name=="BILLING_GATEWAY"){
+                   //     dump($meta->resto_meta_defs->meta_def_name);
+                     // $resto_metas['BILLING_GATEWAY'][] = $meta->meta_val;  
+                        $billing[] = array('id'=>$meta->meta_id,'value'=>$meta->meta_val);
+                    }
+                    $resto_metas[$meta->resto_meta_defs->meta_def_name] = $meta->meta_val;
+                }
+            }
+            $resto_metas['BILLING_GATEWAY'] = $billing;
+            $currency = isset($resto_metas['BUSSINESS_CCY'])?$resto_metas['BUSSINESS_CCY']:"IQD";
+            $tax = isset($resto_metas['DISPLAY_TAX_INFO'])?"(".$resto_metas['DISPLAY_TAX_INFO'].")":"";
+@endphp
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-12">
+                                    <div class="boxs">
+                                        <div class="box-header with-border">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <p class="fw-bold" rel="order_ref"></p>
+                                                <p rel="order_placed"></p>
+                                                <p class="p-2 inkitchen-btn" id="toggle"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 mt-1 text-end">
+                                        <a href="#!">Print</a>
+                                    </div>
+                                </div>
+
+
+                                <div class="row right-panel-box">
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div>
+                                                        <p class="text-fade mb-0">Brand</p>
+                                                        <p rel="brand_name"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div>
+                                                        <p class="text-fade mb-0">Outlet</p>
+                                                        <p rel="outlet_name"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row right-panel-box">
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div>
+                                                        <p class="text-fade mb-0">Order type</p>
+                                                        <p>
+                                                            <i class="icon-Dinner"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span><span class="path5"></span></i>
+                                                            <span rel="order_type"></span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="">
+                                                        <p class="text-fade mb-0">Delivery at</p>
+                                                        <p rel="delivery_at"></p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row right-panel-box">
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="">
+                                                        <p class="text-fade mb-0">Customer</p>
+                                                        <p rel="customer"> <br>
+                                                            <i class="mdi mdi-crown org-color"></i>
+                                                            <small class="org-color">Ordered 5 times </small>
+                                                        </p>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="">
+                                                        <p class="text-fade mb-0">Phone number</p>
+                                                        <p rel="phone"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row right-panel-box">
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="">
+                                                        <p class="text-fade mb-0">Payment</p>
+                                                        <p rel="payment"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="">
+                                                        <p class="text-fade mb-0">Channel</p>
+                                                        <p rel="channel"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row right-panel-box">
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="">
+                                                        <p class="text-fade mb-0">Address</p>
+                                                        <p rel="address"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="boxs">
+                                            <div class="box-body">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="">
+                                                        <p class="text-fade mb-0">Order Notes</p>
+                                                        <p rel="delivery_notes"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                            <div class="row mt-0 right-panel-footer ">
+                                <div class="col-12" id="show-recipes">
+
+
+                                </div>
+                                <div class="col-12">
+                                    <div class="box-header border-0 p-15 mt-0 pb-0">
+                                        <div class="d-flex justify-content-between align-items-center m-0">
+                                            <p>Subtotal:</p>
+                                            <p class="sub_total"></p>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center m-0">
+                                            <p>Delivery Fee:</p>
+                                            <p class="delivery_fee"></p>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center m-0">
+                                            <p class="p-15 m-5 ">Total:  @if(!empty($tax)) <small><em>{{ $tax }}</em></small> @endif  </p>
+                                            <p class="total_txt"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-5 button-bottom-div">
+                                    <div class="m-5">
+                                        <button type="button" class="waves-effect waves-light btn btn-outline btn-danger mb-0 btn-w80 rounded-0 rclose-btn reject change-status-reject" data-status="Rejected" style="display: none">Reject</button>
+                                        <button type="button" class="waves-effect waves-light btn btn-outline btn-dark mb-0 btn-w50 rounded-0 rclose-btn accept change-status-reject" data-status="Close"  style="display: none">Close</button>
+                                        <button type="button" class="waves-effect waves-light btn btn-outline btn-danger mb-0 btn-w50 rounded-0 accept change-status-reject" data-status="Rejected"  style="display: none">Cancel</button>
+                                        <button type="button" class="waves-effect waves-light btn btn-default btn-w80 rounded-0 ready-collect change-status " data-status="">Accept</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+            <!-- /.content -->
+
+        </div>
+
+
+
+
+    </div>
+    <!-- /.content-wrapper -->
+
+
+
+
+    <div class="modal center-modal fade" id="accept-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <h4> Order Settings</h4>
+                    <p>Set the time needed for preparing and delivering orders</p>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Preparation (minutes)</label>
+                                <input type="text" name="preparation_time" class="form-control" value="15"  />
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Preparation + delivery (minutes)</label>
+                                <input type="text"  name="preperation_delivery" class="form-control" value="40"  />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer modal-footer-uniform">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary float-end accept-order">Accept Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@endsection
+
+@section('js')
+    <script src="{!! env('APP_ASSETS') !!}js/jquery.jscroll.min.js"></script>
+    <script src="{!! env('APP_ASSETS') !!}js/jquery.countdown360.min.js"></script>
+    <script src="{!! env('APP_ASSETS') !!}vendor_components/sweetalert/sweetalert.min.js"></script>
+    <script>
+        var resto_id = 0;
+        var status = "all";
+        var counter = 0;
+        var order_id = null;
+        $(function () {
+
+            $("body").on("click",".back-to-orders",function () {
+                $(".order-section").hide();
+            });
+
+
+            $.ajax({
+                url: "{!! env('APP_URL') !!}order/counts",
+                success: function (response) {
+                    //   response = $.parseJSON(response);
+                    var total_accepted = 0;
+                    var total = 0;
+
+                    $.each(response,function (i,v) {
+                        if(v.status=="Send_to_Kitchen" || v.status=="Accepted"){
+                            total_accepted+=parseInt(v.status_count);
+                            total+=parseInt(v.status_count);
+                            $(".labelcenter.kitchen").text(total_accepted);
+                        }
+
+                        if(v.status=="On_Road"){
+                            $(".labelcenter.route").text(v.status_count);
+                            total+=parseInt(v.status_count);
+                        }
+
+                        if(v.status=="Placed"){
+                            $(".labelcenter.new").text(v.status_count);
+                            total+=parseInt(v.status_count);
+                            if(parseInt(v.status_count) > 0){
+                                $("#order-counter").html(v.status_count);
+                                $("#order-counter").show();
+                            }
+
+                        }
+
+                    });
+                    $(".labelcenter.all").text(total);
+                }
+            });
+            $("#all-orders").removeClass('no-order-found');
+            $.ajax({
+                url:"{!! env('APP_URL') !!}liveorders/"+status,
+                success:function (response) {
+
+                    // response = $.parseJSON(response);
+
+                    if(response){
+                        if(response.type=="success"){
+                            $.each(response.orders,function (i,v) {
+
+                                var str='<li class="mlist_li" rel="detail" data-order-id="'+v.id+'">\n' +
+                                    '    <div class="box '+v.box_bg+' rounded-0">\n' +
+                                    '        <div class="media-list media-list-divided media-list-hover">\n' +
+                                    '            <div class="media align-items-center">\n' +
+                                    '                <div class="media-body">\n' +
+                                    '                    <p>#'+v.order_ref+'</p>\n' +
+                                    '                       <p> '+(v.campaign_type!=""?v.campaign_type:"Direct")+',  '+v.created_at+'</p>\n' +
+                                    '                </div>\n' +
+                                    '                <div class="media-right gap-items">\n' +
+                                    '                    <div class="user-social-acount text-center">\n' +
+                                    '                        <p class="m-0 status">'+v.status+'</p>\n' +
+                                    '                        <div class="d-flex align-items-center float-end">\n' +
+                                    '                            <div class="circle-div '+v.bg+' text-center" data-min="'+v.remaining_min+'" data-color="'+v.bg_color+'">\n' +
+                                    '                                   <p class="mb-5 min">'+v.remaining_min+'<br />\n'+
+                                    '                                  Min</p>\n'+
+                                    '                            </div>\n' +
+                                    '                        </div>\n' +
+                                    '                    </div>\n' +
+                                    '                </div>\n' +
+                                    '            </div>\n' +
+                                    '        </div>\n' +
+                                    '    </div>\n' +
+                                    '</li>';
+                                counter = counter+1;
+                                $("#orders-list").append(str);
+                            });
+                            $("span."+status).html(counter);
+
+
+
+
+
+
+
+
+
+                        }else{
+                            $("#all-orders").addClass('no-order-found');
+                        }
+
+                    }
+
+                }
+            });
+            $("body").on("click",".nav-link",function () {
+                $("#orders-list").html('');
+                $(".no-order").show();
+                $(".order-section").hide();
+                status = $(this).data('status');
+                $("#all-orders").removeClass('no-order-found');
+                var counter = 0;
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}liveorders/"+status,
+                    success:function (response) {
+
+                        //    response = $.parseJSON(response);
+
+                        if(response){
+                            if(response.type=="success"){
+
+
+                                $.each(response.orders,function (i,v) {
+                                    var str='<li class="mlist_li" rel="detail" data-order-id="'+v.id+'">\n' +
+                                        '    <div class="box '+v.box_bg+' rounded-0">\n' +
+                                        '        <div class="media-list media-list-divided media-list-hover">\n' +
+                                        '            <div class="media align-items-center">\n' +
+                                        '                <div class="media-body">\n' +
+                                        '                    <p>#'+v.order_ref+'</p>\n' +
+                                        '                    <p> '+(v.campaign_type!=""?v.campaign_type:"Direct")+',  '+v.created_at+'</p>\n' +
+                                        '                </div>\n' +
+                                        '                <div class="media-right gap-items">\n' +
+                                        '                    <div class="user-social-acount text-center">\n' +
+                                        '                        <p class="m-0 status">'+v.status+'</p>\n' +
+                                        '                         <div class="circle-div '+v.bg+' text-center" data-min="'+v.remaining_min+'" data-color="'+v.bg_color+'">\n' +
+                                        '                                   <p class="mb-5 min">'+v.remaining_min+'<br />\n'+
+                                        '                                  Min</p>\n'+
+                                        '                            </div>\n' +
+                                        '                    </div>\n' +
+                                        '                </div>\n' +
+                                        '            </div>\n' +
+                                        '        </div>\n' +
+                                        '    </div>\n' +
+                                        '</li>';
+
+                                    $("#orders-list").append(str);
+
+
+
+                                    counter = counter+1;
+                                });
+                            }else{
+                                $("#all-orders").addClass('no-order-found');
+                            }
+
+                            //$("span."+status).html(counter);
+                        }
+
+                    }
+                });
+            });
+
+            $("body").on("click","li[rel=detail]",function () {
+                var id = $(this).data("order-id");
+                order_id = id;
+
+                $(".mlist_li.selected").removeClass('selected');
+                $("#show-recipes").html('');
+
+                $(this).addClass('selected');
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}get/order/detail/"+id,
+                    success:function (response) {
+                        response = $.parseJSON(response);
+
+                        var price = 0;
+                        var delivery_fee = 0;
+
+                        $(".change-status").attr('data-id',id);
+                        $(".change-status-reject").attr('data-id',id);
+
+                        $.each(response,function (i,v) {
+                            $("p[rel="+i+"]").text(v);
+                            $("span[rel="+i+"]").text(v);
+
+                            if(i=="delivery_fee"){
+                                delivery_fee = v;
+                                $(".delivery_fee").html("{!! $currency !!} "+v);
+                            }
+
+
+                            if(i=="status"){
+                                $(".inkitchen-btn").html(v);
+                                $(".inkitchen-btn").addClass();
+
+                                if(v=="New"){
+                                    $(".reject").show();
+                                    $(".accept").hide();
+                                }else{
+                                    $(".accept").show();
+                                    $(".reject").hide();
+
+                                }
+                            }
+
+                            if(i=="bg"){
+                                $(".inkitchen-btn").removeClass('org-bg');
+                                $(".inkitchen-btn").removeClass('bg-danger');
+                                $(".inkitchen-btn").removeClass('green-bg');
+                                $(".inkitchen-btn").addClass(v);
+
+
+                            }
+
+                            if(i=="next_action"){
+                                if(v=="Accepted") 
+                                    $(".change-status").html('Accept');
+                                    else
+                                $(".change-status").html(v);
+                            }
+
+                            if(i=="next_status"){
+                                $(".change-status").attr('data-status',v);
+                            }
+
+
+                            if(i=="recipes"){
+                                var recipes = v;
+                                if(recipes){
+                                    $.each(recipes,function(m,n){
+                                        console.log(n);
+                                        $("#show-recipes").append(show_recipe(n));
+                                        price+=parseFloat(n.total_price);
+                                        if(n.extra_options){
+                                            $.each(n.extra_options,function(c,d){
+                                                price+=(n.quantity*parseFloat(d.price)); 
+                                            });
+                                        }
+                                    });
+
+                                    $(".sub_total").html('{!! $currency !!} '+price);
+                                }
+                            }
+
+                            $(".total_txt").html("{!! $currency !!} "+(price+delivery_fee));
+
+                        });
+                    }
+                });
+                $(".no-order").hide();
+                $(".order-section").show();
+            });
+
+            $('ul.pagination').hide();
+            $('#all-orders').jscroll({
+                autoTrigger: true,
+                loadingHtml: '<img class="text-center" src="{!! env('APP_ASSETS') !!}images/preloaders/preloader.svg" alt="Loading..." />',
+                padding: 0,
+                nextSelector: '.pagination li.active + li a',
+                contentSelector: 'div.mlist_li',
+                callback: function() {
+
+                    $('ul.pagination').remove();
+                }
+            });
+
+            $("body").on("click",".nav-link",function () {
+                $(".nav-link").removeClass('active')
+                $(this).addClass('active')
+            });
+
+
+            $("body").on("click",".order-row",function () {
+                var id = $(this).data('id');
+                window.location = "{!! env('APP_URL') !!}order/show/"+id;
+            });
+
+            $("body").on("click",".accept-order",function () {
+                var preparation_time = $("input[name=preparation_time]").val();
+                var preperation_delivery = $("input[name=preperation_delivery]").val();
+
+                if(preperation_delivery==""){
+                    $("input[name=preperation_delivery]").focus();
+                    return false;
+                }
+
+                if(preparation_time==""){
+                    $("input[name=preparation_time]").focus();
+                    return false;
+                }
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}update/order/status",
+                    type:"POST",
+                    data:{
+                        id:order_id,
+                        status:"Accepted",
+                        preparation_time:preparation_time,
+                        preperation_delivery:preperation_delivery,
+
+                        "_token":"{!! csrf_token() !!}"
+                    },
+                    success:function () {
+                        // alert();
+                        $(".mlist_li.selected").remove();
+                        if(status=="all"){
+                            $("#orders-list").html('');
+                            /*$.ajax({
+                                url:"{!! env('APP_URL') !!}liveorders/"+status,
+                                success:function (response) {
+
+                                    //response = $.parseJSON(response);
+
+                                    if(response){
+                                        $.each(response.orders,function (i,v) {
+                                            var str='<li class="mlist_li" rel="detail" data-order-id="'+v.id+'">\n' +
+                                                '    <div class="box '+v.box_bg+' rounded-0">\n' +
+                                                '        <div class="media-list media-list-divided media-list-hover">\n' +
+                                                '             <div class="media align-items-center">\n' +
+                                                '                <div class="media-body">\n' +
+                                                '                    <p>#'+v.order_ref+'</p>\n' +
+                                                '                       <p> '+(v.campaign_type!=""?v.campaign_type:"Direct")+',  '+v.created_at+'</p>\n' +
+                                                '                </div>\n' +
+                                                '                <div class="media-right gap-items">\n' +
+                                                '                    <div class="user-social-acount text-center">\n' +
+                                                '                        <p class="m-0 status">'+v.status+'</p>\n' +
+                                                '                        <div class="d-flex align-items-center float-end">\n' +
+                                                '                            <div class="circle-div '+v.bg+' text-center" data-min="'+v.remaining_min+'" data-color="'+v.bg_color+'">\n' +
+                                                '                                   <p class="mb-5 min">'+v.remaining_min+'<br />\n'+
+                                                '                                  Min</p>\n'+
+                                                '                            </div>\n' +
+                                                '                        </div>\n' +
+                                                '                    </div>\n' +
+                                                '                </div>\n' +
+                                                '            </div>\n' +
+                                                '        </div>\n' +
+                                                '    </div>\n' +
+                                                '</li>';
+                                            counter = counter+1;
+                                            $("#orders-list").append(str);
+                                        });
+                                        $("span."+status).html(counter);
+                                    }
+
+                                }
+                            });*/
+
+                        }
+
+                        $(".no-order").show();
+                        $(".order-section").hide();
+                        /*$.ajax({
+                            url: "{!! env('APP_URL') !!}order/counts",
+                            success: function (response) {
+                            //    response = $.parseJSON(response);
+                                var total_accepted = 0;
+                                var total = 0;
+
+                                $.each(response,function (i,v) {
+                                    if(v.status=="Send_to_Kitchen" || v.status=="Accepted"){
+                                        total_accepted+=parseInt(v.status_count);
+                                        total+=parseInt(v.status_count);
+                                        $(".labelcenter.kitchen").text(total_accepted);
+                                    }
+
+                                    if(v.status=="On_Road"){
+                                        $(".labelcenter.route").text(v.status_count);
+                                        total+=parseInt(v.status_count);
+                                    }
+
+
+                                    if(v.status=="Placed"){
+
+                                        $(".labelcenter.new").html(v.status_count);
+                                        total+=parseInt(v.status_count);
+                                        if(parseInt(v.status_count) > 0){
+                                            $("#order-counter").html(v.status_count);
+                                            $("#order-counter").show();
+                                        }else{
+                                            audio.pause();
+                                            $("#order-counter").html(0);
+                                            $("#order-counter").hide();
+                                        }
+                                    }
+
+                                });
+                                $(".labelcenter.all").text(total);
+                            }
+                        });*/
+                        //   swal("Accepted!", "Order is Accepted.", "success");
+                        $("#accept-modal").modal('hide');
+                    }
+                });
+            });
+
+            $("body").on("click",'.change-status,.change-status-reject',function (e) {
+                // alert();
+                var s = $(".nav-link.active").data('status');
+
+                var status = $(this).attr('data-status');
+                // alert(status); return;
+
+                if(status=="Rejected"){
+
+                    swal({
+                        title: "Are you sure?",
+                        text: "You will not be able to recover this order!",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#DD6B55",
+                        confirmButtonText: "Yes, Reject it!",
+                        closeOnConfirm: true
+                    }, function(){
+                        $.ajax({
+                            url:"{!! env('APP_URL') !!}update/order/status",
+                            type:"POST",
+                            data:{
+                                id:order_id,
+                                status:status,
+
+                                "_token":"{!! csrf_token() !!}"
+                            },
+                            success:function () {
+                                //alert();
+                                $(".mlist_li.selected").remove();
+
+                                $(".no-order").show();
+                                $(".order-section").hide();
+                                $.ajax({
+                                    url: "{!! env('APP_URL') !!}order/counts",
+                                    success: function (response) {
+                                        //      response = $.parseJSON(response);
+                                        var total_accepted = 0;
+                                        var total = 0;
+
+                                        $.each(response,function (i,v) {
+                                            if(v.status=="Send_to_Kitchen" || v.status=="Accepted"){
+                                                total_accepted+=parseInt(v.status_count);
+                                                total+=parseInt(v.status_count);
+                                                $(".labelcenter.kitchen").text(total_accepted);
+                                            }
+
+                                            if(v.status=="On_Road"){
+                                                $(".labelcenter.route").text(v.status_count);
+                                                total+=parseInt(v.status_count);
+                                            }
+
+                                            if(v.status=="Placed"){
+
+                                                $(".labelcenter.new").html(v.status_count);
+                                                total+=parseInt(v.status_count);
+                                                if(parseInt(v.status_count) > 0){
+                                                    $("#order-counter").html(v.status_count);
+                                                    $("#order-counter").show();
+                                                }else{
+                                                    audio.pause();
+                                                    $("#order-counter").html(0);
+                                                    $("#order-counter").hide();
+                                                }
+                                            }
+
+                                        });
+                                        $(".labelcenter.all").text(total);
+                                    }
+                                });
+                                //  swal("Rejected!", "Order is rejected.", "success");
+                            }
+                        });
+
+                    });
+                    return false;
+                }
+
+                if(status=="Accepted"){
+
+                    $("#accept-modal").modal('show');
+                    return false;
+                }
+
+
+
+                //   alert(order_id);
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}update/order/status",
+                    type:"POST",
+                    data:{
+                        id:order_id,
+                        status:status,
+
+                        "_token":"{!! csrf_token() !!}"
+                    },
+                    success:function () {
+
+                        $(".mlist_li.selected").remove();
+                        if(s=="all"){
+                            $("#orders-list").html('');
+                            /* $.ajax({
+                                 url:"{!! env('APP_URL') !!}liveorders/all",
+                                success:function (response) {
+
+                            //        response = $.parseJSON(response);
+
+                                    if(response){
+                                        $.each(response.orders,function (i,v) {
+                                            var str='<li class="mlist_li" rel="detail" data-order-id="'+v.id+'">\n' +
+                                                '    <div class="box '+v.box_bg+' rounded-0">\n' +
+                                                '        <div class="media-list media-list-divided media-list-hover">\n' +
+                                                '             <div class="media align-items-center">\n' +
+                                                '                <div class="media-body">\n' +
+                                                '                    <p>#'+v.order_ref+'</p>\n' +
+                                                '                       <p> '+(v.campaign_type!=""?v.campaign_type:"Direct")+',  '+v.created_at+'</p>\n' +
+                                                '                </div>\n' +
+                                                '                <div class="media-right gap-items">\n' +
+                                                '                    <div class="user-social-acount text-center">\n' +
+                                                '                        <p class="m-0 status">'+v.status+'</p>\n' +
+                                                '                        <div class="d-flex align-items-center float-end">\n' +
+                                                '                            <div class="circle-div '+v.bg+' text-center" data-min="'+v.remaining_min+'" data-color="'+v.bg_color+'">\n' +
+                                                '                                   <p class="mb-5 min">'+v.remaining_min+'<br />\n'+
+                                                '                                  Min</p>\n'+
+                                                '                            </div>\n' +
+                                                '                        </div>\n' +
+                                                '                    </div>\n' +
+                                                '                </div>\n' +
+                                                '            </div>\n' +
+                                                '        </div>\n' +
+                                                '    </div>\n' +
+                                                '</li>';
+                                            counter = counter+1;
+                                            $("#orders-list").append(str);
+                                        });
+                                        $("span."+status).html(counter);
+                                    }
+
+                                }
+                            });*/
+
+                        }
+                        $(".no-order").show();
+                        $(".order-section").hide();
+                        /*$.ajax({
+                            url: "{!! env('APP_URL') !!}order/counts",
+                            success: function (response) {
+                           //     response = $.parseJSON(response);
+                                var total_accepted = 0;
+                                var total = 0;
+
+                                $.each(response,function (i,v) {
+                                    if(v.status=="Send_to_Kitchen" || v.status=="Accepted"){
+                                        total_accepted+=parseInt(v.status_count);
+                                        total+=parseInt(v.status_count);
+                                        $(".labelcenter.kitchen").text(total_accepted);
+                                    }
+
+                                    if(v.status=="On_Road"){
+                                        $(".labelcenter.route").text(v.status_count);
+                                        total+=parseInt(v.status_count);
+                                    }
+
+                                    if(v.status=="Placed"){
+                                        $(".labelcenter.new").text(v.status_count);
+                                        total+=parseInt(v.status_count);
+                                    }
+
+                                });
+                                $(".labelcenter.all").text(total);
+                            }
+                        });*/
+                    }
+                });
+                e.preventDefault();
+                e.stopPropagation();
+            });
+            $('.table').DataTable({
+                "order": [[ 0, "desc" ]],
+                'paging'      : true,
+                'lengthChange': true,
+                'searching'   : true,
+                'ordering'    : true,
+                'info'        : true,
+                'autoWidth'   : true,
+                /*"processing": true,
+                "serverSide": true,
+                "ajax": "{!! env('APP_URL') !!}get/ajax/orders",
+                "order": [[ 0, "desc", ]],*/
+                "lengthMenu": [ 50, 100, 150 ]
+
+            });
+            var min_minus = 1;
+            setInterval(function(){
+                $(".circle-div").each(function (i,v) {
+                    var min = parseInt($(this).data('min'));
+                    min = 1;
+                    if((min)>0){
+                        var new_time = (min-min_minus);
+                       // alert(new_time);
+                        if(new_time >= 0){
+                            $(this).attr('data-min',new_time);
+                            $(this).find('p.min').html(new_time+"<br />Min");
+                        }
+
+
+                    }
+
+
+                });
+                min_minus++;
+            },60000);
+
+        })
+
+        function show_recipe(recipe){
+            console.log(recipe);
+
+            var str='<div class="box-header border-1 ">\n' +
+                '                                        <div class="ml-5">\n' +
+                '                                            <div class="d-flex justify-content-between align-items-center">\n' +
+                '                                                <p>'+recipe.quantity+'x '+recipe.recipe_name+'</p>\n' ;
+            if(recipe.total_price > 0)
+            str+=   '                                                <p>{!! $currency !!} '+recipe.total_price+'</p>\n';
+            if(recipe.extra_options){
+                str+='<ul>';
+                if(recipe.extra_options){
+                    $.each(recipe.extra_options,function(c,d){
+                       str+="<li>"+d.name+" : {!! $currency !!} "+d.price+"</li>";
+                    });
+                }
+                str+='<ul>';
+            }
+            str+=
+            '                                            </div>\n' +
+                '                                        </div>\n' +
+                '                                    </div>';
+
+            return str;
+        }
+    </script>
+@endsection

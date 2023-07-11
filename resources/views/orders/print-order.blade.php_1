@@ -1,0 +1,280 @@
+<style>
+@media all {
+
+
+    #invoice-POS {
+        direction: rtl;
+        padding: 2mm;
+        width: 80mm;
+        background: #fafafa;
+
+    }
+
+    ::selection {
+        background: #f31544;
+        color: #FFF;
+    }
+
+    ::moz-selection {
+        background: #f31544;
+        color-adjust: exact;  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        color: #FFF;
+    }
+
+    h1 {
+        font-size: 1.5em;
+        color: #222;
+    }
+
+    h2 {
+        font-size: .9em;
+    }
+
+    h3 {
+        font-size: 1.2em;
+        font-weight: 300;
+        line-height: 2em;
+    }
+
+    p {
+        font-size: .7em;
+        color: #666;
+        line-height: 1.2em;
+    }
+
+    #top, #mid, #bot { /* Targets all id with 'col-' */
+        border-bottom: 1px solid #EEE;
+    }
+
+    #top {
+        min-height: 100px;
+    }
+
+    #mid {
+        min-height: 80px;
+    }
+
+    #bot {
+        min-height: 50px;
+    }
+
+    #top .logo {
+        margin: auto;
+        height: 60px;
+        width: 60px;
+        /* background: url(
+    {!! env('APP_URL').'public/uploads/logo/'.\Illuminate\Support\Facades\Auth::user()->restaurants->photos->file_name !!} ) no-repeat;
+           */
+        background-size: 60px 60px;
+    }
+
+    .clientlogo {
+        float: left;
+        height: 60px;
+        width: 60px;
+        /* background: url(
+    {!! env('APP_URL').'public/uploads/logo/'.\Illuminate\Support\Facades\Auth::user()->restaurants->photos->file_name !!} ) no-repeat;
+            */
+        background-size: 60px 60px;
+        border-radius: 50px;
+    }
+
+    .info {
+        display: block;
+        margin-left: 0;
+    }
+
+    .title {
+        float: right;
+    }
+
+    .title p {
+        text-align: right;
+    }
+
+    .table1 {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table1 td {
+        padding: 5px;
+        border: 1px solid #EEE
+    }
+
+    .no-border td{
+        border: 0 !important; font-size: 9px;
+    }
+    .tabletitle {
+        padding: 5px;
+        font-size: .5em;
+        background: #EEE;
+        color-adjust: exact;  -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+
+    .service {
+        border-bottom: 1px solid #EEE;
+    }
+
+    .item {
+        width: 24mm;
+    }
+
+    .itemtext {
+        font-size: .5em;
+        margin: 0 !important;
+    }
+
+    #legalcopy {
+        margin-top: 5mm;
+    }
+
+
+}
+
+</style>
+
+
+<div id="invoice-POS">
+
+    <center id="top">
+        <p class="legal" style="text-align: center; font-size: 16px"><strong>شكرا لطلبك!</strong> 
+        <div class="logo"><img src="{!! env('APP_URL').'public/uploads/logo/'.\Illuminate\Support\Facades\Auth::user()->restaurants->photos->file_name !!}" height="60" /> </div>
+        <div class="info">
+            <h2 style="text-align: center">{!! \Illuminate\Support\Facades\Auth::user()->restaurants->name !!}</h2>
+        </div><!--End Info-->
+    </center><!--End InvoiceTop-->
+
+    <div id="mid">
+        <div class="info">
+
+            <h2>Order ID: {!! $order->order_ref !!} </h2>
+            <h6 style="margin: 0">اسم الزبون :
+
+
+                {!! $order->customer_name !!}</h6>
+            <table class="no-border" border="0" style="border: 0 !important;">
+                <tr>
+                    <td><strong> العنوان :</strong></td>
+                    <td>
+                        @if(isset($order->customers->customer_addresses[0]))
+                        {!! ucwords($order->customers->customer_addresses[0]->label) !!}
+                        ،{!! $order->customers->customer_addresses[0]->area !!}
+                        {!! $order->customers->customer_addresses[0]->address !!}
+                            @endif
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong> الموبايل :</strong></td>
+                    <td> {!! isset($order->customers)?(str_replace(env('COUNTRY_CODE'),'',$order->customers->users->email)):"" !!} </td>
+                </tr>
+            </table>
+
+        </div>
+    </div><!--End Invoice Mid-->
+
+    <div id="bot">
+
+        <div id="table">
+            <table class="table1">
+                @if(isset($order->orderItems) && $order->orderItems->count() > 0)
+
+                <tr class="tabletitle">
+                    <th class="item">اسم المادة</th>
+                    <th class="Hours">الكمية</th>
+                    <th class="Hours">السعر</th>
+                    <th class="Rate">السعر الإجمالي</th>
+                </tr>
+                        @php
+                            $extra_price = 0;
+                        @endphp
+                        @foreach($order->orderItems as $item)
+                <tr class="service">
+                    <td class="tableitem"><p class="itemtext">
+                            @php
+                                $recipe  = $item->recipes;
+                            $cate_name = "";
+                            $categories = isset($recipe->categories)?$recipe->categories->pluck('category_id'):NULL;
+                            if($categories){
+
+                            $categories = \App\Categories::whereIn('id',$categories)->pluck('name')->toArray();
+                            $cate_name = $categories[0];
+
+
+                            }
+                            @endphp
+                            @php
+                                $extra_options = NULL;
+
+                                   $opt = [];
+                               if(!empty($item->extra_options)){
+
+                               $extra_options = json_decode($item->extra_options);
+
+                               //$opt = "<ul>";
+                               foreach($extra_options as $option){
+
+                                $itm = \App\ExtraOptionItems::find($option->id);
+                                if(isset($itm)){
+
+                                    $opt[] = $itm->name;
+                                 //  $opt.="<li>".$itm->name.' <span class="ml-2 badge badge-danger">'.number_format($itm->price,2).'</span>';
+                                    $extra_price = $extra_price+$itm->price;
+                                  //  dump($extra_price);
+                                  if(isset($option->sub_items)){
+
+                                        foreach($option->sub_items as $sub){
+
+                                           $itm = \App\ExtraOptionItems::find($sub->sub_item_id);
+
+
+                                           $extra_price = $extra_price+$itm->price;
+                                        }
+
+                                   }
+                                   //$opt.="</li>";
+                                }
+                               }
+                              // $opt.="</ul>";
+                               }
+                            @endphp
+                            {!! isset($item->recipes)?$item->recipes->name:"" !!}</p>
+                        </td>
+
+                    <td class="tableitem"><p class="itemtext">{!! $item->qty !!}</td>
+                    <td class="tableitem"><p class="itemtext">IQD {!! number_format($item->price) !!}</td>
+                    <td class="tableitem"><p class="itemtext">IQD {!! number_format($item->qty*$item->price) !!}</td>
+                </tr>
+                    @endforeach
+
+
+
+                <tr class="tabletitle">
+                    <td></td>
+                    <td></td>
+                    <th class="Rate">سعر التوصيل</th>
+                    <th class="payment">IQD {!! $order->delivery_fee !!}</th>
+                </tr>
+
+                <tr class="tabletitle">
+                    <td></td>
+                    <td></td>
+                    <th class="Rate">المبلغ الكلي</th>
+                    <th class="payment">IQD {!! number_format($order->delivery_fee+$order->total_price+$extra_price) !!}</td>
+                </tr>
+                    @endif
+            </table>
+        </div><!--End Table-->
+
+        <div id="legalcopy">
+
+            </p>
+            <p class="legal"><strong>ملاحظات التوصيل ( ان وجدت):</strong> @if(isset($order->customers) && isset($order->customers->customer_addresses))
+                        {!! $order->customers->customer_addresses[0]->instructions !!} @endif </p>
+        </div>
+        <div style="border-top: 2px; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 8px">
+            {!! \Illuminate\Support\Facades\Auth::user()->restaurants->name !!} , {!! \Illuminate\Support\Facades\Auth::user()->restaurants->address !!} {!! \Illuminate\Support\Facades\Auth::user()->restaurants->phone_number !!}
+        </div>
+
+    </div><!--End InvoiceBot-->
+</div><!--End Invoice-->

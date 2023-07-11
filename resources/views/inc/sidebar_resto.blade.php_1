@@ -1,0 +1,116 @@
+@php
+    $current_page = strtolower(Route::currentRouteName());
+
+
+
+    $main_pages = ['dashboard','orderlisting','show_order','marketing','order-history','outlets','outlets-form','outlets-address','outlets-delivery','outlets-ordering-mode','outlets-pickup','outlets-contactless-dining'];
+$outlet = ['outlets','outlets-form','outlets-address','outlets-delivery','outlets-ordering-mode','outlets-pickup','outlets-contactless-dining'];
+
+    @endphp
+<aside class="main-sidebar d-none d-sm-none d-md-none d-lg-block">
+    <!-- sidebar-->
+    <section class="sidebar position-relative">
+        <div class="multinav">
+            <div class="multinav-scroll" style="height: 100%;">
+                <!-- sidebar menu-->
+                <ul class="sidebar-menu" data-widget="tree">
+                    <li class="@if(in_array($current_page,$main_pages) && $current_page=="dashboard") active @endif">
+                        <a href="{!! env('APP_URL') !!}dashboard">
+                            <i class="icon-Home"></i>
+                            <span>Dashboard</span>
+
+                        </a>
+
+                    </li>
+
+                    <li class="@if(in_array($current_page,$main_pages)  && ($current_page=="orderlisting" || $current_page=="show_order")) active @endif">
+                        <a href="{!! env('APP_URL') !!}orders">
+                            <i class="icon-Clipboard-check"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                            @php
+                                $order = \App\Orders::select(DB::raw(' count(status) as status_count'),'status')->where('resto_id',\Illuminate\Support\Facades\Auth::user()->restaurants->id)
+                                ->where('status','Placed')->groupBy('status')->first();
+                          $count = isset($order)?$order->status_count:0;
+                            @endphp
+                            <span>Live Orders</span><span class="notification-badge" id="order-counter" style="font-size: 75%; @if($count == 0) display:none; background-color: red !important @endif">{!! $count !!}</span>
+
+                        </a>
+
+                    </li>
+                    <li class="@if(in_array($current_page,$main_pages)  && ($current_page=="order-history")) active @endif">
+                        <a href="{!! env('APP_URL') !!}order/history">
+                            <i class="icon-Library"><span class="path1"></span><span class="path2"></span></i>
+                            <span>Orders History</span>
+
+                        </a>
+
+                    </li>
+
+                    <li class="@if(in_array($current_page,$outlet)) active @endif">
+                        <a href="{!! env('APP_URL') !!}outlets">
+                            <i class="icon-Cart"><span class="path1"></span><span class="path2"></span></i>
+                            <span>Outlets </span>
+
+                        </a>
+
+                    </li>
+
+
+                    <li class="@if(in_array($current_page,$main_pages)  && ($current_page=="marketing")) active @endif">
+                        <a href="{!! env('APP_URL') !!}marketing">
+                            <i class="icon-Group"><span class="path1"></span><span class="path2"></span></i>
+                            <span>Marketing </span>
+
+                        </a>
+
+                    </li>
+
+
+                    {{--<li class="treeview">
+                        <a href="#">
+                            <i class="icon-Clipboard-check"><span class="path1"></span><span class="path2"></span><span class="path3"></span></i>
+                            <span>Settings</span>
+                            <span class="pull-right-container">
+					  <i class="fa fa-angle-right pull-right"></i>
+					</span>
+                        </a>
+                        <ul class="treeview-menu">
+                            <li><a href="{!! env('APP_URL') !!}restaurant/edit/{!! \App\Helpers\CommonMethods::encrypt(Auth::User()->restaurants->id) !!}"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>Restaurant's Settings</a></li>
+                        </ul>
+                    </li>--}}
+                </ul>
+
+
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <!-- <ul class="sidebar-menu tree" data-widget="tree">
+                <li>
+                       <a >
+                           <i class="icon-User"><span class="path1"></span><span class="path2"></span></i>
+                           <span>Users</span>
+                       </a>
+                     </li>
+            </ul> -->
+            <div class="dropdown">
+
+                <button class="footer-drop btn btn-secondary dropdown-toggle show" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="true">
+                    <i class="icon-User"><span class="path1"></span><span class="path2"></span></i>
+                    <span>{!! \Illuminate\Support\Facades\Auth::user()->restaurants->name !!}</span>
+
+                    <span class="pull-right-container">
+								  <i class="fa fa-angle-right pull-right"></i>
+								</span>
+                </button>
+                <ul class="dropdown-menu footer-drop show" aria-labelledby="dropdownMenu2" data-popper-placement="top-start">
+
+                {{--    <li><button class="dropdown-item" type="button">Users</button></li>
+                    <li><button class="dropdown-item" type="button">Settings</button></li>--}}
+                    <li><button class="dropdown-item" type="button" onclick="location.href='{!! env('APP_URL') !!}logout'">Logout</button></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</aside>
+
+
+

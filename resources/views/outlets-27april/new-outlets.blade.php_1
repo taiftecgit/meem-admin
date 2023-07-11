@@ -1,0 +1,268 @@
+@extends('layouts.app')
+@if(isset($outlet))
+@section('page-title')| {!! isset($outlet)?$outlet->name:"" !!}@endsection
+@else
+@section('page-title')| New Outlet  @endsection
+@endif
+@section('content')
+    <link href="{!! env('APP_ASSETS') !!}/vendor_components/dropzone/dropzone.css" rel="stylesheet"/>
+    <link href="{!! env('APP_ASSETS') !!}/vendor_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet"/>
+
+    <link href="{!! env('APP_ASSETS') !!}css/outlets-inner-section.css" rel="stylesheet" type="text/css">
+    <style>
+
+        body {
+            padding: 0px !important;
+        }
+        .vtabs .tabs-vertical {
+            width: 229px;
+        }
+        .bootstrap-tagsinput {
+            min-height: 60px; width: 100%;
+        }
+        h4{ margin-top: 40px}
+    </style>
+    <style type="text/css">
+        .bootstrap-tagsinput{
+            border: 1px solid #E4E6EB;
+        }
+
+        .bootstrap-tagsinput .label-info{
+            background-color: #ffab00 !important;
+        }
+        .theme-primary [type=checkbox].filled-in:checked.chk-col-primary + label:after{
+            border: 1px solid #ffab00;
+            background-color: #ffab00 !important;
+        }
+        #image-preview {
+            width: 100%;
+            border-radius: 20px;
+            height: 341px;
+            position: relative;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            color: #ecf0f1;
+            background-position: center !important;
+    background-size: cover !important;
+        }
+        #image-preview input {
+            line-height: 200px;
+            font-size: 200px;
+            position: absolute;
+            opacity: 0;
+            z-index: 10;
+        }
+        #image-preview label {
+            position: absolute;
+            z-index: 5;
+            opacity: 0.8;
+            cursor: pointer;
+            background-color: #bdc3c7;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+            line-height: 50px;
+            text-transform: uppercase;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <div class="container-full">
+            <!-- Content Header (Page header) -->
+           {{-- <div class="content-header">
+                <div class="d-flex align-items-center">
+                    <div class="me-auto">
+                        <h4 class="page-title">Outlets</h4>
+                        <div class="d-inline-block align-items-center">
+                            <nav>
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{!! env('APP_URL') !!}dashboard"><i
+                                                    class="mdi mdi-home-outline"></i></a></li>
+
+                                    <li class="breadcrumb-item active" aria-current="page">Outlets</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+
+                </div>
+            </div>--}}
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-4" style="padding-right: 0;background-color: #F5F5F5">
+                        @include('outlets.outlet-sidebar')
+                    </div>
+                    <div class="col-8">
+                        <form id="save-outlet" method="POST" action="{!! env('APP_URL') !!}save/outlet" enctype="multipart/form-data">
+
+                            <input type="hidden" name="id" value="{!! isset($outlet)?$outlet->id:"" !!}" />
+                            @php
+                             //$resto = \App\Restaurants::find(\App\Helpers\CommonMethods::getRestuarantID());
+                            $image = null;
+                                if(isset($outlet)){
+                                   $image = \App\Photos::where('resto_id',\App\Helpers\CommonMethods::getRestuarantID())->where('branch_id',$outlet->id)->first();
+
+                                }
+                                
+                            @endphp
+                            @csrf
+                            <div class="outlet-info-section">
+                                <h2 style="margin-top: 0">Basic information</h2>
+                                <p style="font-size: 14px">Cover Image</p>
+                                <div id="image-preview" @if(isset($image) && !empty($image->file_name)) style="background: url({!! $image->file_name !!})" @endif>
+                                    <label for="image-upload" id="image-label">Choose File</label>
+                                    <input type="file" name="image" id="image-upload" />
+                                </div>
+                                <p class="text-danger text-end">Max of 5MB, at least 854 x 400 pixels and only JPEG and PNG are allowed.</p>
+                                <div class="row mt-4">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label>Outlet name</label>
+                                            <input type="text" value="{!! isset($outlet)?$outlet->name:"" !!}" class="form-control" name="outlet_name"
+                                                   required/>
+                                        </div>
+
+
+                                        <h4>Contact information</h4>
+                                        <div class="form-group">
+                                            <label>Email</label> <br />
+                                            <input type="text" placeholder="Enter valid email address" name="email" value="{!! isset($outlet)?$outlet->email:"" !!}" class="form-control" data-role="tagsinput" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Phone</label> <br />
+                                            <input type="text" class="form-control" name="phone" value="{!! isset($outlet)?$outlet->phone_number:"" !!}" required />
+                                        </div>
+
+
+                                        <h4>Order Settings</h4>
+                                        <p>Select the dates customers can place orders for</p>
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <input type="checkbox" id="md_checkbox_21" class="filled-in chk-col-primary" checked />
+                                                <label for="md_checkbox_21">Same Day</label>			 <br />
+                                                <input type="checkbox" id="md_checkbox_21" class="filled-in chk-col-primary" checked />
+                                                <label for="md_checkbox_21">Next Day</label>
+                                            </div>
+                                        </div>
+
+
+
+                                        <a href="#!" class="btn btn-primary save-changes mt-4">Save Changes</a>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+
+                        <!-- /.box -->
+                </div>
+
+            </section>
+            <!-- /.content -->
+
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+
+    <div class="modal fade" id="crop-image" tabindex="-1" role="dialog" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@endsection
+
+@section('js')
+    <script src="{!! env('APP_ASSETS') !!}/vendor_components/dropzone/dropzone.js"></script>
+    <script src="{!! env('APP_ASSETS') !!}/vendor_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.uploadPreview({
+                input_field: "#image-upload",   // Default: .image-upload
+                preview_box: "#image-preview",  // Default: .image-preview
+                label_field: "#image-label",    // Default: .image-label
+                label_default: "Choose File",   // Default: Choose File
+                label_selected: "Change File",  // Default: Change File
+                no_label: true    ,
+                success_callback: function() {
+                   // alert();
+                   $("#crop-image").modal();
+                }// Default: false
+            });
+            
+            $("body").on("click",".save-changes",function () {
+
+                /*$.toast({
+                    heading: 'Welcome to my Riday Admin',
+                    text: 'Use the predefined ones, or specify a custom position object.',
+                    position: 'top-right',
+                    loaderBg: '#ff6849',
+                    icon: 'info',
+                    hideAfter: 3000,
+                    stack: 6
+                });*/
+
+                if($("#save-outlet").valid()){
+                    $("#save-outlet").ajaxForm(function (response) {
+
+                        response = $.parseJSON(response);
+
+                        if(response.type=="success"){
+                            $.toast({
+                                heading: 'Outlet Update.',
+                                text: response.message,
+                                position: 'top-right',
+                                loaderBg: '#ff6849',
+                                icon: 'success',
+                                hideAfter: 3000,
+                                stack: 1
+                            });
+
+                            setTimeout(function () {
+                                window.location = "{!! env('APP_URL') !!}outlet/edit/"+response.unique_key
+                            },2000);
+                        }else{
+                            $.toast({
+                                heading: 'Outlet Update.',
+                                text: response.message,
+                                position: 'top-right',
+                                loaderBg: '#ff6849',
+                                icon: 'error',
+                                hideAfter: 3000,
+                                stack: 1
+                            });
+                        }
+
+                    }).submit();
+                }
+            });
+        });
+    </script>
+@endsection

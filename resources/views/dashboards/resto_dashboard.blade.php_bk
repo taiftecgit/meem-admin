@@ -1,0 +1,291 @@
+@extends('layouts.app')
+
+@section('content')
+    @php
+        $resto = isset(\Illuminate\Support\Facades\Auth::user()->restaurants)?\Illuminate\Support\Facades\Auth::user()->restaurants:NULL;
+    @endphp
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <div class="container-full">
+            <!-- Main content -->
+
+            <section class="content">
+                <div class="row">
+                    <div class="col-xxxl-3 col-lg-6 col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex align-items-start">
+                                    <div>
+                                        <img src="{!! env('APP_ASSETS') !!}images/food/online-order-1.png" class="w-80 me-20" alt="" />
+                                    </div>
+                                    <div>
+                                        <h2 class="my-0 fw-700">{!! isset($resto)?($resto->orders->count()):0; !!}</h2>
+                                        <p class="text-fade mb-0">Total Order</p>
+                                        {{--<p class="fs-12 mb-0 text-success"><span class="badge badge-pill badge-success-light me-5"><i class="fa fa-arrow-up"></i></span>3% (15 Days)</p>--}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxxl-3 col-lg-6 col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex align-items-start">
+                                    <div>
+                                        <img src="{!! env('APP_ASSETS') !!}images/food/online-order-2.png" class="w-80 me-20" alt="" />
+                                    </div>
+                                    <div>
+                                        <h2 class="my-0 fw-700">{!! isset($resto)?($resto->delivered_orders->count()):0; !!}</h2>
+                                        <p class="text-fade mb-0">Total Delivered</p>
+                                       {{-- <p class="fs-12 mb-0 text-success"><span class="badge badge-pill badge-success-light me-5"><i class="fa fa-arrow-up"></i></span>8% (15 Days)</p>--}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxxl-3 col-lg-6 col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex align-items-start">
+                                    <div>
+                                        <img src="{!! env('APP_ASSETS') !!}images/food/online-order-3.png" class="w-80 me-20" alt="" />
+                                    </div>
+                                    <div>
+                                        <h2 class="my-0 fw-700">{!! isset($resto)?($resto->cancelled_by_customer_orders->count()):0; !!}</h2>
+                                        <p class="text-fade mb-0">Total Cancelled</p>
+                                     {{--   <p class="fs-12 mb-0 text-primary"><span class="badge badge-pill badge-primary-light me-5"><i class="fa fa-arrow-down"></i></span>2% (15 Days)</p>--}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxxl-3 col-lg-6 col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex align-items-start">
+                                    <div>
+                                        <img src="{!! env('APP_ASSETS') !!}images/food/online-order-4.png" class="w-80 me-20" alt="" />
+                                    </div>
+                                    <div>
+                                        @php
+                                        $totalRevenue = \App\Restaurants::totalRevenue($resto->id);
+                                        $last7DaysData = \App\Restaurants::totalRevenueLast7Days($resto->id);
+                                        $last7DaysDataCount =  \App\Restaurants::totalCountRevenue($resto->id);
+                                        $totalOnlineOrders =  \App\Restaurants::totalOnlineOrders($resto->id);
+                                        $totalOnlineOrders7Days  = \App\Restaurants::totalOnlineOrdersLast7Days($resto->id);
+                                        $totalCountOnlineOrders7Days  = \App\Restaurants::totalCountOnlineOrdersLast7Days($resto->id);
+
+
+                                        $last7DaysData = isset($last7DaysData)?$last7DaysData:NULL;
+
+
+                                        @endphp
+                                        <h2 class="my-0 fw-700">IQD {!! isset($totalRevenue)?number_format($totalRevenue[0]->total_price):0 !!}</h2>
+                                        <p class="text-fade mb-0">Total Revenue</p>
+                                       {{-- <p class="fs-12 mb-0 text-primary"><span class="badge badge-pill badge-primary-light me-5"><i class="fa fa-arrow-down"></i></span>12% (15 Days)</p>--}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxxl-7 col-xl-6 col-lg-6 col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h4 class="box-title mb-0">Daily Revenue</h4>
+
+                                    </div>
+                                    <div class="text-end">
+                                        <h3 class="box-title mb-0 fw-700">IQD {!! isset($last7DaysDataCount)?number_format($last7DaysDataCount[0]->total_price):0 !!}</h3>
+
+                                    </div>
+                                </div>
+                                <div id="chart" class="mt-20"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxxl-5 col-xl-6 col-lg-6 col-12">
+                        <div class="box">
+                            <div class="box-body">
+                                <h4 class="box-title mb-1">Customer Flow</h4>
+                                <div class="d-md-flex d-block justify-content-between">
+
+                                    <div>
+                                        <h3 class="mb-0 mt-0 fw-700">{!! isset($totalCountOnlineOrders7Days)?$totalCountOnlineOrders7Days[0]['total_orders']:0 !!}</h3>
+                                        <p class="mb-0 text-danger"><small>Online Order</small></p>
+                                    </div>
+                                </div>
+                                <div id="yearly-comparison"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+    </div>
+    <!-- /.content-wrapper -->
+    @endsection
+
+@section('js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <!-- Chart Js -->
+    <!-- Datatable Js -->
+
+
+    <script>
+        var resto_id = 0;
+        $(function () {
+
+            var data = '{!! $last7DaysData !!}';
+            var order_data = '{!! $totalOnlineOrders7Days !!}';
+            data = $.parseJSON(data);
+            order_data = $.parseJSON(order_data);
+
+            var days = [];
+            var sale = [];
+            $.each(data,function (i,v) {
+                    days.push(v.day_name);
+                    sale.push(v.total_price);
+            });
+
+            var order_days = [];
+            var orders = [];
+            $.each(order_data,function (i,v) {
+                order_days.push(v.day_name);
+                orders.push(v.total_orders);
+            });
+
+
+
+
+            $("body").on('click','.delete-recipe',function () {
+                var id = $(this).data('id');
+
+                $.ajax({
+                    url:"{!! env('APP_URL') !!}recipe/delete/"+id,
+                    success:function (response) {
+                        location.reload();
+                    }
+                });
+            });
+
+
+           // var data = ["200,500,500,600,290,12,80"];
+            var options = {
+                series: [{
+                    name: 'Revenue',
+                    data: sale
+                }],
+                chart: {
+                    height: 350,
+                    type: 'area',
+                    zoom: {
+                        enabled: false
+                    },
+                },
+                colors: ["#4c95dd"],
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    curve: 'smooth'
+                },
+                xaxis: {
+                    categories: days
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return "IQD " + val + " "
+                        }
+                    },
+                },
+            };
+
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+
+
+console.log(order_data);
+
+            var options = {
+                chart: {
+                    height: 325,
+                    type: 'bar',
+                    toolbar: {
+                        show: false
+                    },
+                },
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        endingShape: 'rounded',
+                        columnWidth: '65%',
+                    },
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    show: true,
+                    width: 5,
+                    colors: ['transparent']
+                },
+                colors: ["#e66430"],
+                series: [ {
+                    name: 'Online Order',
+                    data: orders
+                }],
+                xaxis: {
+                    categories: order_days,
+                    axisBorder: {
+                        show: true,
+                        color: '#bec7e0',
+                    },
+                    axisTicks: {
+                        show: true,
+                        color: '#bec7e0',
+                    },
+                },
+                legend: {
+                    show: false,
+                },
+                fill: {
+                    opacity: 1
+
+                },
+                grid: {
+                    row: {
+                        colors: ['transparent'], // takes an array which will be repeated on columns
+                        opacity: 0.2
+                    },
+                    borderColor: '#f1f3fa'
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (val) {
+                            return  + val + " Orders"
+                        }
+                    }
+                }
+            }
+
+            var chart = new ApexCharts(
+                document.querySelector("#yearly-comparison"),
+                options
+            );
+
+            chart.render();
+
+
+
+
+        })
+    </script>
+@endsection

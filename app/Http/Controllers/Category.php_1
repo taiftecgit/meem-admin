@@ -1,0 +1,113 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Categories;
+use App\Photos;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Str;
+use File;
+use Image;
+
+class Category extends Controller
+{
+    //
+
+    public function categories(){
+        if( Auth::user()->role=="restaurant")
+            $categories = Categories::whereNull('deleted_at')->whereIn('resto_id',[0,Auth::user()->restaurants->id])->orderBy('name','ASC')->get();
+            else
+        $categories = Categories::whereNull('deleted_at')->orderBy('name','ASC')->get();
+        $data = [
+            'categories' => $categories
+        ];
+        return view('categories.categories',$data);
+    }
+
+    public function new_category(){
+
+        return view('categories.category_form');
+    }
+
+    public function save(Request $request)
+    {
+        //  dd($request->all());
+
+        $id = $request->id;
+        if(empty($id))
+            $category = new Categories();
+        else
+            $category = Categories::find($id);
+
+        $category->name = $request->name;
+        $category->arabic_name = $request->arabic_name;
+        $category->is_active =1;
+        $category->resto_id = Auth::user()->role=="restaurant"?Auth::user()->restaurants->id:0;
+        $category->save();
+
+        $id = $category->id;
+        if($request->hasFile('main_image')){
+            $logo = $request->file('main_image');
+
+
+
+            $file_name = "category-".Str::slug($request->name)."-main_image".'-'.time();
+            $extension = $logo->getClientOriginalExtension();
+
+
+
+            Storage::disk('main_image')->put($file_name.'.'.$extension,  File::get($logo));
+
+            $destinationPath = public_path('/uploads/main_image');
+            $img = Image::make($destinationPath . '/' . $file_name.'.'.$extension)->resize(100, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+
+            $img->save($destinationPath . '/thumbnails/' . $file_name.'.'.$extension);
+
+
+
+            $main_image = Photos::where('category_id',$id)->where('photo_type','main_image')->first();
+            if(!$main_image)
+                $main_image = new Photos();
+
+
+            $main_image->file_name = $file_name.'.'.$extension;
+            $main_image->category_id = $id;
+            $main_image->photo_type = 'main_image';
+            $main_image->resto_id =  Auth::user()->restaurants->id;;
+
+            $main_image->save();
+
+            //$resto->text =
+        }
+
+
+        if($id > 0)
+            echo json_encode(array('type' => 'success', 'message'=>"Category is saved successfully."));
+        else
+            echo json_encode(array('type' => 'error', 'message'=>"Category is not saved successfully."));
+    }
+
+    public function delete($id){
+        //$id = CommonMethods::decrypt($id);
+        $category = Categories::find($id);
+        $category->deleted_at = date('Y-m-d H:i:s');
+        $category->save();
+
+
+    }
+    public function edit($id){
+
+        $category = Categories::find($id);
+
+        $data = [
+            'category' => $category,
+        ];
+
+
+        return view('categories.category_form',$data);
+    }
+}

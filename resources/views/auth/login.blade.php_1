@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="csrf-token" content="MOPUhVXZcUk6jStOhUNBIjlzjQOz911kSUPoP7gN">
+    <meta name="description" content="{!! env('APP_NAME') !!}<">
+    <meta property="og:type" content="website" />
+    <meta property="og:image" itemprop="image" content="{!! env('APP_ASSETS') !!}images/meem.png">    <title>{!! env('APP_NAME') !!}</title>
+    <!-- Favicon Icon -->
+    <link rel="icon" type="image/png" href="{!! env('APP_ASSETS') !!}images/favicon.png">
+    <!-- Feather Icon-->
+    <link href="{!! env('APP_ASSETS') !!}css/vendors_css.css" rel="stylesheet" type="text/css">
+    <!-- Fontawesome Icon-->
+    <link href="{!! env('APP_ASSETS') !!}css/style.css" rel="stylesheet" type="text/css">
+    <link href="{!! env('APP_ASSETS') !!}css/style_new.css" rel="stylesheet" type="text/css">
+    <!-- Bootstrap Css -->
+    <link href="{!! env('APP_ASSETS') !!}css/skin_color.css" rel="stylesheet"><!-- Custom Css -->
+    <link href="{!! env('APP_ASSETS') !!}css/login.css" rel="stylesheet">
+    <style>
+    .do-login{
+            background: #FEC34D !important;
+            border-color: #FEC34D !important;
+    }
+    .theme-primary .btn-danger:hover, .theme-primary .btn-danger:active, .theme-primary .btn-danger:focus, .theme-primary .btn-danger.active {
+     background: #FFAD12 !important;
+    border-color:  #FFAD12 !important;
+    color: #ffffff !important;
+}
+   
+        .input-group .input-group-text {
+                border-color: #000 !important;
+        }
+        .form-control, .form-select {
+         
+            border-color: #000  !important;
+         
+        }
+        form input[type=email], input[type=password], input[type=text]{
+            color: #000 !important;
+        }
+    </style>
+
+</head>
+<body class="hold-transition theme-primary bg-img" >
+
+<div class="container h-p100">
+    <div class="row align-items-center justify-content-md-center h-p100">
+
+              <div class="row justify-content-center g-0">
+                <div class="col-lg-5 col-md-8 col-12">
+                    <div class="bg-white rounded10 shadow-lg">
+                       
+                        <div class="p-40">
+                            <div class="logo ">
+                                 <div class="col-md-12">
+                                    <img class="image-fluid w-25 ml-5" src="{!! env('APP_ASSETS') !!}images/icons/meem.png">
+                                 </div>
+                            </div>
+                            <form method="POST" action="{{ route('login') }}">
+                                @csrf
+                            <div class="form-group ">
+                                <h3 class="balck-h3"><b>Welcome to meem</b></h3>
+                                <p>it's good to see you again!</p>
+                                <p class="mt-2">Type your login information, and we'll take you to your dashboard right away.</p>
+                            </div>    
+                           <div class="form-group pt-r1">
+                              <label for="exampleInputEmail1"><b>User name *</b></label>
+                              <input type="text" name="username" required=""  class="form-control @error('username') is-invalid @enderror" id="username" aria-describedby="emailHelp" placeholder="Enter user name">
+                           </div>
+                           <div class="form-group has-search">
+                              
+                                
+
+                              <div class="form-group has-search">
+                                <label for="exampleInputEmail1"><b>Password *</b></label>
+                                <!-- <a href="" class="float-end">Forgot password?</a> -->
+                                <span class="fa fa-eye form-control-feedback reveal show-password"></span>
+                                <input type="password" class="form-control pwd @error('password') is-invalid @enderror" name="password" required="" placeholder="Enter password">
+                              </div>
+                             
+                                     
+                           </div>
+
+
+                           
+                           <div class="col-md-12 text-center ">
+                            <div class="d-grid gap-2">
+                              <button type="button" class=" btn btn-block  btn-primary tx-tfm do-login">Login</button>
+                            </div>
+                           </div>
+                           <div class="col-md-12 ">
+                              <div class="login-or">
+                                 @if (count($errors) > 0)
+                                        <div class="alert alert-dark-danger alert-dismissible fade show" style="display: block;">
+                                            <ul style="list-style: none; padding:0; margin :0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li class="text-danger text-center">{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif 
+                              </div>
+                           </div>
+                           
+                           <div class="form-group pt-r3">
+                              <!-- <p class="text-center"><b>Don't have account?</b> <a href="#" id="signup">Sign up here</a></p> -->
+                           </div>
+                        </form>
+                           
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+    </div>
+</div>
+
+
+<!-- Jquery -->
+<script src="{!! env('APP_ASSETS') !!}js/vendors.min.js"></script>
+<!-- Fontawesome -->
+<script src="{!! env('APP_ASSETS') !!}vendor/fontawesome/js/all.min.js"></script>
+<!-- Bootstrap -->
+<script src="{!! env('APP_ASSETS') !!}vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Custom Js -->
+<script src="{!! env('APP_ASSETS') !!}js/scripts.js"></script>
+<!-- Ajax Chart Js -->
+<script>
+    $(function () {
+        $("body").on('click','.do-login',function () {
+            $("form").submit();
+        });
+
+        var showen = true;
+        $("body").on("click",".show-password",function(){
+
+            $("input[name=password]").attr('type','text');
+            
+            if(showen){
+               $("input[name=password]").attr('type','text');
+               $(this).removeClass('fa-eye');
+               $(this).addClass('fa-eye-slash');
+               showen = false;
+            }else{
+                $("input[name=password]").attr('type','password');
+               $(this).removeClass('fa-eye-slash');
+               $(this).addClass('fa-eye');
+                showen = true;
+            }
+
+        });
+    })
+</script>
+</body>
+</html>

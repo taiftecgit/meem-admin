@@ -159,12 +159,12 @@ if(isset($outlet_meta)){
             <!-- Main content -->
             <section class="content">
                 <div class="row">
-					  <div class="col-12 col-sm-3 sidebar_div_main" style="padding-right: 0;background-color: #F5F5F5">
+					  <div class="col-12 col-sm-4 sidebar_div_main" style="padding-right: 0;background-color: #F5F5F5">
                         @include('outlets.outlet-sidebar')
                     </div>
 
 
-                    <div class="col-12 col-sm-9 p-15">
+                    <div class="col-12 col-sm-8 p-15">
                          <div class="delivery-section">
                                             <h3>{{__('label.add_delivery_area')}}</h3>
                                             <div class="row">

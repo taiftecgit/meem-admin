@@ -82,6 +82,21 @@
             $business_type = isset($resto_metas['BUSSINESS_TYPE'])?$resto_metas['BUSSINESS_TYPE']:"Restaurants";
 
 @endphp
+<style type="text/css">
+    
+    .tbl_row,.tbl_h4_title{
+        padding: 10px;
+    }
+    .tbl_h4_title
+    {
+      padding-left: 0;
+      margin-left: 0 !important;
+    }
+    table {
+    --bs-table-bg: transparent !important;
+
+}
+</style>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <div class="container-full">
@@ -90,10 +105,8 @@
             <section class="content">
                 <div class="row ">
                     <div class="col-md-10">
-                        <div class="m-15">
-                            <h3 class="title">{{__('label.dashboard')}}
-
-</h3>
+                        <div class="page-top-title">
+                            <h3 class="title m-0">{{__('label.dashboard')}}</h3>
                         </div>
                     </div>
                 </div>
@@ -107,7 +120,7 @@
                        <button class="form-control btn  btn-md shadow-none ">Launch marketing activity</button>
                        </div>-->
                 </div>
-                <div class="row p-5 align-items-center">
+                <div class="row m-0 align-items-center">
                     <div class="col-md-6">
                         <div class="count_div h-100 ">
                             <div class="d-flex justify-content-between align-items-center">
@@ -246,54 +259,56 @@
 				$avg_total_avg = $avg_new_order_basket + $avg_returnning_order_basket ;
 
 				@endphp
-                <div class="row tbl_row mt-25">
-                    <div class="col-12 mt-4 tb_row_fdiv">
-                        <h4 class="m-5 tbl_h4_title">{{__('label.new_customers_x_returning_customers')}}</h4>
-                        <div class="table-responsive">
-                            <table class="table text-center table-borderless">
-                                <thead>
-                                <tr>
-                                    <th scope="col"></th>
-                                    <th scope="col">{{__('label.orders')}}</th>
-                                    <th scope="col">{{__('label.customers')}}</th>
-                                    <th scope="col">% {{__('label.customers')}}</th>
-                                    <th scope="col">{{__('label.average_basket_value')}}</th>
-                                    <th scope="col">{{__('label.total_sale')}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>{{__('label.new')}}</td>
-                                    <td>{!! $new_order !!}</td>
-                                    <td>{!! $new_customers !!}</td>
-                                    <td>{!! round($percent_new_customer) !!}</td>
-                                    <td>{!! number_format(round($avg_new_order_basket))  !!}</td>
-                                    <td>{!! number_format($new_order_total_price)  !!}</td>
-                                </tr>
-                                <tr class="row_background">
-                                    <td>{{__('label.returning')}}</td>
-                                    <td>{!! $returnning_order !!}</td>
-                                    <td>{!! $returnning_customers !!}</td>
-                                    <td>{!! round($percent_returnning_customers) !!}</td>
-                                    <td>{!! number_format(round($avg_returnning_order_basket))  !!}</td>
-                                    <td>{!! number_format($returnning_order_total_price)  !!}</td>
-                                </tr>
-                                </tbody>
-                                <tfoot>
-                                <tr>
-                                    <th>{{__('label.total')}}</th>
-                                    <th>{!! $new_order + $returnning_order !!}</th>
-                                    <th>{!! $total_customers !!}</th>
-                                    <th>100%</th>
-                                    <th>{!! number_format(round($avg_total_avg)) !!}</th>
-                                    <th>{!! number_format($returnning_order_total_price + $new_order_total_price) !!}</th>
-                                </tr>
-                                </tfoot>
-                            </table>
+                <div class="row m-0">
+                    <div class="col-12 mt-25">
+                        <div class="tbl_row">
+                            <h4 class="m-5 tbl_h4_title">{{__('label.new_customers_x_returning_customers')}}</h4>
+                            <div class="table-responsive">
+                                <table class="table text-center table-borderless">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">{{__('label.orders')}}</th>
+                                        <th scope="col">{{__('label.customers')}}</th>
+                                        <th scope="col">{{__('label.customers')}} %</th>
+                                        <th scope="col">{{__('label.average_basket_value')}}</th>
+                                        <th scope="col">{{__('label.total_sale')}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>{{__('label.new')}}</td>
+                                        <td>{!! $new_order !!}</td>
+                                        <td>{!! $new_customers !!}</td>
+                                        <td>{!! round($percent_new_customer) !!}</td>
+                                        <td>{!! number_format(round($avg_new_order_basket))  !!}</td>
+                                        <td>{!! number_format($new_order_total_price)  !!}</td>
+                                    </tr>
+                                    <tr class="row_background">
+                                        <td>{{__('label.returning')}}</td>
+                                        <td>{!! $returnning_order !!}</td>
+                                        <td>{!! $returnning_customers !!}</td>
+                                        <td>{!! round($percent_returnning_customers) !!}</td>
+                                        <td>{!! number_format(round($avg_returnning_order_basket))  !!}</td>
+                                        <td>{!! number_format($returnning_order_total_price)  !!}</td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>{{__('label.total')}}</th>
+                                        <th>{!! $new_order + $returnning_order !!}</th>
+                                        <th>{!! $total_customers !!}</th>
+                                        <th>100%</th>
+                                        <th>{!! number_format(round($avg_total_avg)) !!}</th>
+                                        <th>{!! number_format($returnning_order_total_price + $new_order_total_price) !!}</th>
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row mt-25">
+                <div class="row mt-25 mb-25 m-0">
                     <div class="col-md-6">
                         <div class="boxs">
                             <div class="box-header with-border">

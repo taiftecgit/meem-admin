@@ -18,7 +18,10 @@
     .btn-toggle.btn-sm,.btn-toggle.btn-sm > .handle{
         border-radius: 16px;
     }
-
+    .btn-toggle.btn-sm.active
+    {
+      background-color:#ffab00 !important;
+    }
     .btn-toggle.btn-lg,.btn-toggle.btn-lg > .handle{
         border-radius: 20px;
     }
@@ -28,7 +31,7 @@
     }
     .outlet-status{
         background: #C1C1C1;
-        padding: 30px 45px 10px;
+        padding: 17px 45px 18px;
     }
     .fixed .content-wrapper{
         padding-top: 0 !important;
@@ -138,7 +141,7 @@ app()->setLocale($lang);
 @endphp
 <div class="row" style="--bs-gutter-x:0">
     <div class="col-12 outlet-status">
-        <div class="d-flex justify-content-start mb-3">
+        <div class="d-flex justify-content-start">
 
             <div class="">
                 @if(isset($outlet))

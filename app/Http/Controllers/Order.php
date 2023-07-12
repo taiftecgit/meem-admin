@@ -40,7 +40,7 @@ class Order extends Controller
 
         $offset = $start_page * $limit;
 
-        $orders = Orders::where('resto_id',$this->resto_id)->whereIN('status' ,['Placed','Send_to_Kitchen','On_Road','Accepted'])->orderBy('created_at','DESC')->offset($offset)->limit($limit)->get()->toJson();
+       $orders = Orders::where('resto_id',$this->resto_id)->whereIN('status' ,['Placed','Send_to_Kitchen','On_Road','Accepted'])->orderBy('created_at','DESC')->offset($offset)->limit($limit)->get()->toJson();
         // $orders = Auth::user()->restaurants->orders;
         $data = [
             'orders' => $orders

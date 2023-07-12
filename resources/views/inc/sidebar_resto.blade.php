@@ -73,8 +73,7 @@ $mta = \App\Models\RestoMetas::where('bussiness_id',$resto_id)->where('meta_def_
                     <li class="@if(in_array($current_page,$main_pages) && $current_page=="dashboard") active @endif">
                         <a href="{!! env('APP_URL') !!}dashboard">
                             <i class="icon-Library">
-							<svg xmlns="http://www.w3.org/2000/svg" height="24" width="24"><path d="M13 9V3h8v6ZM3 13V3h8v10Zm10 8V11h8v10ZM3 21v-6h8v6Zm2-10h4V5H5Zm10 8h4v-6h-4Zm0-12h4V5h-4ZM5 19h4v-2H5Zm4-8Zm6-4Zm0 6Zm-6 4Z"/></svg>
-							</i>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M5 5h4v6H5zm10 8h4v6h-4zM5 17h4v2H5zM15 5h4v2h-4z" opacity=".3"/><path fill="currentColor" d="M3 13h8V3H3v10zm2-8h4v6H5V5zm8 16h8V11h-8v10zm2-8h4v6h-4v-6zM13 3v6h8V3h-8zm6 4h-4V5h4v2zM3 21h8v-6H3v6zm2-4h4v2H5v-2z"/></svg>	</i>
                             <span>{{__('label.dashboard')}}</span>
 
                         </a>

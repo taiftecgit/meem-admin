@@ -13,6 +13,9 @@
 			  -o-transform: rotate(180deg);
 			  transform: rotate(180deg);
 		}
+        .print{
+            color:#000 !important
+        }
         .load-more-order{
             position: sticky;
             background: #ffab55;
@@ -45,10 +48,16 @@
             color: #000;
             background-color: #f1f1f1;
         }
-        #show-recipes .box-header{
-            padding: 15px 1.5rem 5px;
+        @if(app()->getLocale()=="ar")
+			 #show-recipes .box-header{
+            padding: 15px 1.2rem 5px 0;
         }
-        @-webkit-keyframes special {
+        @else
+        #show-recipes .box-header{
+            padding: 15px 0 5px 1.2rem;
+        }
+        @endif
+@-webkit-keyframes special {
             from { background-color: rgba(255, 121, 77, 0.27); }
             to { background-color: inherit; }
         }
@@ -375,8 +384,13 @@ app()->setLocale($lang);
 
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-12 mt-1 text-end">
-                                        <a href="#!" class="print">{{__('label.print')}}</a>
+                                    <div class="col-sm-12 mt-1 @if(app()->getLocale()=="ar") text-start @else text-end @endif  px-0 pt-1 ">
+                                        <a href="#!" class="print">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 16 16">
+                                                <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>
+                                                <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>
+                                            </svg>
+                                        </a>
                                     </div>
                                 </div>
 								<div class="for-mobile">
@@ -1528,7 +1542,7 @@ var discounted_price = 0;
             var str='<div class="box-header border-1 ">\n' +
                 '                                        <div class="ml-5">\n' +
                 '                                            <div class="d-flex justify-content-between align-items-center">\n' +
-                '                                                <p><img src="'+recipe.recipe_image+'" style="border-radius:10px" height="40px" width="40px" />'+recipe.quantity+'x '+recipe.recipe_name+'</p>\n' ;
+                '                                                <p><span class="badge rounded-pill bg-secondary mx-2">'+recipe.quantity+'  </span><img src="'+recipe.recipe_image+'" style="border-radius:10px; margin:0 3px" height="40px" width="40px" /> '+recipe.recipe_name+'</p>\n' ;
             if(recipe.total_price > 0){
 				var price = parseFloat(recipe.total_price);
 						if(discount_amount > 0){
@@ -1602,8 +1616,8 @@ var discounted_price = 0;
             var str='<div class="box-header border-1 ">\n' +
                 '                                        <div class="ml-5">\n' +
                 '                                            <div class="d-flex justify-content-between align-items-center">\n' +
-                '                                                <p><img src="'+recipe.recipe_image+'" style="border-radius:10px" height="40px" width="40px" />'+recipe.quantity+'x '+recipe.recipe_name+'</p>\n' ;
-            if(recipe.total_price > 0){
+                '                                                <p><span class="badge rounded-pill bg-secondary mx-2">'+recipe.quantity+'  </span><img src="'+recipe.recipe_image+'" style="border-radius:10px; margin:0 3px" height="40px" width="40px" /> '+recipe.recipe_name+'</p>\n' ;
+                     if(recipe.total_price > 0){
 				var price = parseFloat(recipe.total_price);
 
 

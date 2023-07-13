@@ -1667,6 +1667,7 @@ html[dir="rtl"] .text-end:has(.print) {
 			var after_pusher_status = $(".nav-link.active").data('status');
 			if(after_pusher_status && after_pusher_status=="")
 				after_pusher_status = "all";
+            $("#all-orders").removeClass('no-order-found');
             $.ajax({
                 url:"{!! env('APP_URL') !!}liveorders/"+after_pusher_status,
                 success:function (response) {
@@ -1674,6 +1675,7 @@ html[dir="rtl"] .text-end:has(.print) {
                     //response = $.parseJSON(response);
 
                     if(response){
+
                         $.each(response.orders,function (i,v) {
                             var str='<li class="mlist_li" rel="detail" data-order-id="'+v.id+'">\n' +
                                 '    <div class="box '+v.box_bg+' rounded-0">\n' +

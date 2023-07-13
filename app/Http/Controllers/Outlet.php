@@ -117,6 +117,7 @@ class Outlet extends Controller
 
 
         $name = $request->outlet_name;
+        $outlet_arabic_name = $request->outlet_arabic_name;
         $time_zone = $request->time_zone;
         $email = $request->email;
         $phone = $request->phone;
@@ -138,6 +139,7 @@ class Outlet extends Controller
 
         $outlet->resto_id = $restaurants->id;
         $outlet->time_zone = $time_zone;
+        $outlet->outlet_arabic_name = $outlet_arabic_name;
         $outlet->name = $name;
 		 $outlet->whatsapp_number = $request->whatsapp_number;
         $outlet->email = $email;

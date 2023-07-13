@@ -326,6 +326,7 @@ app()->setLocale($lang);
                         </div>
                         <div class="row mt-5 list_row">
                             <div class=" col-md-12 p-0">
+
                                 <div class="tab-content">
                                     <div class="tab-pane fade in active all-orders position-relative" id="all-orders" role="tabpanel" style="max-height: 82vh; min-height: 82vh; overflow: auto;">
                                         <div class="p-0">
@@ -660,14 +661,16 @@ app()->setLocale($lang);
                                                 <p>{{__('label.discounts')}}:</p>
                                                 <p class="discount_total">AED 0</p>
                                             </div>
-                                            <div class="d-flex justify-content-between align-items-center m-0">
-                                                <p>{{__('label.delivery_fee')}}:</p>
-                                                <p class="delivery_fee"></p>
-                                            </div>
+                                            <div id="only-delivery">
+                                                <div class="d-flex justify-content-between align-items-center m-0">
+                                                    <p>{{__('label.delivery_fee')}}:</p>
+                                                    <p class="delivery_fee"></p>
+                                                </div>
 
-                                            <div class="delivery_discount_with text-success d-flex justify-content-between align-items-center m-0">
-                                                <p>{{__('label.delivery_discounts')}}:</p>
-                                                <p class="delivery_discount_total">AED 0</p>
+                                                <div class="delivery_discount_with text-success d-flex justify-content-between align-items-center m-0">
+                                                    <p>{{__('label.delivery_discounts')}}:</p>
+                                                    <p class="delivery_discount_total">AED 0</p>
+                                                </div>
                                             </div>
 
                                             <div class="d-flex fw-bold justify-content-between align-items-center m-0">
@@ -1091,6 +1094,11 @@ app()->setLocale($lang);
                        $(".for-pickup").hide();
 
                        $(".for-"+o_t).show();
+
+                        if(o_t=="pickup"){
+                            $("#only-delivery").hide();
+                        }
+
                         var discounted_delivery = 0;
                         $.each(response,function (i,v) {
                             $("p[rel="+i+"]").text(v);
@@ -1100,7 +1108,7 @@ app()->setLocale($lang);
                                 delivery_fee = v;
                                 if(discount_with_order){
 
-                                    if(discount_with_order.is_delivery_discount=="Yes"){
+                                    if(discount_with_order.is_delivery_discount=="Yes" && o_t=="delivery"){
                                       //  alert('test');
                                         if(discount_with_order.delivery_discount_type=="percentage"){
                                              discounted_delivery =  (parseFloat(delivery_fee) * (parseFloat(discount_with_order.delivery_discount_value) /100));

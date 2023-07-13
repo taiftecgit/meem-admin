@@ -170,7 +170,11 @@ app()->setLocale($lang);
                                             <input type="text" value="{!! isset($outlet)?$outlet->name:"" !!}" class="form-control" name="outlet_name"
                                                    required/>
                                         </div>
-
+                                        <div class="form-group">
+                                            <label>{{__('label.arabic_name')}}</label>
+                                            <input style="direction: rtl" type="text" value="{!! isset($outlet)?$outlet->outlet_arabic_name:"" !!}" class="form-control" name="outlet_arabic_name"
+                                                   />
+                                        </div>
 
                                         <h4>{{__('label.contact_information')}}</h4>
                                         <div class="form-group">

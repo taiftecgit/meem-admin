@@ -59,7 +59,7 @@
 			@endif
 		@endif 
     </div>
-    <nav class="navbar navbar-static-top d-flex align-items-end flex-column ">
+    <nav class="navbar navbar-static-top d-flex align-items-end flex-column mb-0">
         <!-- Sidebar toggle button-->
         <div class="row">
             <div class="col-md-12 bar-section">

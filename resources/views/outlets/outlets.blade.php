@@ -40,6 +40,17 @@
         .w-max{
             width:max-content;
         }
+        #DataTables_Table_0 > tbody > tr > td{
+           padding: 1rem !important;
+        }
+        #DataTables_Table_0 > thead > tr > th[class*="sort"]:before,
+        #DataTables_Table_0 > thead > tr > th[class*="sort"]:after {
+            content: "" !important;
+        }
+        html[dir="rtl"] .btn-toggle.btn-sm.btn-sm:after
+        {
+            margin-right: 13px;
+        }
     </style>
     <!-- Content Wrapper. Contains page content -->
 @php
@@ -59,8 +70,8 @@ app()->setLocale($lang);
 
                 <div class="row ">
                     <div class="col-md-6">
-                        <div class="m-15">
-                            <h3 class="title">{{__('label.outlets')}}</h3>
+                        <div class="page-top-title">
+                            <h3 class="title m-0">{{__('label.outlets')}}</h3>
                             <p>{{__('label.add_and_manage_your_outlets')}}</p>
                         </div>
                     </div>
@@ -76,7 +87,7 @@ app()->setLocale($lang);
                 <div class="row mt-15">
                     <div class="col-md-12 pt-5">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h4 class="orange_text p-5" style="margin-left: 10px">{!! $outlets->count() !!} {{__('label.outlets')}}</h4>
+                            <h4 class="orange_text p-5" style="margin-left: 7px">{!! $outlets->count() !!} {{__('label.outlets')}}</h4>
                             <div class="form-group has-search">
                                 <span class="fa fa-search form-control-feedback"></span>
                                 <input type="text" class="form-control" placeholder="{{__('label.search_outlet')}}">
@@ -86,8 +97,8 @@ app()->setLocale($lang);
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-12 mt-4">
+                <div class="row m-0">
+                    <div class="col-12 mt-4 pr-0">
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
@@ -109,9 +120,9 @@ app()->setLocale($lang);
 
                                 <tr>
                                     <td>
-                                        <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-success @if($outlet->active=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->active=="1") true @else false @endif" autocomplete="off">
+                                        <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-success @if($outlet->active=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->active=="1") true @else false @endif" autocomplete="off" @if($outlet->active!='1') style="background-color:red !important;" @endif>
                                             <div class="handle"></div>
-                                        </button> {{__('label.active')}}
+                                        </button> @if($outlet->active==1) {{__('label.active')}} @else {{__('label.deactive')}} @endif
                                     </td>
                                     <td >
                                         <h5>{!! $outlet->name !!}</h5>

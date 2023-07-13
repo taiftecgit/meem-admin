@@ -74,10 +74,10 @@ app()->setLocale($lang);
             <!-- Main content -->
             <section class="content">
                 <div class="row">
-                     <div class="col-12 col-sm-3 sidebar_div_main" style="padding-right: 0;background-color: #F5F5F5">
+                     <div class="col-12 col-sm-4 sidebar_div_main" style="padding-right: 0;background-color: #F5F5F5">
                         @include('outlets.outlet-sidebar')
                     </div>
-                    <div class="col-12 col-sm-9 p-15">
+                    <div class="col-12 col-sm-8 p-15">
                         <form id="save-outlet" method="POST" action="{!! env('APP_URL') !!}save/features/outlet" enctype="multipart/form-data">
                                                 @csrf
                                                 <input type="hidden" name="feature_type" value="pickup" />
@@ -91,7 +91,12 @@ app()->setLocale($lang);
                                                     <p>{{__('label.customers_can_pickup_their_orders_at_outlet')}} </p>
                                                 </div>
                                                 <div class="p-2 bd-highlight">
-                                                    <button type="button" class="btn btn-lg btn-toggle btn-success switch @if($outlet->is_pickup=="1") active @endif switch" data-bs-toggle="button" aria-pressed="@if($outlet->is_pickup=="1") true @else false @endif" autocomplete="off">
+                                                    @php
+                                                      $bstatus=($outlet->is_pickup=="1")?'active':'';
+                                                      $bflag=($outlet->is_pickup=="1")? true:false;
+                                                      $bcolor=($outlet->is_pickup=="1")? 'success':'danger';
+                                                    @endphp
+                                                    <button type="button" class="btn btn-lg btn-toggle btn-{{$bcolor}} switch {{$bstatus}} switch" data-bs-toggle="button" aria-pressed="{!! $bflag !!}" autocomplete="off">
                                                         <div class="handle"></div>
                                                     </button>
                                                 </div>

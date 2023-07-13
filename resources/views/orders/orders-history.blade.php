@@ -3,6 +3,9 @@
 @section('content')
     <link href="{!! env('APP_ASSETS') !!}css/order-history.css" rel="stylesheet" type="text/css">
     <style>
+        .content{
+            padding-left:10px;
+        }
         @-webkit-keyframes special {
             from { background-color: rgba(255, 121, 77, 0.27); }
             to { background-color: inherit; }
@@ -70,6 +73,10 @@
 		.actions{
 			position:absolute; top: 25px; right: 0
 		}
+        .content-wrapper {
+            width: calc(100% - 290px);
+            background-color: #fff !important;
+        }
 		.actions li{ margin:0 !important; padding:0}
         @media(max-width:767px)
         {

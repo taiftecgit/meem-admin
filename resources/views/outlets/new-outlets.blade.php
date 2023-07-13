@@ -23,9 +23,15 @@
             width: 229px;
         }
         .bootstrap-tagsinput {
-            min-height: 60px; width: 100%;
+            min-height: 46px; width: 100%;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
         }
         h4{ margin-top: 40px}
+       .select2-container{
+        width: 100% !important;
+       }
     </style>
     <style type="text/css">
         .bootstrap-tagsinput{
@@ -40,10 +46,10 @@
             background-color: #ffab00 !important;
         }
 		.form-control, .form-select {
-    height: 46px !important;
-    border-color: #E4E6EB !important;
-    border-radius: 7px !important;
-}
+            height: 46px !important;
+            border-color: #E4E6EB !important;
+            border-radius: 7px !important;
+        }
         #image-preview {
             width: 100%;
             border-radius: 20px;
@@ -88,16 +94,20 @@
                         padding: 9px 12px;
                 }
 
-        @media (min-width: 850px) and (max-width:  1020px){
-            .content-wrapper {
-    width: calc(100% - 1px) !important;
-}
+            @media (min-width: 850px) and (max-width:  1020px)
+            {
+              .content-wrapper 
+              {
+                width: calc(100% - 1px) !important;
+              }
 
-.fixed .content-wrapper{
-    margin-top: 80px !important;
-    padding: 0 !important;
-}
-        }
+              .fixed .content-wrapper
+              {
+                margin-top: 80px !important;
+                padding: 0 !important;
+              }
+            }
+
     </style>
     <!-- Content Wrapper. Contains page content -->
 @php
@@ -136,10 +146,10 @@ app()->setLocale($lang);
             <!-- Main content -->
             <section class="content">
                 <div class="row">
-                   <div class="col-12 col-sm-3 sidebar_div_main" style="padding-right: 0;background-color: #F5F5F5">
+                   <div class="col-12 col-sm-4 sidebar_div_main" style="padding-right: 0;background-color: #F5F5F5">
                         @include('outlets.outlet-sidebar')
                     </div>
-                    <div class="col-12 col-sm-9 p-15">
+                    <div class="col-12 col-sm-8 p-15">
                         <form id="save-outlet" method="POST" action="{!! env('APP_URL') !!}save/outlet" enctype="multipart/form-data">
 
                             <input type="hidden" name="id" value="{!! isset($outlet)?$outlet->id:"" !!}" />

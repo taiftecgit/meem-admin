@@ -6,6 +6,14 @@
 @endsection
 @section('content')
     <style>
+        .lh-48
+        {
+            line-height:48px;
+        }
+        .theme-primary .nav-tabs .nav-link .labelcenter{
+            position: relative;
+            top: 3px;
+        }
 		.arrow-arabic svg{
 			-webkit-transform:rotate(180deg);
 			  -moz-transform: rotate(180deg);
@@ -58,6 +66,7 @@
         }
         @endif
 @-webkit-keyframes special {
+
             from { background-color: rgba(255, 121, 77, 0.27); }
             to { background-color: inherit; }
         }
@@ -239,15 +248,15 @@ app()->setLocale($lang);
 
 @endphp
     <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
+    <div class="content-wrapper p-0">
         <div id="countdown"></div>
 
         <div class="container-full">
             <section class="content p-0">
 
                 <div class="row">
-                    <div class="col-sm-12">
-                        <nav class="navbar navbar-static-top  ">
+                    <div class="col-sm-12 p-0">
+                        <nav class="navbar navbar-static-top p-0">
                             <!-- Sidebar toggle button-->
                             <div class="row">
 
@@ -259,7 +268,7 @@ app()->setLocale($lang);
                                             <li class="item nav-item d-inline">
                                                 <div class="gap-items-4">
 
-                                                    <a class="nav-link p-0 active" data-bs-toggle="tab" href="#new-orders"  data-status="new" role="tab">{{__('label.new')}}
+                                                    <a class="nav-link p-0 active lh-48" data-bs-toggle="tab" href="#new-orders"  data-status="new" role="tab">{{__('label.new')}}
                                                         <span class="labelcenter label-default new">0</span></a>
 
 
@@ -269,7 +278,7 @@ app()->setLocale($lang);
                                             <li class="item nav-item d-inline">
                                                 <div class="gap-items-4">
 
-                                                    <a class="nav-link p-0" data-bs-toggle="tab" href="#in-kitchen"  data-status="kitchen" role="tab">{{__('label.in_preparation')}}
+                                                    <a class="nav-link p-0 lh-48" data-bs-toggle="tab" href="#in-kitchen"  data-status="kitchen" role="tab">{{__('label.in_preparation')}}
                                                         <span class="labelcenter label-default kitchen">0</span></a>
 
                                                 </div>
@@ -277,7 +286,7 @@ app()->setLocale($lang);
                                             </li>
                                             <li class="item nav-item d-inline">
                                                 <div class="gap-items-4">
-                                                    <a class="nav-link p-0" data-bs-toggle="tab" href="#in-route"  data-status="route" role="tab" >{{__('label.in_routeready')}}
+                                                    <a class="nav-link p-0 lh-48" data-bs-toggle="tab" href="#in-route"  data-status="route" role="tab" >{{__('label.in_routeready')}}
                                                         <span class="labelcenter label-default route">0</span></a>
 
                                                 </div>
@@ -286,7 +295,7 @@ app()->setLocale($lang);
 
                                             <li class="item nav-item d-inline">
                                                 <div class="gap-items-4">
-                                                    <a class="nav-link p-0 " data-bs-toggle="tab" href="#all-orders" data-status="all" role="tab">{{__('label.all')}}
+                                                    <a class="nav-link p-0  lh-48" data-bs-toggle="tab" href="#all-orders" data-status="all" role="tab">{{__('label.all')}}
                                                         <span class="labelcenter label-default all">0</span></a>
 
                                                 </div>

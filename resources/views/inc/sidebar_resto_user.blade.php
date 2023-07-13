@@ -208,7 +208,7 @@ $resto_id = \App\Helpers\CommonMethods::getRestuarantID();
 								</span>
                 </button>
               
-                <ul class="dropdown-menu footer-drop" aria-labelledby="dropdownMenu2" data-popper-placement="top-start">
+                <ul class="dropdown-menu footer-drop mx-40" aria-labelledby="dropdownMenu2" data-popper-placement="top-start">
                     <li><button class="dropdown-item" type="button" onclick="location.href='{!! env('APP_URL') !!}logout'">Logout</button></li>
                 </ul>
             </div>

@@ -104,7 +104,7 @@ app()->setLocale($lang);
                             <h4 class="orange_text p-5" style="margin-left: 10px">{!! $users->count() !!} Users</h4>
                             <div class="form-group has-search position-relative">
 
-                                <input type="text" class="form-control search-outlet" name="search" placeholder="Search Outlet">
+                                <input type="text" class="form-control search-outlet" name="search" placeholder="{{__('label.search_user')}}">
                                 <a href="#!" class="search-buttom position-absolute"><i class="fa fa-search"></i> </a>
                             </div>
                         </div>

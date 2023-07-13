@@ -58,10 +58,13 @@
             justify-content: center !important;
         }
      .category_title {
-        padding-left: 36px;
+        padding-left: 0px;
      }
      .cate_add_btn{
         margin-right: 36px;
+     }
+     .fixed .content-wrapper{
+        padding-top: 0px;
      }
     @media (max-width:767px) {
 

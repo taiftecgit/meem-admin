@@ -81,11 +81,9 @@
     display: inline-block;
 }
 .pause-order{
-    padding: 10px; background-color: #fff8ec; margin-bottom: 30px;
+    padding: 40px; background-color: #fff8ec; margin-bottom: 30px;
 }
-.list-inline li{
-    margin-right: 30px;
-}
+
 
 @media (max-width:641px) {
   .list-inline li{
@@ -169,49 +167,51 @@ app()->setLocale($lang);
 
                 </div>
 @php
-                                                          $resto = \App\Models\Restaurants::find(\App\Helpers\CommonMethods::getRestuarantID());
-                                                    @endphp
-                                    @if(isset($outlets) && $outlets->count() > 0)
-                                    @foreach($outlets as $outlet)
-                                    <div class="pause-order">
-                                       <div class="row">
-                                           <div class="col-md-6"><p class="fw-normal m-0">{!! $resto->name !!}</p>
-                                            <h5 class="m-0 fw-bold">{!! $outlet->name !!}</h5>
-                                           </div>
-                                           <div class="col-md-6 text-end order_status_div">
-                                            <ul class="list-inline">
-                                                <li> @if($outlet->is_delivery=="1") <span class="gdot"></span>{{__('label.delivery')}} @else<span class="rdot"></span> {{__('label.delivery_pause')}} @endif</li>
-                                                <li> @if($outlet->is_pickup=="1") <span class="gdot"></span> {{__('label.pickup')}}  @else <span class="rdot"></span>{{__('label.pickup_pause')}}   @endif</li>
-												 @if($business_type=="Restaurants")
-                                                 <li> @if($outlet->is_contactless_dining=="1") <span class="gdot"></span> {{__('label.dine_in')}}  @else <span class="rdot"></span> {{__('label.dine_in_pause')}} @endif</li>
-												@endif
-                                            </ul>
+ $resto = \App\Models\Restaurants::find(\App\Helpers\CommonMethods::getRestuarantID());
+@endphp
+   <div class="p-15">
+        @if(isset($outlets) && $outlets->count() > 0)
+         @foreach($outlets as $outlet)
+            <div class="pause-order">
+               <div class="row">
+                   <div class="col-md-6"><p class="fw-normal m-0">{!! $resto->name !!}</p>
+                    <h5 class="m-0 fw-bold">{!! $outlet->name !!}</h5>
+                   </div>
+                   <div class="col-md-6 text-end order_status_div">
+                    <ul class="list-inline">
+                        <li> @if($outlet->is_delivery=="1") <span class="gdot"></span>{{__('label.delivery')}} @else<span class="rdot"></span> {{__('label.delivery_pause')}} @endif</li>
+                        <li> @if($outlet->is_pickup=="1") <span class="gdot"></span> {{__('label.pickup')}}  @else <span class="rdot"></span>{{__('label.pickup_pause')}}   @endif</li>
+                         @if($business_type=="Restaurants")
+                         <li> @if($outlet->is_contactless_dining=="1") <span class="gdot"></span> {{__('label.dine_in')}}  @else <span class="rdot"></span> {{__('label.dine_in_pause')}} @endif</li>
+                        @endif
+                    </ul>
 
-                                          </div>
-                                       </div>
+                  </div>
+               </div>
 
-                                       <div class="row mt-30 sm-mt-0">
-                                           <div class="col-md-12 col-lg-4 mb-2">
-                                                <button type="button"  data-on-text="Open" data-type="delivery"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_delivery=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_delivery=="1") true @else false @endif" autocomplete="off">
-                                                                    <div class="handle"></div>
-                                                                </button> {{__('label.accepting_delivery_orders')}}
-                                           </div>
-                                           <div class="col-md-12 col-lg-4">
-                                               <button type="button"  data-type="pickup"   data-on-text="Open"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_pickup=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_pickup=="1") true @else false @endif" autocomplete="off">
-                                                                    <div class="handle"></div>
-                                                                </button> {{__('label.accepting_pickup_orders')}}
-                                           </div>
-										   @if($business_type=="Restaurants")
-                                           <div class="col-md-12 col-lg-4">
-                                            <button type="button"  data-type="dine-in"  data-on-text="Open"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_contactless_dining=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_contactless_dining=="1") true @else false @endif" autocomplete="off">
-                                                                    <div class="handle"></div>
-                                                                </button>{{__('label.accepting_dine_in')}}
-                                           </div>
-										   @endif
-                                       </div>
-                                   </div>
-                                        @endforeach
-                                                                @endif
+               <div class="row mt-30 sm-mt-0">
+                   <div class="col-md-12 col-lg-4 mb-2">
+                        <button type="button"  data-on-text="Open" data-type="delivery"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_delivery=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_delivery=="1") true @else false @endif" autocomplete="off">
+                                            <div class="handle"></div>
+                                        </button> {{__('label.accepting_delivery_orders')}}
+                   </div>
+                   <div class="col-md-12 col-lg-4">
+                       <button type="button"  data-type="pickup"   data-on-text="Open"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_pickup=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_pickup=="1") true @else false @endif" autocomplete="off">
+                                            <div class="handle"></div>
+                                        </button> {{__('label.accepting_pickup_orders')}}
+                   </div>
+                   @if($business_type=="Restaurants")
+                   <div class="col-md-12 col-lg-4">
+                    <button type="button"  data-type="dine-in"  data-on-text="Open"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_contactless_dining=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_contactless_dining=="1") true @else false @endif" autocomplete="off">
+                                            <div class="handle"></div>
+                                        </button>{{__('label.accepting_dine_in')}}
+                   </div>
+                   @endif
+               </div>
+           </div>
+         @endforeach
+        @endif
+   </div>                            
 
 
 

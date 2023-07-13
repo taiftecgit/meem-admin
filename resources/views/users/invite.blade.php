@@ -106,7 +106,7 @@ app()->setLocale($lang);
                 <div class="row ">
                     <div class="col-md-6">
                         <div class="m-15">
-                            <h3 class="title">{{__('label.invite_users')}}</h3>
+                            <h3 class="title">{{__('label.invite_user')}}</h3>
                             <p>{{__('label.You_can_add_new_users')}}</p>
                         </div>
                     </div>

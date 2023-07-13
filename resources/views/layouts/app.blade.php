@@ -52,6 +52,13 @@ $lang="en";
 
 
     <style>
+            
+    .page-top-title {
+        padding: 7px 10px;
+    }
+    .pr-0{
+        padding-right: 0 !important;
+    }
         .table {
             --bs-table-bg: #ffffff;
             --bs-table-striped-bg:#fff5de;
@@ -211,12 +218,12 @@ $lang="en";
         }
         @else
         .content-wrapper {
-            width: calc(100% - 300px);
+            width: calc(100% - 280px);
             background-color: #fff !important;
         }
         .fixed .content-wrapper {
             margin-top: 0px;
-            margin-left: 290px;
+            margin-left: 275px;
         }
         @endif
 
@@ -1134,7 +1141,7 @@ $lang="en";
 
 html[dir="rtl"] .content-wrapper {
     width: calc(100% - 19rem) ;
-    margin-right: 19rem ;
+    margin-right: 19.5rem ;
 }
 
 html[dir="rtl"] .main-sidebar {

@@ -18,7 +18,7 @@
             background: #ffa505;
         }
          .fixed .content-wrapper{
-            margin-left: 259px !important;
+            margin-left: 275px !important;
         }
     .margin-left-20{
         margin-left: 20px;
@@ -57,11 +57,17 @@
         div.dataTables_wrapper div.dataTables_paginate ul.pagination{
             justify-content: center !important;
         }
-
+        .table > thead > tr > td[class*="sort"]:before,
+        .table > thead > tr > td[class*="sort"]:after {
+            content: "" !important;
+        }
 
     /*table tr:hover{
         background: #FFD684;
     }*/
+    #recipe-lists_wrapper{
+        padding: 0 15px;
+    }
     </style>
     @endsection
     @php
@@ -125,8 +131,8 @@ $restuarant1 = $resto;
             <section class="content">
                 <div class="row ">
                     <div class="col-md-10">
-                        <div class="m-15">
-                            <h3 class="title margin-left-20">{{__('label.inventory')}}</h3>
+                        <div class="page-top-title">
+                            <h3 class="title m-0">{{__('label.inventory')}}</h3>
                         </div>
                     </div>
                 </div>
@@ -135,9 +141,9 @@ $restuarant1 = $resto;
 
 
                             @endphp
-                <div class="row ">
+                <div class="row m-0">
                     <div class="col-md-6 ">
-                        <select class="form-control form-select margin-left-30" id="outlets">
+                        <select class="form-control form-select" id="outlets">
                             <option value="">{{__('label.outlets')}}</option>
 
                             @if(isset($outlets) && $outlets->count() > 0)
@@ -153,11 +159,11 @@ $restuarant1 = $resto;
                        </div>-->
                 </div>
 
-                <div class="row mt-2">
-                    <div class="col-sm-8">
-                        <input type="text" placeholder="{{__('label.search')}}" class="form-control col-md-6 margin-left-30">
+                <div class="row m-0">
+                    <div class="col-sm-6 mt-2">
+                        <input type="text" placeholder="{{__('label.search_for_item')}}" class="form-control col-md-6">
                     </div>
-                    <div class="col-sm-3"><p class="fw-bold text-end mt-2">{{__('label.availablity')}}</p></div>
+                    <div class="col-sm-6"><p class="fw-bold text-end mt-2">{{__('label.availablity')}}</p></div>
                 </div>
 
                  <div class="row p-0 mt-4">

@@ -23,7 +23,7 @@
             background-color: transparent !important;
         }
         #image-preview {
-            width: 700px;
+            width: 100%;
             border-radius: 20px;
             height: 341px;
             position: relative;
@@ -92,13 +92,15 @@ app()->setLocale($lang);
         <div class="container-full">
             <section class="content">
                 @if(isset($restaurant))
-                <h3 style="margin-left: 10px">{!! $restaurant->name !!}</h3>
+                <div class="page-top-title">
+                    <h3 class="title m-0">{!! $restaurant->name !!}</h3>
+                </div>
                 @endif
                   <form id="restaurant-form" method="POST" action="{!! env('APP_URL') !!}restaurant/save"
               enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id" value="{!! isset($restaurant)?$restaurant->id:'' !!}"/>
-            <div class="row">
+            <div class="row m-0">
                 <div class="col-xl-9">
                     <div class="card mb-4">
                         
@@ -183,7 +185,7 @@ app()->setLocale($lang);
                            
                                  @if(\Illuminate\Support\Facades\Auth::user()->role=="restaurant")
                                     @if(isset($restaurant) && $restaurant->allow_whatsapp_notifications=="1")
-                                    <div class="col-sm-3 col-md-3">
+                                    <div class="col-sm-6 col-md-6">
                                         <div class="form-group">
                                             <label>{{__('label.whatsapp_number_for_order_notification')}}</label>
                                             <input type="text" class="form-control" placeholder="" name="whatsapp_number_notification"
@@ -197,7 +199,7 @@ app()->setLocale($lang);
                             </div>
                             
                             @php
-                                $countries = \App\Countries::whereNull('deleted_at')->get();
+                                $countries = \App\Models\Countries::whereNull('deleted_at')->get();
                               
 
                                 $outlet_countries = !empty($restaurant->outlet_countries)?explode(',',$restaurant->outlet_countries):[];
@@ -266,15 +268,15 @@ app()->setLocale($lang);
                             <div class="row">
                                
                                 
-								<div class="col-sm-2 col-md-2">
+								<!-- <div class="col-sm-2 col-md-2">
                                     <div class="form-group">
                                         <label>{{__('label.default_color_for_order')}}</label><br />
                                         <input type="text" class="form-control" placeholder="" value="{!! isset($restaurant)?$restaurant->default_color:'' !!}"  name="default_color" id="color">
                                     </div>
-                                </div>
+                                </div> -->
                         
-                                <div class="col-sm-12 col-md-6">
-                                   
+                                <div class="col-sm-12 col-md-6 mb-2">
+                                   <label>{{__('label.time_zone')}}</label>
                                     <select name="time_zone" class="form-control" required>
                                         <option value="">{{__('label.choose_timezone')}}</option>
                                         @if(isset($time_zones) && $time_zones->count() > 0)
@@ -287,17 +289,17 @@ app()->setLocale($lang);
                             </div>
                             @endif
                                         @php
-                                        $resto_metas = \App\RestoMetaDefs::where('parent_meta_def_id',0)->get();
+                                        $resto_metas = \App\Models\RestoMetaDefs::where('parent_meta_def_id',0)->get();
 							$colors = [];
                                         //dump($resto_metas);
                                         $existing_resto_meta = [];
                                         if(isset($restaurant))
-                                        $existing_resto_meta = \App\RestoMetas::where('bussiness_id',$restaurant->id)->whereNull('outlet_id')->pluck('meta_def_id')->toArray();
+                                        $existing_resto_meta = \App\Models\RestoMetas::where('bussiness_id',$restaurant->id)->whereNull('outlet_id')->pluck('meta_def_id')->toArray();
 
                                         $existing_resto_meta = isset($existing_resto_meta )?$existing_resto_meta:[];
                                         $existing_resto_meta_value = null;
                                          if(isset($restaurant))
-                                        $existing_resto_meta_value = \App\RestoMetas::where('bussiness_id',$restaurant->id)->whereNull('outlet_id')->get();
+                                        $existing_resto_meta_value = \App\Models\RestoMetas::where('bussiness_id',$restaurant->id)->whereNull('outlet_id')->get();
                                         $v = [];
                                         if(isset($existing_resto_meta_value) && $existing_resto_meta_value->count() > 0){
                                             foreach($existing_resto_meta_value as $value){

@@ -262,7 +262,7 @@ $mta = \App\Models\RestoMetas::where('bussiness_id',$resto_id)->where('meta_def_
 								</span>
                 </button>
 
-                <ul class="dropdown-menu footer-drop mx-40" aria-labelledby="dropdownMenu2" data-popper-placement="top-start">
+                <ul class="dropdown-menu footer-drop" aria-labelledby="dropdownMenu2" data-popper-placement="top-start">
                     @if(\Illuminate\Support\Facades\Auth::user()->role=="restaurant")
                    <li><button class="dropdown-item" onclick="location.href='{!! env('APP_URL') !!}users'" type="button">{{__('label.users')}} </button></li>
                     <li><button class="dropdown-item" type="button" onclick="location.href='{!! env('APP_URL') !!}restaurant/edit/{!! \App\Helpers\CommonMethods::encrypt($resto_id) !!}'">{{__('label.business_settings')}}</button></li>

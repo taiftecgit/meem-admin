@@ -15,6 +15,30 @@ app()->setLocale($lang);
     <link href="{!! env('APP_ASSETS') !!}/vendor_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet"/>
     <link href="{!! env('APP_ASSETS') !!}/css/jquery.timepicker.min.css" rel="stylesheet"/>
     <style>
+        .btn-toggle.switch[aria-pressed="false"]{
+            background-color: #cb4b18 !important;
+            border-color: #cb4b18 !important;
+            box-shadow: none !important;
+        }
+        .btn-toggle.switch[aria-pressed="true"]{
+            background-color: #3fd642!important;
+            border-color: #3fd642!important;
+            box-shadow: none !important;
+        }
+        .time-show {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .time-show a i{
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        .flex-items{
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
          .vtabs .tabs-vertical {
             width: 229px;
         }
@@ -42,11 +66,11 @@ app()->setLocale($lang);
             background-color: #ffab00;
         }
 
-        .theme-primary .btn-success:hover, .theme-primary .btn-success:active, .theme-primary .btn-success:focus, .theme-primary .btn-success.active {
+        /*.theme-primary .btn-success:hover, .theme-primary .btn-success:active, .theme-primary .btn-success:focus, .theme-primary .btn-success.active {
             background-color: #3fd642!important;
             border-color: #3fd642!important;
             color: #ffffff !important;
-        }
+        }*/
         #output canvas{
             width: 100%;
         }
@@ -137,16 +161,22 @@ app()->setLocale($lang);
                                                     @if(isset($existing_days) && $existing_days->count() > 0)
                                                         @foreach($existing_days as $d)
                                                             <div class="row mb-3 hour-section">
-                                                                <div class="col-sm-2"> @if(!in_array($d->day_name,$day_exists))
+                                                                <div class="col-sm-2"> 
+                                                                    <div class="flex-items">
+                                                                        @if(!in_array($d->day_name,$day_exists))
 
-                                                                    {{__('label.'.trim(strtolower($d->day_name)))}}
-                                                                @endif</div>
+                                                                            {{__('label.'.trim(strtolower($d->day_name)))}}
+                                                                        @endif
+                                                                    </div>
+                                                                </div>
                                                                 <div class="col-sm-2">
                                                                     @if(!in_array($d->day_name,$day_exists))
-                                                                        <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-success update-hour-status @if($d->status=="open") active @endif" data-bs-toggle="button" aria-pressed="@if($d->status=="open") true @else false @endif" autocomplete="off">
-                                                                            <div class="handle"></div>
-                                                                        </button>
-                                                                        <input type="checkbox" name="is_open[{!! strtolower($d->day_name) !!}]" @if($d->status=="open") checked @endif />
+                                                                        <div class="flex-items">
+                                                                            <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-success update-hour-status @if($d->status=="open") active @endif" data-bs-toggle="button" aria-pressed="@if($d->status=="open") true @else false @endif" autocomplete="off">
+                                                                                <div class="handle"></div>
+                                                                            </button>
+                                                                            <input type="checkbox" name="is_open[{!! strtolower($d->day_name) !!}]" @if($d->status=="open") checked @endif />
+                                                                        </div>
                                                                     @endif
                                                                 </div>
                                                                 <div class="col-sm-3 time-show start_time" @if($d->status=="close") style="display: none" @endif >

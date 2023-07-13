@@ -187,7 +187,8 @@ $lang="en";
 
         }
         ul.footer-drop{
-            transform: translate(226px, 2px) !important;
+            transform: translate(269px, 2px) !important;
+                box-shadow: 3px 0 4px rgba(0, 0, 0, 0.06);
         }
 
         .notification-badge{

@@ -75,6 +75,18 @@ app()->setLocale($lang);
             color: white !important;
             background: #ffa505;
         }
+        .flex-item{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .btn-md.add-discount{
+            width: max-content;
+            margin-right: 10px;
+        }
+        .page-top-title{
+            padding: 7px 10px 7px 0 !important;
+        }
     </style>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -82,14 +94,14 @@ app()->setLocale($lang);
             <!-- Main content -->
             <section class="content">
 
-                <div class="row ">
+                <div class="row m-0">
                     <div class="col-md-6">
-                        <div class="m-15">
-                            <h3 class="title">{{__('label.users')}}</h3>
+                        <div class="page-top-title">
+                            <h3 class="title m-0">{{__('label.users')}}</h3>
                             <p>{{__('label.invite_users_and_managers_their_access_to_your_account')}}</p>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 flex-item">
                         <a href="{!! env('APP_URL') !!}invite" class="form-control btn btn-primary btn-md add-outlet  text-center">
                             <i class="fa  fa-plus mr-2"></i>
                             <!-- <i class="mdi mdi-plus-circle"></i> --> {{__('label.invite_user')}}
@@ -98,7 +110,7 @@ app()->setLocale($lang);
                 </div>
 
 
-                <div class="row mt-15">
+                <div class="row mt-15 m-0">
                     <div class="col-md-12 pt-5">
                         <div class="d-flex justify-content-between align-items-center">
                             <h4 class="orange_text p-5" style="margin-left: 10px">{!! $users->count() !!} Users</h4>
@@ -114,7 +126,7 @@ app()->setLocale($lang);
 
 
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped text-center">
                                 <thead>
                                 <tr>
                                     <th scope="col">{{__('label.user')}}</th>

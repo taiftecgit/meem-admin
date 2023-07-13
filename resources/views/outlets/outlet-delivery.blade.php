@@ -4,6 +4,20 @@
     <link href="{!! env('APP_ASSETS') !!}/vendor_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet"/>
     <link href="{!! env('APP_ASSETS') !!}/css/jquery.timepicker.min.css" rel="stylesheet"/>
     <style>
+        .hours-action {
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .hours-action a i{
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        .flex-items{
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
         .vtabs .tabs-vertical {
             width: 229px;
         }
@@ -185,7 +199,7 @@ app()->setLocale($lang);
                                                             <input type="text" name="end_time[{!! strtolower($d->day_name) !!}][]" value="{!! date('H:i a',strtotime($d->end_time)) !!}"  class="form-control timepicker ">
                                                         </div>
                                                     </div>
-                                                    <div class="col-sm-2 time-show  hours-action" @if($d->status=="close") style="display: none" @endif>
+                                                    <div class="col-sm-2 p-0 time-show  hours-action" @if($d->status=="close") style="display: none" @endif>
                                                         @if(!in_array($d->day_name,$day_exists))
                                                             <a href="#!" class="text-primary add-more-hours"  data-day="{!! strtolower($d->day_name) !!}"> <i class="fa fa-plus-square-o"></i>{{__('label.add_hours')}}</a>
                                                         @endif
@@ -200,10 +214,12 @@ app()->setLocale($lang);
                                                                $bflag=($d->status=="open")? true :false; 
                                                                $bclass=($d->status=="open")?'success':'secondary';
                                                             @endphp
-                                                            <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-{{$bclass}} update-hour-status {{$bstatus}}" data-bs-toggle="button" aria-pressed="{!! $bflag !!}" autocomplete="off">
+                                                            <div class="flex-items">
+                                                                <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-{{$bclass}} update-hour-status {{$bstatus}}" data-bs-toggle="button" aria-pressed="{!! $bflag !!}" autocomplete="off">
                                                                 <div class="handle"></div>
-                                                            </button>
-                                                            <input type="checkbox" name="is_open[{!! strtolower($d->day_name) !!}]" @if($d->status=="open") checked @endif />
+                                                                </button>
+                                                                <input type="checkbox" name="is_open[{!! strtolower($d->day_name) !!}]" @if($d->status=="open") checked @endif />
+                                                            </div>
                                                         @endif
                                                     </div>
                                                 </div>
@@ -228,10 +244,12 @@ app()->setLocale($lang);
                                                     </div>
                                                     <div class="col-sm-2 time-show hours-action"><a href="#!" class="text-primary add-more-hours" data-day="{!! strtolower($d) !!}"> <i class="fa fa-plus-square-o"></i> {{__('label.add_hours')}}</a></div>
                                                     <div class="col-sm-2">
-                                                        <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-success active update-hour-status" data-bs-toggle="button" aria-pressed="true" autocomplete="off">
+                                                        <div class="flex-items">
+                                                            <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-success active update-hour-status" data-bs-toggle="button" aria-pressed="true" autocomplete="off">
                                                             <div class="handle"></div>
-                                                        </button>
-                                                        <input type="checkbox" name="is_open[{!! strtolower($d) !!}]" checked />
+                                                            </button>
+                                                            <input type="checkbox" name="is_open[{!! strtolower($d) !!}]" checked />
+                                                        </div>
                                                     </div>
                                                 </div>
                                             @endforeach

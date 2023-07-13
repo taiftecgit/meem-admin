@@ -20,7 +20,7 @@
     }
     .btn-toggle.btn-sm.active
     {
-      background-color:#ffab00 !important;
+      
     }
     .btn-toggle.btn-lg,.btn-toggle.btn-lg > .handle{
         border-radius: 20px;

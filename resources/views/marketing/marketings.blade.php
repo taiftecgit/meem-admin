@@ -30,14 +30,14 @@ app()->setLocale($lang);
                 <div class="d-flex align-items-center">
                     <div class="me-auto">
                         <h4 class="page-title">{{__('label.marketings')}}</h4>
-                        <div class="d-inline-block align-items-center">
+                        <!-- <div class="d-inline-block align-items-center">
                             <nav>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{!! env('APP_URL') !!}dashboard"><i class="mdi mdi-home-outline"></i></a></li>
                                     <li class="breadcrumb-item active" aria-current="page">{{__('label.marketings')}}</li>
                                 </ol>
                             </nav>
-                        </div>
+                        </div> -->
                     </div>
 
                 </div>
@@ -48,9 +48,9 @@ app()->setLocale($lang);
             <section class="content">
                 <div class="col-12">
                     <div class="box">
-                        <div class="box-header with-border">
+                        <!-- <div class="box-header with-border">
                             <h4 class="box-title">{{__('label.marketings')}}</h4>
-                        </div>
+                        </div> -->
                         <!-- /.box-header -->
                         <div class="box-body">
                             <!-- Nav tabs -->

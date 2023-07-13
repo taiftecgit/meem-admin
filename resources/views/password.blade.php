@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @php
-$resto = \App\Restaurants::find(\App\Helpers\CommonMethods::getRestuarantID());
+$resto = \App\Models\Restaurants::find(\App\Helpers\CommonMethods::getRestuarantID());
 $lang = $resto->default_lang; 
 
 app()->setLocale($lang);
@@ -9,16 +9,28 @@ $lang = session('app_lang');
 app()->setLocale($lang);
 }
 @endphp
+
 @section('content')
+<style type="text/css">
+    .top-breadcrumb{
+        padding: 0 10px;
+    }
+</style>
+
     <div class="content-wrapper">
     <div class="container-fluid">
-        <h1 class="mt-4">{{__('label.change_password')}}</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{!! env('APP_URL') !!}dashboard">{{__('label.dashboard')}}</a></li>
+        <div class="row m-0">
+            <div class="page-top-title">
+                <h3 class="title m-0">{{__('label.change_password')}}</h1>
+            </div>
+            <ol class="breadcrumb mb-4 top-breadcrumb">
+                <li class="breadcrumb-item"><a href="{!! env('APP_URL') !!}dashboard">{{__('label.dashboard')}}</a></li>
 
-            <li class="breadcrumb-item active">{{__('label.change_password')}}</li>
-        </ol>
-        <div class="row">
+                <li class="breadcrumb-item active">{{__('label.change_password')}}</li>
+            </ol>
+        </div>
+        
+        <div class="row m-0">
             <div class="col-xl-12">
                 <div class="card mb-4">
 

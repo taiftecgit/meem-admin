@@ -43,7 +43,19 @@ app()->setLocale($lang);
         .btn-toggle.btn-sm,.btn-toggle.btn-sm > .handle{
             border-radius: 16px;
         }
-
+        .flex-item{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        .btn-md.add-discount{
+            width: max-content;
+            margin-right: 10px;
+        }
+        #discount-table > thead > tr > th[class*="sort"]:before,
+        #discount-table > thead > tr > th[class*="sort"]:after {
+            content: "" !important;
+        }
     </style>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -51,10 +63,10 @@ app()->setLocale($lang);
             <!-- Main content -->
             <section class="content">
 
-                <div class="row ">
+                <div class="row m-0">
                     <div class="col-md-6">
-                        <div class="m-15">
-                            <h3 class="title">{{__('label.discounts')}}</h3>
+                        <div class="page-top-title">
+                            <h3 class="title m-0">{{__('label.discounts')}}</h3>
                         </div>
                     </div>
                     @php
@@ -89,8 +101,8 @@ app()->setLocale($lang);
             $business_type = isset($resto_metas['BUSSINESS_TYPE'])?$resto_metas['BUSSINESS_TYPE']:"Restaurants";
 
 @endphp
-                    <div class="col-md-5">
-                        <a style="width: 200px" href="{!! env('APP_URL') !!}business/{!! $resto->unique_shared_key !!}/new/discount"  class="form-control btn btn-primary btn-md add-discount  text-center">
+                    <div class="col-md-6 flex-item">
+                        <a href="{!! env('APP_URL') !!}business/{!! $resto->unique_shared_key !!}/new/discount"  class="form-control btn btn-primary btn-md add-discount  text-center">
                             <i class="fa  fa-plus mr-2"></i>
                             <!-- <i class="mdi mdi-plus-circle"></i> --> {{__('label.add_discount')}}
                         </a>

@@ -87,6 +87,15 @@ app()->setLocale($lang);
         .page-top-title{
             padding: 7px 10px 7px 0 !important;
         }
+        html[dir="rtl"] .add-outlet{
+              width: 48%;
+        }
+        html[dir="rtl"] .hours-action{
+          font-size: 10px;
+        }
+        html[dir="rtl"] .hours-action a i{
+          margin-left: 5px;
+        }
     </style>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">

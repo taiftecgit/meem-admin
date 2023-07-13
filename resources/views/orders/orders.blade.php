@@ -152,6 +152,12 @@
     color: #fff;
     background-color: transparent!important;
 }
+/*------Start Arabic css---------------*/
+
+html[dir="rtl"].nav-tabs{
+    margin-right:-40px !important; 
+}
+/*------end Arabic css---------------*/
 body.fixed {
 	overflow-y:hidden;
 		}

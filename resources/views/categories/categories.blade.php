@@ -90,6 +90,12 @@
 .category_title{
     font-size: 1.7142857142857142rem;
 }
+html[dir="rtl"] .list-group{
+    padding-right: 0;
+}
+html[dir="rtl"] .category_title{
+  margin-right: 15px;
+}
 </style>
 
 @php

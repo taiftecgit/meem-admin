@@ -1141,7 +1141,7 @@ $lang="en";
 /* CSS by Sadaf(customdev) start */
 
 html[dir="rtl"] .content-wrapper {
-    width: calc(100% - 19rem) ;
+    width: calc(100% - 20.5rem) ;
     margin-right: 19.5rem ;
 }
 

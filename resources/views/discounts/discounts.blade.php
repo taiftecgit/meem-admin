@@ -56,6 +56,9 @@ app()->setLocale($lang);
         #discount-table > thead > tr > th[class*="sort"]:after {
             content: "" !important;
         }
+        html[dir="rtl"] .btn-md.add-discount{
+         margin-left: 10px;
+        }
     </style>
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">

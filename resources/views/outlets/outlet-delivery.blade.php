@@ -4,6 +4,16 @@
     <link href="{!! env('APP_ASSETS') !!}/vendor_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet"/>
     <link href="{!! env('APP_ASSETS') !!}/css/jquery.timepicker.min.css" rel="stylesheet"/>
     <style>
+        .btn-toggle.switch[aria-pressed="false"]{
+            background-color: #cb4b18 !important;
+            border-color: #cb4b18 !important;
+            box-shadow: none !important;
+        }
+        .btn-toggle.switch[aria-pressed="true"]{
+            background-color: #3fd642!important;
+            border-color: #3fd642!important;
+            box-shadow: none !important;
+        }
         .hours-action {
             font-size: 12px;
             display: flex;
@@ -124,7 +134,7 @@ app()->setLocale($lang);
                                             <p>{{__('label.customers_can_request_orders_to_be_delivered')}}</p>
                                         </div>
                                         <div class="bd-highlight">
-                                            <button type="button" class="btn btn-lg btn-toggle btn-success switch @if($outlet->is_delivery=="1") active @endif switch" data-bs-toggle="button" aria-pressed="@if($outlet->is_delivery=="1") true @else false @endif" autocomplete="off">
+                                            <button type="button" class="btn btn-lg btn-toggle  switch @if($outlet->is_delivery=="1") active @endif switch" data-bs-toggle="button" aria-pressed="@if($outlet->is_delivery=="1") true @else false @endif" autocomplete="off">
                                                 <div class="handle"></div>
                                             </button>
                                         </div>

@@ -105,6 +105,25 @@ $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
             align-items: center;
             justify-content: flex-end;
         }
+  html[dir="rtl"] .top-title 
+  {
+     margin-right: 10px;   
+  }
+  html[dir="rtl"] .btn-toggle.btn-sm{
+    margin: 0 0rem;
+  }      
+  html[dir="rtl"] .content-wrapper .content .row:first-child .col-6:nth-child(2) .btn {
+    margin-right: 10px !important;
+  }
+  html[dir="rtl"] .me-3 {
+    margin-left: 1rem !important;
+  }
+  html[dir="rtl"] .cms-auto {
+    margin-right: auto !important;
+  }
+  html[dir="rtl"] .list-group-item{
+    padding:0.4rem 0rem 0.2rem 0rem;
+  }
 </style>
 
 <div class="content-wrapper">
@@ -224,7 +243,7 @@ $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
 
 
                                                                          @endif
-                                                                         <div class="  ms-auto ">
+                                                                         <div class="cms-auto ms-auto ">
                                                                              <a href="{!! env('APP_URL') !!}recipe/edit/{!! $item->id !!}" class="mr-2 badge badge-primary m-1"  data-toggle="tooltip" data-placement="top" title="{{__('label.edit')}}"><i class="glyphicon glyphicon-edit"></i></a>
                                                                              <a href="javascript:;" data-id="{!! $item->id !!}" class="delete-recipe badge badge-danger m-1"  data-toggle="tooltip" data-placement="top" title="{{__('label.delete')}}">   <i class="glyphicon glyphicon-trash"></i>
                                                                              </a>

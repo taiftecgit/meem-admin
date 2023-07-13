@@ -427,7 +427,9 @@ input,select:focus{
   .nav-tabs{
     border-bottom: 0px solid #dee2e6 !important;
 	margin-left:0px !important;
-	
+  }
+  html[dir="rtl"] .nav-tabs{
+	margin-right:-40px !important; 
   }
   
   .navbar {

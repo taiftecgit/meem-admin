@@ -51,6 +51,15 @@
         {
             margin-right: 13px;
         }
+        html[dir="rtl"] .ar-pl-0{
+            padding-left: 0 !important;
+        }
+        html[dir="rtl"] .content{
+            padding-left: 15px !important;
+        }
+        html[dir="rtl"] .btn-toggle.btn-sm.btn-sm:after {
+            margin-right: 0;
+        }
     </style>
     <!-- Content Wrapper. Contains page content -->
 @php
@@ -98,7 +107,7 @@ app()->setLocale($lang);
                 </div>
 
                 <div class="row m-0">
-                    <div class="col-12 mt-4 pr-0">
+                    <div class="col-12 mt-4 pr-0 ar-pl-0">
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>

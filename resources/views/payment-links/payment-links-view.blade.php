@@ -122,7 +122,16 @@
         }
         .select2 {width: 100% !important;}
 
-
+        .ar-mrl-adjust{
+            margin-left: 10px;
+        }
+        html[dir="rtl"]  .ar-mrl-adjust{
+            margin-right: 10px;
+            margin-left: 0;
+        }
+        html[dir="rtl"]  .ar-m-0{
+            margin: 0 !important;
+        }
 
     </style>
 
@@ -132,7 +141,7 @@
             <section class="content pt-3">
 
 
-                    <div class="row">
+                    <div class="row ar-m-0">
                         <div class="col-xl-8">
                             <div class="card mb-4">
 
@@ -144,14 +153,14 @@
                                             <h1>Payment link #{!! $payment_link->unique_id !!}</h1>
                                             <p class="mt-40 mb-1"> {!! \Carbon\Carbon::parse($payment_link->created_at)->format('M d, Y') !!}</p>
                                             <h5 class="fw-bold">{!! $payment_link->amount !!} {!! $currency !!}</h5>
-                                            <div class="d-flex">
+                                            <div class="d-flex align-items-center">
                                                 <div style="width: 90%">
                                                     <div class="progress mt-20 ">
                                                         <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                                     </div>
                                                 </div>
 
-                                                <div class="m-10 pt-5">
+                                                <div class="ar-mrl-adjust">
                                                     {!! $payment_link->payments_count?$payment_link->payments_count:0 !!} / {!! $payment_link->number_of_uses !!}
                                                 </div>
                                             </div>

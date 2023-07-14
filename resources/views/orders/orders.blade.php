@@ -155,7 +155,7 @@
 /*------Start Arabic css---------------*/
 
 html[dir="rtl"].nav-tabs{
-    margin-right:-40px !important; 
+   padding-right:0 !important; 
 }
 /*------end Arabic css---------------*/
 body.fixed {

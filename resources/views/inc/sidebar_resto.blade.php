@@ -21,7 +21,9 @@ $mta = \App\Models\RestoMetas::where('bussiness_id',$resto_id)->where('meta_def_
 
     @endphp
      <style type="text/css">
-
+.light-skin .main-sidebar{
+    box-shadow: none !important;
+}
         .resto-name-long{
                 max-width: 150px;
     display: inline-block;

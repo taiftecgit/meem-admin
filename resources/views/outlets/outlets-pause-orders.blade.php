@@ -95,8 +95,15 @@
 .pause-order{
     padding: 40px; background-color: #fff8ec; margin-bottom: 30px;
 }
-
-
+.ar-m-adjust
+{
+   margin-left: 0 !important; 
+}
+html[dir="rtl"] .ar-m-adjust
+{
+   margin-right: 0 !important; 
+   margin-left:5px !important;
+}
 @media (max-width:641px) {
   .list-inline li{
     margin-right: 5px;
@@ -204,7 +211,7 @@ app()->setLocale($lang);
                <div class="row mt-30 sm-mt-0">
                    <div class="col-md-12 col-lg-4 mb-2">
                         <div class="flex-items">
-                            <button type="button"  data-on-text="Open" data-type="delivery"  data-off-text="Closed" class="ml-0 switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_delivery=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_delivery=="1") true @else false @endif" autocomplete="off">
+                            <button type="button"  data-on-text="Open" data-type="delivery"  data-off-text="Closed" class="ar-m-adjust switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_delivery=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_delivery=="1") true @else false @endif" autocomplete="off">
                                             <div class="handle"></div>
                                         </button> {{__('label.accepting_delivery_orders')}}
                         </div>
@@ -219,7 +226,7 @@ app()->setLocale($lang);
                    @if($business_type=="Restaurants")
                    <div class="col-md-12 col-lg-4">
                         <div class="flex-items">
-                            <button type="button"  data-type="dine-in"  data-on-text="Open"  data-off-text="Closed" class="ml-0 switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_contactless_dining=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_contactless_dining=="1") true @else false @endif" autocomplete="off">
+                            <button type="button"  data-type="dine-in"  data-on-text="Open"  data-off-text="Closed" class="ar-m-adjust switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_contactless_dining=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_contactless_dining=="1") true @else false @endif" autocomplete="off">
                                                 <div class="handle"></div>
                                             </button>{{__('label.accepting_dine_in')}}
                         </div>

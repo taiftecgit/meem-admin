@@ -96,6 +96,14 @@ html[dir="rtl"] .list-group{
 html[dir="rtl"] .category_title{
   margin-right: 15px;
 }
+html[dir="rtl"] .ar-mr-0{
+    margin-right: 0 !important;
+    margin-left: 5px !important;
+}
+.ar-mr-0{
+    margin-left: 0 !important;
+    margin-right: 5px !important;
+}
 </style>
 
 @php
@@ -121,7 +129,7 @@ app()->setLocale($lang);
                  <div class=" p-15 rounded-1">
                      <div class="row mb-4">
                          <div class="col-sm-12">
-                             <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn ms-0  btn-toggle btn-sm btn-success switch-me" data-id="sorting" data-bs-toggle="button" aria-pressed="false" autocomplete="off">
+                             <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn ml-0 ar-mr-0 btn-toggle btn-sm btn-success switch-me" data-id="sorting" data-bs-toggle="button" aria-pressed="false" autocomplete="off">
                                  <div class="handle"></div>
                              </button> Sorting Enabled?
                          </div>

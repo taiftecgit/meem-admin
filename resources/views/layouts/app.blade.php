@@ -202,9 +202,9 @@ $lang="en";
         }
 
         @php
-
-            $no_gap_pages = ['OrderListing','outlets-form','OutletEdit','outlets-address','outlets-delivery','outlets-pickup','outlets-delivery-area','outlets-new-delivery-area','outlets-digital-menu'];
-            ;
+            
+            $no_gap_pages = ['OrderListing','outlets-form','OutletEdit','outlets-address','outlets-delivery','outlets-pickup','outlets-delivery-area','outlets-new-delivery-area','outlets-digital-menu','marketing','payment-links'];
+            
         @endphp
 
         @if(in_array(Route::currentRouteName(),$no_gap_pages))
@@ -1141,8 +1141,14 @@ $lang="en";
 /* CSS by Sadaf(customdev) start */
 
 html[dir="rtl"] .content-wrapper {
-    width: calc(100% - 20.5rem) ;
-    margin-right: 19.5rem ;
+    width: calc(100% - 270px);
+    margin-right:270px;
+}
+html[dir="rtl"] .btn-toggle.btn-sm:after{
+    right: 0.3rem;
+}
+html[dir="rtl"] .switch-me.btn-toggle.btn-sm.btn-outlet.switch-me[aria-pressed=" false "]{
+   background: grey !important;
 }
 
 html[dir="rtl"] .main-sidebar {

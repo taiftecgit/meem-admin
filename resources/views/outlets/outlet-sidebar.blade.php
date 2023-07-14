@@ -82,6 +82,19 @@
     .outlet-info-section{
         padding:30px;
     }
+    html[dir="rtl"] .ar-p-0{
+        padding: 0 !important;
+    }
+    html[dir="rtl"] .outlet-status{
+        padding: 17px 58px 18px;
+    }
+    .arrow-link svg{
+        margin-right: 10px;
+    }
+    html[dir="rtl"] .arrow-link svg{
+        margin-left: 10px;
+        margin-right: 0px;
+    }
     /*.outlet-active{
         height: 30px !important;
         width: 90px !important;
@@ -139,23 +152,25 @@ $lang = session('app_lang');
 app()->setLocale($lang);
 }
 @endphp
-<div class="row" style="--bs-gutter-x:0">
-    <div class="col-12 outlet-status">
-        <div class="d-flex justify-content-start">
+<div class="row">
+    <div class="col-12 ar-p-0">
+        <div class="outlet-status">
+            <div class="d-flex justify-content-start">
 
-            <div class="">
-                @if(isset($outlet))
-                <p style="margin-top: 0; margin-bottom: 5px">{{__('label.outlet_is_active')}}</p>
-                    @endif
+                <div class="">
+                    @if(isset($outlet))
+                    <p style="margin-top: 0; margin-bottom: 5px">{{__('label.outlet_is_active')}}</p>
+                        @endif
 
-            </div>
-            <div class="" style="margin-right: 10px; margin-left: 7px; margin-top: -4px">
-                @if(isset($outlet))
+                </div>
+                <div class="" style="margin-right: 10px; margin-left: 7px; margin-top: -4px">
+                    @if(isset($outlet))
 
-                <button type="button" class="btn btn-sm btn-toggle btn-success @if(isset($outlet) &&$outlet->active=="1") active @endif outlet-active" data-bs-toggle="button" aria-pressed="@if(isset($outlet) && $outlet->active=="1") true @else false @endif" autocomplete="off">
-                    <div class="handle"></div>
-                </button>
-                    @endif
+                    <button type="button" class="btn btn-sm btn-toggle btn-success @if(isset($outlet) &&$outlet->active=="1") active @endif outlet-active" data-bs-toggle="button" aria-pressed="@if(isset($outlet) && $outlet->active=="1") true @else false @endif" autocomplete="off">
+                        <div class="handle"></div>
+                    </button>
+                        @endif
+                </div>
             </div>
         </div>
     </div>
@@ -164,8 +179,8 @@ app()->setLocale($lang);
 <div class="row"  style=";--bs-gutter-x:0">
 
     <div class="col-md-12 p-outletnameP">
-        <a href="{!! env('APP_URL') !!}outlets" style="color: #000;">
-        <svg style="margin-right: 10px" id="Shape_707" data-name="Shape 707" xmlns="http://www.w3.org/2000/svg" width="21.079" height="13.138" viewBox="0 0 21.079 13.138">
+        <a href="{!! env('APP_URL') !!}outlets" style="color: #000;" class="arrow-link">
+        <svg id="Shape_707" data-name="Shape 707" xmlns="http://www.w3.org/2000/svg" width="21.079" height="13.138" viewBox="0 0 21.079 13.138">
             <path id="Shape_707-2" data-name="Shape 707" d="M1992.041,272.576a1.21,1.21,0,0,1-1.319.855c-7.25-.011-8.5-.007-15.75-.007h-.379c.1.1.16.17.224.234q1.722,1.718,3.446,3.436a1.037,1.037,0,0,1,.288,1.091,1,1,0,0,1-.8.725,1.056,1.056,0,0,1-1-.339q-1.945-1.944-3.9-3.883c-.456-.454-.924-.9-1.362-1.368a6.5,6.5,0,0,1-.526-.744v-.424a5.306,5.306,0,0,1,.526-.744c1.74-1.751,3.494-3.488,5.24-5.233a1.076,1.076,0,0,1,1.023-.357,1,1,0,0,1,.8.725,1.023,1.023,0,0,1-.271,1.072c-.654.656-1.312,1.306-1.965,1.962-.559.561-1.114,1.125-1.712,1.728h.341c7.259,0,8.518,0,15.778-.007a1.207,1.207,0,0,1,1.319.855Z" transform="translate(-1970.962 -265.795)" fill="#6d6d6d" opacity="0.569"/>
         </svg>  {{__('label.outlets')}}</a>
         <h3>

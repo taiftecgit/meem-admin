@@ -84,6 +84,19 @@
             width:50%;
            }
         }
+        .pl-10{
+            padding-left: 10px;
+        }
+        .pr-10{
+            padding-right: 10px;
+        }
+        .page-top-title{
+            padding-left: 0;
+        }
+        html[dir="rtl"] .row.pt-15.pl-10.pr-10{
+            margin: 0 !important;
+        }
+
     </style>
 @php
 $resto = \App\Models\Restaurants::find(\App\Helpers\CommonMethods::getRestuarantID());
@@ -146,8 +159,14 @@ app()->setLocale($lang);
     <div class="content-wrapper">
         <div class="container-full">
             <section class="content">
-                <h3 style="margin-left: 10px">{{__('label.order_history')}}</h3>
-                <div class="row p-15">
+                <div class="row ">
+                    <div class="col-md-10">
+                        <div class="page-top-title">
+                            <h3 class="title m-0">{{__('label.order_history')}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-15 pl-10 pr-10">
                     <div class="card cust_card p-15 rounded-1">
                         <form class="row g-3 ordhistory" action="#">
                             <div class="col-md-4">

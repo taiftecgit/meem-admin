@@ -34,6 +34,11 @@ app()->setLocale($lang);
             font-size: 14px;
             margin-right: 5px;
         }
+        html[dir="rtl"] .time-show a i{
+            font-size: 14px;
+            margin-right: 0px;
+            margin-left: 5px;
+        }
         .flex-items{
             display: flex;
             align-items: center;

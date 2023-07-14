@@ -104,10 +104,20 @@ app()->setLocale($lang);
 	}
 
 	.modal-header {
-    border-bottom-color: #ffab00;
-    background-color: #ffab00;
-	color:white;
-}
+        border-bottom-color: #ffab00;
+        background-color: #ffab00;
+    	color:white;
+    }
+    .ar-mrl-adjust{
+        margin-left: 22px;
+    }
+    html[dir="rtl"] .ar-mrl-adjust{
+        margin-right: 25px;
+    }
+    html[dir="rtl"] .page-top-title{
+        padding: 7px 12px;
+    }
+
     </style>
 @php
     $restuarant1 = $resto;
@@ -148,12 +158,19 @@ $business_type =  trim($business_type);
  <div class="content-wrapper">
         <div class="container-full">
             <section class="content">
-				<h1 class="mt-4">{{__('label.recipe')}}</h1>
-        <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item"><a href="{!! env('APP_URL') !!}dashboard">{{__('label.dashboard')}}</a></li>
-            <li class="breadcrumb-item active">  @if(isset($recipe)) {{__('label.edit_recipe')}}  @else {{__('label.new_recipe')}}  @endif</li>
-        </ol>
-                <div class="row">
+                <div class="row ">
+                    <div class="col-md-10">
+                        <div class="page-top-title">
+                            <h3 class="title m-0">{{__('label.recipe')}}</h3>
+                        </div>
+                    </div>
+                    <ol class="breadcrumb mb-4 ar-mrl-adjust">
+                        <li class="breadcrumb-item"><a href="{!! env('APP_URL') !!}dashboard">{{__('label.dashboard')}}</a></li>
+                        <li class="breadcrumb-item active">  @if(isset($recipe)) {{__('label.edit_recipe')}}  @else {{__('label.new_recipe')}}  @endif</li>
+                    </ol>
+                </div>
+				
+                <div class="row m-0">
             <div class="col-xl-12">
                 <div class="card mb-4">
                     <div class="card-header">

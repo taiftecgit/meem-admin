@@ -105,6 +105,9 @@ $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
             align-items: center;
             justify-content: flex-end;
         }
+  .cms-auto {
+    margin-left: auto;
+  }
   html[dir="rtl"] .top-title 
   {
      margin-right: 10px;   
@@ -120,9 +123,14 @@ $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
   }
   html[dir="rtl"] .cms-auto {
     margin-right: auto !important;
+    margin-left: 0;
   }
   html[dir="rtl"] .list-group-item{
     padding:0.4rem 0rem 0.2rem 0rem;
+  }
+  html[dir="rtl"] .accordion-button::after{
+    margin-left: 0;
+    margin-right: auto;
   }
 </style>
 
@@ -243,7 +251,7 @@ $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
 
 
                                                                          @endif
-                                                                         <div class="cms-auto ms-auto ">
+                                                                         <div class="cms-auto">
                                                                              <a href="{!! env('APP_URL') !!}recipe/edit/{!! $item->id !!}" class="mr-2 badge badge-primary m-1"  data-toggle="tooltip" data-placement="top" title="{{__('label.edit')}}"><i class="glyphicon glyphicon-edit"></i></a>
                                                                              <a href="javascript:;" data-id="{!! $item->id !!}" class="delete-recipe badge badge-danger m-1"  data-toggle="tooltip" data-placement="top" title="{{__('label.delete')}}">   <i class="glyphicon glyphicon-trash"></i>
                                                                              </a>

@@ -134,7 +134,7 @@ app()->setLocale($lang);
                         <div class="m-15">
                             <h3 class="title">{{__('label.user_role')}}</h3>
 
-                            <div class="row user-type-section mb-25"  data-role="administrator">
+                            <div class="row user-type-section mb-25 m-0"  data-role="administrator">
                                 <div class="col-md-1">
                                     <div class="form-group">
                                         <div class="custom-control custom-radio">
@@ -194,7 +194,7 @@ app()->setLocale($lang);
 
 
 
-                            <div class="row user-type-section mb-25" data-role="manager">
+                            <div class="row user-type-section mb-25 m-0" data-role="manager">
                                 <div class="col-md-1">
                                     <div class="form-group">
                                         <div class="custom-control custom-radio">
@@ -267,7 +267,7 @@ app()->setLocale($lang);
                             </div>
 
 
-                            <div class="row user-type-section mb-25"  data-role="staff">
+                            <div class="row user-type-section mb-25 m-0"  data-role="staff">
                                 <div class="col-md-1">
                                     <div class="form-group">
                                         <div class="custom-control custom-radio">

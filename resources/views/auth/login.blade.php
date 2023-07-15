@@ -20,8 +20,8 @@
     <link href="{!! env('APP_ASSETS') !!}css/login.css" rel="stylesheet">
     <style>
     .do-login{
-            background: #FEC34D !important;
-            border-color: #FEC34D !important;
+            background: #ffab00 !important;
+            border-color: #ffab00 !important;
     }
 		label.error{
     color: #F00;
@@ -104,7 +104,7 @@ label {
     <div class="row align-items-center justify-content-md-center h-p100">
 
               <div class="row justify-content-center g-0">
-                <div class="col-lg-5 col-md-8 col-12" style="padding:25px">
+                <div class="col-lg-5 col-md-8 col-12 p-25">
                     <div class="bg-white rounded10 shadow-lg">
 
                         <div class="p-40">

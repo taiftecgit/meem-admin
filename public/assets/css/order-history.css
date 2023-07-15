@@ -179,8 +179,8 @@ input:focus,select:focus{
 }
 .pagination  li a.page-link 
 {
-    color: white !important;
-    background: #ffa505 !important;
+    color: black !important;
+    background: #fff !important;
 }
 .pagination li.active a.page-link 
 {

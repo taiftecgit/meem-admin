@@ -104,7 +104,9 @@ a.count_atag{
   font-style: normal;
   font-weight: 100;
   font-size:13px;
-  text-align:center;
+  text-align: right;
+  width: 100%;
+  display: inherit;
 }
 .tbl_row
 {

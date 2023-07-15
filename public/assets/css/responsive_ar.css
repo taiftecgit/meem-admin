@@ -1,0 +1,31 @@
+@media (max-width: 767px) {
+	html[dir="rtl"] .main-header .logo{
+		padding: 0 20px;
+	}
+	html[dir="rtl"] .left_bar.mx-10{
+		margin-right: 5px !important;
+	}
+	html[dir="rtl"] .main-sidebar .sidebar-footer .resto-name-long {
+		padding-left: 30px !important;
+	    margin-right: 10px !important;
+		top: -2px !important;
+	}
+	html[dir="rtl"] .nav-tabs .gap-items-4 .nav-link{
+		padding-right: 10px !important;
+	}
+	html[dir="rtl"] .row.pt-15.pl-10.pr-10{
+		padding-right: 5px;
+		padding-left: 5px;
+	}
+	html[dir="rtl"] .sm-ml-10{
+		margin-left:0px;
+		margin-right:10px;
+	}
+	html[dir="rtl"] .outlet-table thead>tr>th{
+		padding-right:22px;
+	}
+	html[dir="rtl"] .sm-ml-0{
+		margin-left: 7px !important;
+		margin-right: 0px !important;
+	}
+}

@@ -85,7 +85,11 @@ $lang="en";
         background: #fff;
         padding-left: 0;
     }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 88d2f5bc0c1a77eee9b743e36ec594843237b01e
 
         .table {
             --bs-table-bg: #ffffff;
@@ -233,9 +237,15 @@ $lang="en";
         }
 
         @php
+<<<<<<< HEAD
 
             $no_gap_pages = ['OrderListing','outlets-form','OutletEdit','outlets-address','outlets-delivery','outlets-pickup','outlets-delivery-area','outlets-new-delivery-area','outlets-digital-menu','marketing','payment-links'];
 
+=======
+
+            $no_gap_pages = ['OrderListing','outlets-form','OutletEdit','outlets-address','outlets-delivery','outlets-pickup','outlets-delivery-area','outlets-new-delivery-area','outlets-digital-menu','marketing','payment-links'];
+
+>>>>>>> 88d2f5bc0c1a77eee9b743e36ec594843237b01e
         @endphp
 
         @if(in_array(Route::currentRouteName(),$no_gap_pages))
@@ -475,7 +485,11 @@ $lang="en";
                 padding: 14px 21px !important;
             }*/
 
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 88d2f5bc0c1a77eee9b743e36ec594843237b01e
         }
 
 
@@ -640,8 +654,13 @@ $lang="en";
 
 
         @media (max-width:767px){
+<<<<<<< HEAD
 
 
+=======
+
+
+>>>>>>> 88d2f5bc0c1a77eee9b743e36ec594843237b01e
             .right-panel-footer{
                 --bs-gutter-x: 0;
             }
@@ -801,7 +820,11 @@ $lang="en";
             .sidebar-footer {
                 width: 100%;
             }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 88d2f5bc0c1a77eee9b743e36ec594843237b01e
 			.switch-lang{
 				    position: absolute;
 					right:50%;
@@ -870,7 +893,11 @@ $lang="en";
 			html[dir="rtl"] .nav-tabs .nav-link {
 				font-size: 12px !important;
 			}
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> 88d2f5bc0c1a77eee9b743e36ec594843237b01e
 		}
 		@media (max-width:375px){
 			.tab-bar-section {
@@ -1166,9 +1193,11 @@ $lang="en";
 /* CSS by Sadaf(customdev) start */
 
 html[dir="rtl"] .content-wrapper {
+<<<<<<< HEAD
 
     width: calc(100% - 21rem) ;
     margin-right: 19.5rem ;
+
 
 }
 html[dir="rtl"] .btn-toggle.btn-sm:after{

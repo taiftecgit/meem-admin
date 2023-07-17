@@ -383,6 +383,8 @@ class Order extends Controller
             $next_action=$order->order_type=="delivery"?'Delivered':'Picked Up';
             $next_status="Has_Delivered";
         }
+
+
         $address = "";
         $delivery_notes = "";
         if(isset($order->customers) && isset($order->customers->customer_addresses)){
@@ -420,7 +422,12 @@ class Order extends Controller
             'preparation_delivery_time'=>$time_to,
             'time_type'=>$type
         );
+        if(session('app_lang') !==null){
+            $lang = session('app_lang');
+            app()->setLocale($lang);
 
+        }
+        $label_next_status = trans(strtolower('label.'.$next_status));
         $order = array(
             'order_ref' => str_pad($order->order_ref,6,0,STR_PAD_LEFT),
             'estimated_code'=>$estimated_time,
@@ -440,6 +447,7 @@ class Order extends Controller
             'recipes'=>$recipes,
             'next_action'=>$next_action,
             'next_status' =>$next_status,
+            'next_status_label'=> ($label_next_status),
             'address'=>$address,
             'geo_location' => isset($order->customers->customer_addresses[0])?$order->customers->customer_addresses[0]->selected_lat_lng:$order->selected_area_formatted,
             'for_table'=>$order->for_table,

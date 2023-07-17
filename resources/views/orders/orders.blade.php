@@ -6,6 +6,12 @@
 @endsection
 @section('content')
     <style>
+        #show-recipes, .calc_div{
+            background-color: #fff7e8;
+        }
+        .row.right-panel-box{
+            padding:0 10px
+        }
         .lh-48
         {
             line-height:48px;
@@ -358,7 +364,7 @@ app()->setLocale($lang);
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6 box-shadowed">
+                    <div class="col-sm-12 col-md-6 p-0 box-shadowed">
                         <div class="no-order" style="padding-top: 50%; height: 90vh ;">
                             <h3 class="text-center text-light">{{__('label.no_order_selected')}}</h3>
                         </div>
@@ -781,6 +787,8 @@ app()->setLocale($lang);
 		var order_object = null;
         $(function () {
 
+            count_order_status();
+
             $("body").on("click",".back-to-orders",function () {
                 $(".order-section").hide();
             });
@@ -821,39 +829,7 @@ app()->setLocale($lang);
             });
 
 
-            $.ajax({
-                url: "{!! env('APP_URL') !!}order/counts",
-                success: function (response) {
-                    //   response = $.parseJSON(response);
-                    var total_accepted = 0;
-                    var total = 0;
 
-                    $.each(response,function (i,v) {
-                        if(v.status=="Send_to_Kitchen" || v.status=="Accepted"){
-                            total_accepted+=parseInt(v.status_count);
-                            total+=parseInt(v.status_count);
-                            $(".labelcenter.kitchen").text(total_accepted);
-                        }
-
-                        if(v.status=="On_Road"){
-                            $(".labelcenter.route").text(v.status_count);
-                            total+=parseInt(v.status_count);
-                        }
-
-                        if(v.status=="Placed"){
-                            $(".labelcenter.new").text(v.status_count);
-                            total+=parseInt(v.status_count);
-                            if(parseInt(v.status_count) > 0){
-                                $("#order-counter").html(v.status_count);
-                                $("#order-counter").show();
-                            }
-
-                        }
-
-                    });
-                    $(".labelcenter.all").text(total);
-                }
-            });
 
             $("body").on("click",".load-more-order",function(){
                 var _start_page = $(this).data('start-page');
@@ -1066,6 +1042,8 @@ app()->setLocale($lang);
 
 			var _already_clicked = false;
 
+
+
             $("body").on("click","li[rel=detail]",function () {
 
 				if(!_already_clicked){
@@ -1180,13 +1158,16 @@ app()->setLocale($lang);
 
                             }
 
-                            if(i=="next_action"){
-                                if(v=="Accepted")
-                                    $(".change-status").html("{{__('label.accept')}}");
-                                    else
-                                $(".change-status").html(v);
-                            }
+                            {{--if(i=="next_action"){--}}
+                            {{--    if(v=="Accepted")--}}
+                            {{--        $(".change-status").html("{{__('label.accept')}}");--}}
+                            {{--        else--}}
+                            {{--    $(".change-status").html(v);--}}
+                            {{--}--}}
+                            if(i=="next_status_label"){
 
+                                    $(".change-status").html(v);
+                            }
                             if(i=="next_status"){
                                 $(".change-status").attr('data-status',v);
                             }
@@ -1371,6 +1352,8 @@ var discounted_price = 0;
                         _this.removeClass('btn-muted');
                         _this.addClass('btn-primary');
 
+                        count_order_status();
+
 
 
 
@@ -1432,43 +1415,7 @@ var discounted_price = 0;
 
                                 $(".no-order").show();
                                 $(".order-section").hide();
-                                $.ajax({
-                                    url: "{!! env('APP_URL') !!}order/counts",
-                                    success: function (response) {
-                                        //      response = $.parseJSON(response);
-                                        var total_accepted = 0;
-                                        var total = 0;
-
-                                        $.each(response,function (i,v) {
-                                            if(v.status=="Send_to_Kitchen" || v.status=="Accepted"){
-                                                total_accepted+=parseInt(v.status_count);
-                                                total+=parseInt(v.status_count);
-                                                $(".labelcenter.kitchen").text(total_accepted);
-                                            }
-
-                                            if(v.status=="On_Road"){
-                                                $(".labelcenter.route").text(v.status_count);
-                                                total+=parseInt(v.status_count);
-                                            }
-
-                                            if(v.status=="Placed"){
-
-                                                $(".labelcenter.new").html(v.status_count);
-                                                total+=parseInt(v.status_count);
-                                                if(parseInt(v.status_count) > 0){
-                                                    $("#order-counter").html(v.status_count);
-                                                    $("#order-counter").show();
-                                                }else{
-                                                    audio.pause();
-                                                    $("#order-counter").html(0);
-                                                    $("#order-counter").hide();
-                                                }
-                                            }
-
-                                        });
-                                        $(".labelcenter.all").text(total);
-                                    }
-                                });
+                               count_order_status();
                                 //  swal("Rejected!", "Order is rejected.", "success");
                             }
                         });
@@ -1501,6 +1448,7 @@ var discounted_price = 0;
                     success:function () {
 
                         $(".mlist_li.selected").remove();
+                        count_order_status();
                         if(s=="all"){
                             $("#orders-list").html('');
 
@@ -1551,6 +1499,7 @@ var discounted_price = 0;
             },60000);
 
         })
+
 
 
 			  function show_recipe(recipe){
@@ -1723,5 +1672,7 @@ var discounted_price = 0;
 
 					return str;
 				}
+
+
     </script>
 @endsection

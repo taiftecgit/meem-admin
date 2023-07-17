@@ -11,8 +11,8 @@
 
 
     $main_pages = ['dashboard','orderlisting','show_order','marketing','order-history','outlets','outlets-form','outlets-address',
-    'outlets-delivery','outlets-ordering-mode','outlets-pickup','outlets-contactless-dining','pause-orders'];
-$outlet = ['outlets','outlets-form','outlets-address','outlets-delivery','outlets-ordering-mode','outlets-pickup','outlets-contactless-dining','invetory','discounts'];
+    'outlets-delivery','outlets-ordering-mode','outlets-pickup','outlets-contactless-dining','pause-orders','inventory','discounts','payment-links'];
+$outlet = ['outlets','outlets-form','outlets-address','outlets-delivery','outlets-ordering-mode','outlets-pickup','outlets-contactless-dining'];
 $menu_pages = ['recipes','categories'];
 $resto_id = \App\Helpers\CommonMethods::getRestuarantID();
 
@@ -33,6 +33,12 @@ $mta = \App\Models\RestoMetas::where('bussiness_id',$resto_id)->where('meta_def_
 			color:#000;
         }
 
+        @if(app()->getLocale()=="ar")
+        .treeview-menu > li > a{
+            padding: 5px 25px 5px 25px;
+        }
+        @endif
+
 		 .theme-primary.light-skin .sidebar-menu > li:hover svg, .theme-primary.light-skin .sidebar-menu > li:active svg, .theme-primary.light-skin .sidebar-menu > li.active svg{
 			 fill:#FFF !important;
 		 }
@@ -46,6 +52,7 @@ $mta = \App\Models\RestoMetas::where('bussiness_id',$resto_id)->where('meta_def_
 
         .sidebar-menu li > a > .pull-right-container, .sidebar-menu li > a > .pull-left-container{
             font-size: 1.5714285714rem;
+            top:40%
         }
         .theme-primary.light-skin .sidebar-menu > li.active.treeview > a{
             color:#FFF !important;
@@ -61,6 +68,13 @@ $mta = \App\Models\RestoMetas::where('bussiness_id',$resto_id)->where('meta_def_
             -ms-transform: rotate(270deg);
             -o-transform: rotate(270deg);
             transform: rotate(270deg);
+        }
+        .treeview-menu li:hover a,.treeview-menu li:hover svg{
+            color:#fff !important;
+        }
+
+        .treeview-menu li.active a,.treeview-menu li.active svg{
+            color:#fff !important;
         }
     </style>
 <aside class="main-sidebar d-none d-sm-none d-md-none d-lg-block">
@@ -134,14 +148,18 @@ $mta = \App\Models\RestoMetas::where('bussiness_id',$resto_id)->where('meta_def_
 					</span>
                         </a>
                         <ul class="treeview-menu" @if(in_array($current_page,$menu_pages)) style="display: block;" @else style="display: none;" @endif>
-                            <li @if(in_array($current_page,$menu_pages) && $current_page=="categories") class="active" @endif><a href="{!! env('APP_URL') !!}categories"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>{{__('label.categories')}}</a></li>
-                            <li @if(in_array($current_page,$menu_pages) && $current_page=="recipes") class="active" @endif><a href="{!! env('APP_URL') !!}recipes"><i class="icon-Commit"><span class="path1"></span><span class="path2"></span></i>{{__('label.items')}}</a></li>
+                            <li @if(in_array($current_page,$menu_pages) && $current_page=="categories") class="active" @endif><a href="{!! env('APP_URL') !!}categories"><i class="icon-Commit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><circle cx="17.5" cy="17.5" r="2.5" fill="currentColor" opacity=".3"/><path fill="currentColor" d="M5 15.5h4v4H5zm7-9.66L10.07 9h3.86z" opacity=".3"/><path fill="currentColor" d="m12 2l-5.5 9h11L12 2zm0 3.84L13.93 9h-3.87L12 5.84zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5s2.01 4.5 4.5 4.5s4.5-2.01 4.5-4.5s-2.01-4.5-4.5-4.5zm0 7a2.5 2.5 0 0 1 0-5a2.5 2.5 0 0 1 0 5zM11 13.5H3v8h8v-8zm-2 6H5v-4h4v4z"/></svg>
+                                    </i>{{__('label.categories')}}</a></li>
+                            <li @if(in_array($current_page,$menu_pages) && $current_page=="recipes") class="active" @endif><a href="{!! env('APP_URL') !!}recipes"><i class="icon-Commit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"><circle cx="5" cy="19" r="1" fill="currentColor"/><path fill="currentColor" d="M4 4h2v9H4z"/><path fill="currentColor" d="M7 2H3a1 1 0 0 0-1 1v18a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Zm0 19H3V3h4Z"/><circle cx="12" cy="19" r="1" fill="currentColor"/><path fill="currentColor" d="M11 4h2v9h-2z"/><path fill="currentColor" d="M14 2h-4a1 1 0 0 0-1 1v18a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Zm0 19h-4V3h4Z"/><circle cx="19" cy="19" r="1" fill="currentColor"/><path fill="currentColor" d="M18 4h2v9h-2z"/><path fill="currentColor" d="M21 2h-4a1 1 0 0 0-1 1v18a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1Zm0 19h-4V3h4Z"/></svg>
+                                    </i>{{__('label.items')}}</a></li>
                         </ul>
                     </li>
 
 
 
-                     <li class="@if(in_array($current_page,$main_pages) && ($current_page=="invetory")) active @endif">
+                     <li class="@if(in_array($current_page,$main_pages) && ($current_page=="inventory")) active @endif">
                         <a href="{!! env('APP_URL') !!}inventory">
                             <i class="icon-Chart-pie">
 

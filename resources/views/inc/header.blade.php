@@ -47,17 +47,17 @@
                </svg>
            </div>
         </a>
-		
+
 <!--		<ul  class="switch-lang"><li><a class="change-lang" data-lang="en" href="#!">EN</a></li><li><a class="change-lang" data-lang="ar" href="#!">AR</a></li></ul>-->
 		@if(\Illuminate\Support\Facades\Auth::user()->role!="administrator")
 		<ul class="switch-lang">
 			@if(app()->getLocale()=="ar")
-			<li><a class="change-lang" data-lang="en" href="#!">EN</a></li>
+			<li><a class="change-lang" data-lang="en" href="javascript:;">EN</a></li>
 			@endif
 			@if(app()->getLocale()=="en")
-			<li><a class="change-lang" data-lang="ar" href="#!">AR</a></li>
+			<li><a class="change-lang" data-lang="ar" href="javascript:;">AR</a></li>
 			@endif
-		@endif 
+		@endif
     </div>
     <nav class="navbar navbar-static-top d-flex align-items-end flex-column mb-0">
         <!-- Sidebar toggle button-->

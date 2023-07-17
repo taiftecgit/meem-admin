@@ -1432,11 +1432,11 @@ $business_type =  trim($business_type);
                             var width = this.width;
                             if (height > 1280 || width > 1980) {
 
-                                swal({title:"Image Dimensions error",text:"You are exceeding from dimension limit (1920 x 1280), your current dimensions are width: "+width+"px and height: "+height+"px"},function(){
-                                    $("#image-preview").removeAttr('style');
-                                    $("#image-upload").val('');
-                                });
-                                return false;
+                                // swal({title:"Image Dimensions error",text:"You are exceeding from dimension limit (1920 x 1280), your current dimensions are width: "+width+"px and height: "+height+"px"},function(){
+                                //     $("#image-preview").removeAttr('style');
+                                //     $("#image-upload").val('');
+                                // });
+                                // return false;
                             }
 
                         };

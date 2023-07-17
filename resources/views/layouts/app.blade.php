@@ -52,7 +52,19 @@ $lang="en";
 
 
     <style>
-            
+        @font-face {
+            font-family: "Expo-Arabic-Light";
+            src: url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Light.ttf' !!});
+			src: url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Light.ttf' !!}) format("ttf"),
+			url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Light.ttf' !!}) format("ttf"),
+			}
+        @font-face {
+            font-family: "Expo-Arabic-Medium";
+            src: url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Medium.ttf' !!});
+            src: url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Medium.ttf' !!}) format("ttf"),
+            url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Medium.ttf' !!}) format("ttf"),
+        }
+
     .page-top-title {
         padding: 7px 10px;
     }
@@ -99,6 +111,9 @@ $lang="en";
             background-color: #ffab00;
             border-color: #ffab00;
         }
+
+
+
         .sidebar-active .sidebar-mini.sidebar-collapse .sidebar-menu > li > a > span{ display: block !important;}
         .sidebar-menu > li .badge {
             margin-left: 5px;
@@ -239,6 +254,8 @@ $lang="en";
     margin-left: 223px !important;
 }
 
+
+
 .delivery-section {
     width: 356px !important;
     left:0 !important;
@@ -320,7 +337,7 @@ $lang="en";
             height: 61px;
         }
         .main-header .logo .logo-lg{
-            line-height: 61px;
+            line-height: 56px;
         }
         }
 
@@ -974,6 +991,17 @@ $lang="en";
             }
         }
 
+
+        * {
+            font-family:"Expo-Arabic-Medium"
+        }
+
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+            font-family:"Expo-Arabic-Medium" !important;
+        }
+
+
+
        /* @media (device-width: 375px) and (orientation: portrait){
             .navbar{
                 background-color: transparent !important;
@@ -1140,7 +1168,7 @@ $lang="en";
 /* CSS by Sadaf(customdev) start */
 
 html[dir="rtl"] .content-wrapper {
-    width: calc(100% - 19rem) ;
+    width: calc(100% - 21rem) ;
     margin-right: 19.5rem ;
 }
 
@@ -1223,6 +1251,18 @@ html[dir="rtl"] header .logo-box {
 .theme-primary.light-skin .sidebar-menu > li:hover > a, .theme-primary.light-skin .sidebar-menu > li:active > a, .theme-primary.light-skin .sidebar-menu > li.active > a {
 	padding:5px; !important;
 }
+    @if(app()->getLocale()=="ar")
+    html[dir="rtl"]  .theme-primary.light-skin .sidebar-menu > li > a, html[dir="rtl"] .theme-primary.light-skin .sidebar-menu > li > a, html[dir="rtl"] .theme-primary.light-skin .sidebar-menu > li > a{
+        padding:11.7px 30px 11.7px 30px !important;
+    }
+    html[dir="rtl"]  .theme-primary.light-skin .sidebar-menu > li:hover > a, html[dir="rtl"] .theme-primary.light-skin .sidebar-menu > li:active > a, html[dir="rtl"] .theme-primary.light-skin .sidebar-menu > li.active > a{
+        padding:11.7px 30px 11.7px 30px !important;
+    }
+    @else
+    html[dir="rtl"]  .theme-primary.light-skin .sidebar-menu > li:hover > a, html[dir="rtl"] .theme-primary.light-skin .sidebar-menu > li:active > a, html[dir="rtl"] .theme-primary.light-skin .sidebar-menu > li.active > a{
+        padding:11.7px !important;
+    }
+    @endif
 html[dir="rtl"] .sidebar-menu > li:hover > a, html[dir="rtl"] .sidebar-menu > li:active > a, html[dir="rtl"] .sidebar-menu > li.active > a {
 	padding:8px 30px; !important;
 }
@@ -1675,85 +1715,49 @@ html[dir="rtl"] .text-end:has(.print) {
 			if(after_pusher_status && after_pusher_status=="")
 				after_pusher_status = "all";
             $("#all-orders").removeClass('no-order-found');
-            $.ajax({
-                url:"{!! env('APP_URL') !!}liveorders/"+after_pusher_status,
-                success:function (response) {
+            $(".mlist_li[data-order-id="+data.order_id+"]").remove();
+            {{--$.ajax({--}}
+            {{--    url:"{!! env('APP_URL') !!}liveorders/"+after_pusher_status,--}}
+            {{--    success:function (response) {--}}
 
-                    //response = $.parseJSON(response);
+            {{--        //response = $.parseJSON(response);--}}
 
-                    if(response){
+            {{--        if(response){--}}
 
-                        $.each(response.orders,function (i,v) {
-                            var str='<li class="mlist_li" rel="detail" data-order-id="'+v.id+'">\n' +
-                                '    <div class="box '+v.box_bg+' rounded-0">\n' +
-                                '        <div class="media-list media-list-divided media-list-hover">\n' +
-                                '             <div class="media align-items-center">\n' +
-                                '                <div class="media-body">\n' +
-                                '                    <p>#'+v.order_ref+'</p>\n' +
-                                '                       <p> '+(v.campaign_type!=""?v.campaign_type:"Direct")+',  '+v.created_at+'</p>\n' +
-                                '                </div>\n' +
-                                '                <div class="media-right gap-items">\n' +
-                                '                    <div class="user-social-acount text-center">\n' +
-                                '                        <p class="m-0 status">'+v.status+'</p>\n' +
-                                '                        <div class="d-flex align-items-center float-end">\n' +
-                                '                            <div class="circle-div '+v.bg+' text-center" data-min="'+v.remaining_min+'" data-color="'+v.bg_color+'">\n' +
-                                '                                   <p class="mb-5 min">'+v.remaining_min+'<br />\n'+
-                                '                                  Min</p>\n'+
-                                '                            </div>\n' +
-                                '                        </div>\n' +
-                                '                    </div>\n' +
-                                '                </div>\n' +
-                                '            </div>\n' +
-                                '        </div>\n' +
-                                '    </div>\n' +
-                                '</li>';
-                            counter = counter+1;
-                            $("#orders-list").append(str);
-                        });
-                        $("span."+status).html(counter);
-                    }
+            {{--            $.each(response.orders,function (i,v) {--}}
+            {{--                var str='<li class="mlist_li" rel="detail" data-order-id="'+v.id+'">\n' +--}}
+            {{--                    '    <div class="box '+v.box_bg+' rounded-0">\n' +--}}
+            {{--                    '        <div class="media-list media-list-divided media-list-hover">\n' +--}}
+            {{--                    '             <div class="media align-items-center">\n' +--}}
+            {{--                    '                <div class="media-body">\n' +--}}
+            {{--                    '                    <p>#'+v.order_ref+'</p>\n' +--}}
+            {{--                    '                       <p> '+(v.campaign_type!=""?v.campaign_type:"Direct")+',  '+v.created_at+'</p>\n' +--}}
+            {{--                    '                </div>\n' +--}}
+            {{--                    '                <div class="media-right gap-items">\n' +--}}
+            {{--                    '                    <div class="user-social-acount text-center">\n' +--}}
+            {{--                    '                        <p class="m-0 status">'+v.status+'</p>\n' +--}}
+            {{--                    '                        <div class="d-flex align-items-center float-end">\n' +--}}
+            {{--                    '                            <div class="circle-div '+v.bg+' text-center" data-min="'+v.remaining_min+'" data-color="'+v.bg_color+'">\n' +--}}
+            {{--                    '                                   <p class="mb-5 min">'+v.remaining_min+'<br />\n'+--}}
+            {{--                    '                                  Min</p>\n'+--}}
+            {{--                    '                            </div>\n' +--}}
+            {{--                    '                        </div>\n' +--}}
+            {{--                    '                    </div>\n' +--}}
+            {{--                    '                </div>\n' +--}}
+            {{--                    '            </div>\n' +--}}
+            {{--                    '        </div>\n' +--}}
+            {{--                    '    </div>\n' +--}}
+            {{--                    '</li>';--}}
+            {{--                counter = counter+1;--}}
+            {{--                $("#orders-list").append(str);--}}
+            {{--            });--}}
+            {{--            $("span."+status).html(counter);--}}
+            {{--        }--}}
 
-                }
-            });
+            {{--    }--}}
+            {{--});--}}
 
-            $.ajax({
-                url: "{!! env('APP_URL') !!}order/counts",
-                success: function (response) {
-                    //    response = $.parseJSON(response);
-                    var total_accepted = 0;
-                    var total = 0;
-
-                    $.each(response,function (i,v) {
-                        if(v.status=="Send_to_Kitchen" || v.status=="Accepted"){
-                            total_accepted+=parseInt(v.status_count);
-                            total+=parseInt(v.status_count);
-                            $(".labelcenter.kitchen").text(total_accepted);
-                        }
-
-                        if(v.status=="On_Road"){
-                            $(".labelcenter.route").text(v.status_count);
-                            total+=parseInt(v.status_count);
-                        }
-
-
-                        if(v.status=="Placed"){
-
-                            $(".labelcenter.new").html(v.status_count);
-                            total+=parseInt(v.status_count);
-                            if(parseInt(v.status_count) > 0){
-                                $("#order-counter").html(v.status_count);
-                                $("#order-counter").show();
-                            }else{
-                                audio.pause();
-                                $("#order-counter").html(0);
-                                $("#order-counter").hide();
-                            }
-                        }
-
-                    });
-                    $(".labelcenter.all").text(total);
-                }
-            });
+            count_order_status();
 
             $(".mlist_li[data-order-id="+data.order_id+"]").remove();
         }
@@ -1763,7 +1767,7 @@ html[dir="rtl"] .text-end:has(.print) {
         console.log('logged_user: '+logged_user+" , resto_id: "+resto_id);
         if(resto_id==logged_user){
 
-
+            $("#all-orders").removeClass('no-order-found');
             audio.play();
 
             var new_order = (data.order_data);
@@ -1828,39 +1832,7 @@ html[dir="rtl"] .text-end:has(.print) {
              row+='<td>'+action_list+'</td>';
              row+='</tr>';*/
 
-            $.ajax({
-                url: "{!! env('APP_URL') !!}order/counts",
-                success: function (response) {
-                    // response = $.parseJSON(response);
-                    var total_accepted = 0;
-                    var total = 0;
-
-                    $.each(response,function (i,v) {
-                        if(v.status=="Send_to_Kitchen" || v.status=="Accepted"){
-                            total_accepted+=parseInt(v.status_count);
-                            total+=parseInt(v.status_count);
-                            $(".labelcenter.kitchen").text(total_accepted);
-                        }
-
-                        if(v.status=="On_Road"){
-                            $(".labelcenter.route").text(v.status_count);
-                            total+=parseInt(v.status_count);
-                        }
-
-                        if(v.status=="Placed"){
-                            $(".labelcenter.new").text(v.status_count);
-                            total+=parseInt(v.status_count);
-                            if(parseInt(v.status_count) > 0){
-                                $("#order-counter").html(v.status_count);
-                                $("#order-counter").show();
-                            }
-
-                        }
-
-                    });
-                    $(".labelcenter.all").text(total);
-                }
-            });
+            count_order_status();
              @if(\Illuminate\Support\Facades\Auth::user()->role=="restaurant")
             @if(Route::currentRouteName()=="OrderListing")
             $("#orders-list").prepend(li);
@@ -1902,6 +1874,46 @@ html[dir="rtl"] .text-end:has(.print) {
 			}
 		});
     });
+
+
+    function count_order_status(){
+
+        $.ajax({
+            url: "{!! env('APP_URL') !!}order/counts",
+            success: function (response) {
+                //   response = $.parseJSON(response);
+                var total_accepted = 0;
+                var total = 0;
+
+                $.each(response,function (i,v) {
+                    if(v.status=="Send_to_Kitchen" || v.status=="Accepted"){
+                        total_accepted+=parseInt(v.status_count);
+                        total+=parseInt(v.status_count);
+                        $(".labelcenter.kitchen").text(total_accepted);
+                    }
+
+                    if(v.status=="On_Road"){
+                        $(".labelcenter.route").text(v.status_count);
+                        total+=parseInt(v.status_count);
+                    }
+
+                    if(v.status=="Placed"){
+                        $(".labelcenter.new").text(v.status_count);
+                        total+=parseInt(v.status_count);
+                        if(parseInt(v.status_count) > 0){
+                            $("#order-counter").html(v.status_count);
+                            $("#order-counter").show();
+                        }else{
+                            $("#order-counter").hide();
+                        }
+
+                    }
+
+                });
+                $(".labelcenter.all").text(total);
+            }
+        });
+    }
 </script>
 </html>
 @yield('js')

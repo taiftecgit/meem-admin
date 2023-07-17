@@ -19,6 +19,18 @@
 <!--    <link href="{!! env('APP_ASSETS') !!}css/style.css" rel="stylesheet" type="text/css">-->
     <link href="{!! env('APP_ASSETS') !!}css/login.css" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: "Expo-Arabic-Light";
+            src: url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Light.ttf' !!});
+            src: url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Light.ttf' !!}) format("ttf"),
+            url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Light.ttf' !!}) format("ttf"),
+        }
+        @font-face {
+            font-family: "Expo-Arabic-Medium";
+            src: url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Medium.ttf' !!});
+            src: url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Medium.ttf' !!}) format("ttf"),
+            url({!! env('APP_ASSETS').'fonts/Expo-Arabic-Medium.ttf' !!}) format("ttf"),
+        }
     .do-login{
             background: #FEC34D !important;
             border-color: #FEC34D !important;
@@ -95,6 +107,13 @@ label {
                     padding: 31px !important;
                 }
             }
+        * {
+            font-family:"Expo-Arabic-Medium"
+        }
+
+        h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+            font-family:"Expo-Arabic-Medium" !important;
+        }
     </style>
 
 </head>

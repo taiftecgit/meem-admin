@@ -105,7 +105,7 @@ Route::group([ 'middleware' => ['auth','check.request']], function() {
     Route::get('/category/edit/{id}', [\App\Http\Controllers\Category::class,'edit'])->name('edit_category');
     Route::get('/category/delete/{id}', [\App\Http\Controllers\Category::class,'delete'])->name('delete_category');
 
-    Route::get('/inventory',[\App\Http\Controllers\Recipe::class,'inventory']);
+    Route::get('/inventory',[\App\Http\Controllers\Recipe::class,'inventory'])->name('inventory');
     Route::get('/users',[\App\Http\Controllers\RestoUser::class,'users']);
     Route::get('/invite',[\App\Http\Controllers\RestoUser::class,'invite']);
 
@@ -246,7 +246,7 @@ Route::group([ 'middleware' => ['auth','check.request']], function() {
 
     Route::post('exclude/recipe/outlet',[\App\Http\Controllers\Recipe::class,'exclude_outlet']);
 
-    Route::get('/discounts',[\App\Http\Controllers\Discount::class,'discounts']);
+    Route::get('/discounts',[\App\Http\Controllers\Discount::class,'discounts'])->name('discounts');
     Route::get('/discount/{id}',[\App\Http\Controllers\Discount::class,'edit_discount']);
     Route::post('/discount/save',[\App\Http\Controllers\Discount::class,'save_discount']);
     Route::get('/delete/discount/{id}',[\App\Http\Controllers\Discount::class,'delete_discount']);

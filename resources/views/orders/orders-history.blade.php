@@ -84,6 +84,19 @@
             width:50%;
            }
         }
+        .pl-10{
+            padding-left: 10px;
+        }
+        .pr-10{
+            padding-right: 10px;
+        }
+        .page-top-title{
+            padding-left: 0;
+        }
+        html[dir="rtl"] .row.pt-15.pl-10.pr-10{
+            margin: 0 !important;
+        }
+
     </style>
 @php
 $resto = \App\Models\Restaurants::find(\App\Helpers\CommonMethods::getRestuarantID());
@@ -146,17 +159,23 @@ app()->setLocale($lang);
     <div class="content-wrapper">
         <div class="container-full">
             <section class="content">
-                <h3 style="margin-left: 10px">{{__('label.order_history')}}</h3>
-                <div class="row p-15">
+                <div class="row ">
+                    <div class="col-md-10">
+                        <div class="page-top-title">
+                            <h3 class="title m-0">{{__('label.order_history')}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-15 pl-10 pr-10">
                     <div class="card cust_card p-15 rounded-1">
                         <form class="row g-3 ordhistory" action="#">
-                            <div class="col-md-4">
+                            <div class="col-md-4 sm-pl-0">
                                 <input type="text" class="form-control" placeholder="{{__('label.id')}}" id="inputEmail4">
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-8 sm-pl-0">
                                 <input type="text" class="form-control" placeholder="{{__('label.phone_number')}}" id="inputPassword4">
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 sm-pl-0">
                                 <select class="form-control form-select " title="{{__('label.outlets')}}" data-live-search="true">
                                     @php
                                         $outlets = \App\Models\Outlets::whereNull('deleted_at')->where('resto_id',\App\Helpers\CommonMethods::getRestuarantID())->where('active',1)->get();
@@ -169,11 +188,11 @@ app()->setLocale($lang);
 
                                 </select>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 sm-pl-0">
                                 <input type="text" class="form-control" id="inputAddress2" placeholder="{{__('label.date_range')}}">
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-12 sm-pl-0">
                                 <select class="form-control form-select" data-live-search="true"  title="{{__('label.order_status')}}">
 
                                     <option value="Placed">{{__('label.new')}}</option>
@@ -187,28 +206,28 @@ app()->setLocale($lang);
 
                                 </select>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 sm-pl-0">
                                 <select class="form-control form-select selectpicker">
                                     <option>{{__('label.select_option')}}</option>
                                 </select>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 sm-pl-0">
                                 <select class="form-control form-select selectpicker">
                                     <option>{{__('label.select_option')}}</option>
                                 </select>
                             </div>
-                            <div class="col-6">
+                            <div class="col-6 sm-pl-0">
                                 <button type="submit" class="btn btn-outline-primary btn-md rounded-0 sm-w-50">{{__('label.search')}}</button>
                             </div>
                         </form>
                     </div>
-                    <div class="card p-15 rounded-1">
+                    <div class="card p-15 rounded-1 sm-pl-0">
                         <div class="jumbotron p-0">
 
 
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table-responsive">
+                                <div class="col-md-12 sm-pl-3">
+                                    <div class="table-responsive order-his-tbl">
                                         <table id="example" class="table table-striped" >
                                             <thead>
                                             <tr>

@@ -64,15 +64,18 @@ $mta = \App\Models\RestoMetas::where('bussiness_id',$resto_id)->where('meta_def_
             text-align: center;
         }
         .form-control, .form-select {
-                    height: 46px !important;
-                    border-color: #E4E6EB !important;
-                    border-radius: 7px !important;
-                }
+            height: 46px !important;
+            border-color: #E4E6EB !important;
+            border-radius: 7px !important;
+        }
+        html[dir="rtl"]  .ar-m-0{
+            margin: 0 !important;
+        }
     </style>
  <div class="content-wrapper">
         <div class="container-full">
             <section class="content">
-                <div class="row">
+                <div class="row ar-m-0">
             <div class="col-xl-12">
                 <div class="card mb-4">
                     <div class="card-header">

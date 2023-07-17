@@ -135,6 +135,29 @@ input:focus{
     float: left;
     font-size: 22px;
 }
+.p-25{
+	padding: 25px;
+}
+@media (max-width: 767px) {
+	body{
+		padding-top: 0rem;
+	}
+	.p-40 {
+    padding: 30px !important;
+	}
+	.p-25{
+		padding: 18px;
+	}
+	.balck-h3{
+		font-size: 22px;
+		margin-top: 2rem;
+	}
+	.form-group label {
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 5px;
+	}
+}
 
 @media all and (device-width: 768px) and (device-height: 1024px) and (orientation:portrait) 
 {

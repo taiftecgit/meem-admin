@@ -163,7 +163,7 @@ $restuarant1 = $resto;
                     <div class="col-sm-6 mt-2">
                         <input type="text" placeholder="{{__('label.search_for_item')}}" class="form-control col-md-6">
                     </div>
-                    <div class="col-sm-6"><p class="fw-bold text-end mt-2">{{__('label.availablity')}}</p></div>
+                    <div class="col-sm-6"><p class="fw-bold text-{{($lang=='en')?'end':'start'}} mt-2">{{__('label.availablity')}}</p></div>
                 </div>
 
                  <div class="row p-0 mt-4">

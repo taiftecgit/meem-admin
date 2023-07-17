@@ -33,7 +33,7 @@
                                   <i class="fa fa-angle-right pull-right"></i>
                                 </span>
                 </button>
-                <ul class="dropdown-menu footer-drop mx-40" aria-labelledby="dropdownMenu2" data-popper-placement="top-start">
+                <ul class="dropdown-menu footer-drop" aria-labelledby="dropdownMenu2" data-popper-placement="top-start">
 
                
                     

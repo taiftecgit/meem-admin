@@ -94,7 +94,44 @@ $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
         }
 
 
-
+        .top-title{
+            font-size: 1.7142857142857142rem;
+        }
+        .mr-12{
+            margin-right: 12px;
+        }
+        .flex-item{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+  .cms-auto {
+    margin-left: auto;
+  }
+  html[dir="rtl"] .top-title 
+  {
+     margin-right: 10px;   
+  }
+  html[dir="rtl"] .btn-toggle.btn-sm{
+    margin: 0 0rem;
+  }      
+  html[dir="rtl"] .content-wrapper .content .row:first-child .col-6:nth-child(2) .btn {
+    margin-right: 10px !important;
+  }
+  html[dir="rtl"] .me-3 {
+    margin-left: 1rem !important;
+  }
+  html[dir="rtl"] .cms-auto {
+    margin-right: auto !important;
+    margin-left: 0;
+  }
+  html[dir="rtl"] .list-group-item{
+    padding:0.4rem 0rem 0.2rem 0rem;
+  }
+  html[dir="rtl"] .accordion-button::after{
+    margin-left: 0;
+    margin-right: auto;
+  }
 </style>
 
 <div class="content-wrapper">
@@ -103,14 +140,14 @@ $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
 
 
 
-                 <div class="card p-15 rounded-1">
-                     <div class="card-header">
+                 <div class="">
+                     <div class="row m-0">
 
-                             <div class="col-6"><h3 style="margin-left: 10px">{{__('label.items')}}</h3></div>
-                             <div class="col-6 text-end"><a href="{!! env('APP_URL') !!}recipe/new" class="btn btn-sm btn-danger float-right"><i class="glyphicon glyphicon-plus"></i> {{__('label.add_new')}} </a></div>
+                             <div class="col-6"><h2 class="top-title" style="margin-left: 10px">{{__('label.items')}}</h3></div>
+                             <div class="col-6 text-end flex-item"><a href="{!! env('APP_URL') !!}recipe/new" class="btn btn-sm btn-danger float-right mr-12"><i class="glyphicon glyphicon-plus"></i> {{__('label.add_new')}} </a></div>
 
                      </div>
-                     <div class="card-body">
+                     <div class="card-body pt-0">
                          <div class="row mb-4">
                              <div class="col-sm-12">
 
@@ -123,7 +160,7 @@ $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
                                  <div class="col-md-12">
                                      <div class="d-flex">
                                          <div>
-                                             <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn mt-1  btn-toggle btn-sm btn-success switch-me" data-id="sorting" data-bs-toggle="button" aria-pressed="false" autocomplete="off">
+                                             <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn mt-1 ms-0  btn-toggle btn-sm btn-success switch-me" data-id="sorting" data-bs-toggle="button" aria-pressed="false" autocomplete="off">
                                                  <div class="handle"></div>
                                              </button> <span class="mt-1">Sorting Enabled?</span>
                                          </div>
@@ -214,7 +251,7 @@ $resto_meta = isset($restuarant1->resto_metas)?$restuarant1->resto_metas:null;
 
 
                                                                          @endif
-                                                                         <div class="  ms-auto ">
+                                                                         <div class="cms-auto">
                                                                              <a href="{!! env('APP_URL') !!}recipe/edit/{!! $item->id !!}" class="mr-2 badge badge-primary m-1"  data-toggle="tooltip" data-placement="top" title="{{__('label.edit')}}"><i class="glyphicon glyphicon-edit"></i></a>
                                                                              <a href="javascript:;" data-id="{!! $item->id !!}" class="delete-recipe badge badge-danger m-1"  data-toggle="tooltip" data-placement="top" title="{{__('label.delete')}}">   <i class="glyphicon glyphicon-trash"></i>
                                                                              </a>

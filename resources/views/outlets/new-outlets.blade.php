@@ -107,7 +107,13 @@
                 padding: 0 !important;
               }
             }
-
+            .sidebar_div_main{
+                padding-left: 8px;
+            }
+            html[dir="rtl"] .sidebar_div_main {
+                padding-right: 6px !important;
+                padding-left: 0;
+            }
     </style>
     <!-- Content Wrapper. Contains page content -->
 @php
@@ -145,7 +151,7 @@ app()->setLocale($lang);
 
             <!-- Main content -->
             <section class="content">
-                <div class="row">
+                <div class="row ">
                    <div class="col-12 col-sm-4 sidebar_div_main" style="padding-right: 0;background-color: #F5F5F5">
                         @include('outlets.outlet-sidebar')
                     </div>

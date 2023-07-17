@@ -144,7 +144,7 @@
                                 </div>
                                 <div class="right_text_div">
                                     <a class="d-block text-decoration-none count_atag">
-                                        <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex justify-content-center align-items-center">
                                             <small class="iqd_small">{!! $currency !!}</small>
                                             <h3 class="count_h3 text-break">
                                             @if(isset($resto) && isset($totalRevenue) && isset($resto->delivered_orders) && $resto->delivered_orders->count() > 0)
@@ -168,7 +168,7 @@
                                 </div>
                                 <div class="right_text_div">
                                     <a class="d-block text-decoration-none count_atag">
-                                        <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex justify-content-center align-items-center">
                                             <small class="iqd_small">{!! $currency !!}</small>
                                             <h3 class="count_h3 text-break"> {!! isset($totalRevenue)?number_format($totalRevenue[0]->total_price):0 !!}</h3>
                                         </div>

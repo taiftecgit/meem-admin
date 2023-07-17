@@ -167,6 +167,12 @@
     color: #fff;
     background-color: transparent!important;
 }
+/*------Start Arabic css---------------*/
+
+html[dir="rtl"].nav-tabs{
+   padding-right:0 !important; 
+}
+/*------end Arabic css---------------*/
 body.fixed {
 	overflow-y:hidden;
 		}
@@ -264,11 +270,11 @@ app()->setLocale($lang);
                     <div class="col-sm-12 p-0">
                         <nav class="navbar navbar-static-top p-0">
                             <!-- Sidebar toggle button-->
-                            <div class="row">
+                            <div class="row sm-m-0">
 
 
                                 <div class="col-md-12 tab-bar-section">
-                                    <div class="app">
+                                    <div class="app ovrflow-x-auto">
                                         <ul class="hs full nav nav-tabs" role="tablist">
 
                                             <li class="item nav-item d-inline">

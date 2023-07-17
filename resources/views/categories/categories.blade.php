@@ -61,7 +61,7 @@
         padding-left: 0px;
      }
      .cate_add_btn{
-        margin-right: 36px;
+        margin-right: 30px;
      }
      .fixed .content-wrapper{
         padding-top: 0px;
@@ -87,7 +87,23 @@
         }
 
     }
-
+.category_title{
+    font-size: 1.7142857142857142rem;
+}
+html[dir="rtl"] .list-group{
+    padding-right: 0;
+}
+html[dir="rtl"] .category_title{
+  margin-right: 15px;
+}
+html[dir="rtl"] .ar-mr-0{
+    margin-right: 0 !important;
+    margin-left: 5px !important;
+}
+.ar-mr-0{
+    margin-left: 0 !important;
+    margin-right: 5px !important;
+}
 </style>
 
 @php
@@ -105,15 +121,15 @@ app()->setLocale($lang);
         <div class="container-full">
             <section class="content">
                 <div class="row">
-                    <div class="col-6"><h3 class="category_title" style="margin-left: 10px">{{__('label.categories')}}</h3></div>
+                    <div class="col-6"><h2 class="category_title" style="margin-left: 15px">{{__('label.categories')}}</h3></div>
                     <div class="col-6 text-end add_btn_div"><a href="{!! env('APP_URL') !!}category/new{{ isset($_GET['menu'])?'?menu=tablet':''}}" class="btn btn-sm btn-danger float-right cate_add_btn"><i class="glyphicon glyphicon-plus"></i> {{__('label.add_new')}} </a></div>
                 </div>
 
 
-                 <div class="card p-15 rounded-1">
+                 <div class=" p-15 rounded-1">
                      <div class="row mb-4">
                          <div class="col-sm-12">
-                             <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-success switch-me" data-id="sorting" data-bs-toggle="button" aria-pressed="false" autocomplete="off">
+                             <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn ml-0 ar-mr-0 btn-toggle btn-sm btn-success switch-me" data-id="sorting" data-bs-toggle="button" aria-pressed="false" autocomplete="off">
                                  <div class="handle"></div>
                              </button> Sorting Enabled?
                          </div>

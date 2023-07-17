@@ -96,7 +96,9 @@
         }
         .select2 {width: 100% !important;}
 
-
+        html[dir="rtl"]  .ar-m-0{
+            margin: 0 !important;
+        }
 
     </style>
 
@@ -111,7 +113,7 @@
                       enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="id" value="{!! isset($payment_link)?$payment_link->id:'' !!}"/>
-                    <div class="row">
+                    <div class="row ar-m-0">
                         <div class="col-xl-8">
                             <div class="card mb-4">
 

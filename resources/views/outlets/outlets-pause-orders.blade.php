@@ -5,6 +5,17 @@
 @endsection
 @section('content')
     <style>
+        .p-10{
+            padding: 10px;
+        }
+        .ml-0{
+            margin-left: 0 !important;
+        }
+        .flex-items{
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
         @-webkit-keyframes special {
             from { background-color: rgba(255, 121, 77, 0.27); }
             to { background-color: inherit; }
@@ -63,7 +74,7 @@
 
         .btn-toggle.active{
             color: white !important;
-            background: #ffa505;
+            background: green;
         }
         .rdot {
     height: 10px;
@@ -79,12 +90,20 @@
     background-color: green;
     border-radius: 0%;
     display: inline-block;
+    margin-right: 5px;
 }
 .pause-order{
     padding: 40px; background-color: #fff8ec; margin-bottom: 30px;
 }
-
-
+.ar-m-adjust
+{
+   margin-left: 0 !important; 
+}
+html[dir="rtl"] .ar-m-adjust
+{
+   margin-right: 0 !important; 
+   margin-left:5px !important;
+}
 @media (max-width:641px) {
   .list-inline li{
     margin-right: 5px;
@@ -159,8 +178,8 @@ app()->setLocale($lang);
 
                 <div class="row ">
                     <div class="col-md-6">
-                        <div class="m-15">
-                            <h3 class="title">{{__('label.pause_orders')}}</h3>
+                        <div class="page-top-title">
+                            <h3 class="title m-0">{{__('label.pause_orders')}}</h3>
 
                         </div>
                     </div>
@@ -169,7 +188,7 @@ app()->setLocale($lang);
 @php
  $resto = \App\Models\Restaurants::find(\App\Helpers\CommonMethods::getRestuarantID());
 @endphp
-   <div class="p-15">
+   <div class="row m-0 p-10">
         @if(isset($outlets) && $outlets->count() > 0)
          @foreach($outlets as $outlet)
             <div class="pause-order">
@@ -188,23 +207,29 @@ app()->setLocale($lang);
 
                   </div>
                </div>
-
+               
                <div class="row mt-30 sm-mt-0">
                    <div class="col-md-12 col-lg-4 mb-2">
-                        <button type="button"  data-on-text="Open" data-type="delivery"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_delivery=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_delivery=="1") true @else false @endif" autocomplete="off">
+                        <div class="flex-items">
+                            <button type="button"  data-on-text="Open" data-type="delivery"  data-off-text="Closed" class="ar-m-adjust switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_delivery=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_delivery=="1") true @else false @endif" autocomplete="off">
                                             <div class="handle"></div>
                                         </button> {{__('label.accepting_delivery_orders')}}
+                        </div>
                    </div>
                    <div class="col-md-12 col-lg-4">
-                       <button type="button"  data-type="pickup"   data-on-text="Open"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_pickup=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_pickup=="1") true @else false @endif" autocomplete="off">
+                        <div class="flex-items">
+                            <button type="button"  data-type="pickup"   data-on-text="Open"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_pickup=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_pickup=="1") true @else false @endif" autocomplete="off">
                                             <div class="handle"></div>
                                         </button> {{__('label.accepting_pickup_orders')}}
+                        </div>
                    </div>
                    @if($business_type=="Restaurants")
                    <div class="col-md-12 col-lg-4">
-                    <button type="button"  data-type="dine-in"  data-on-text="Open"  data-off-text="Closed" class="switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_contactless_dining=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_contactless_dining=="1") true @else false @endif" autocomplete="off">
-                                            <div class="handle"></div>
-                                        </button>{{__('label.accepting_dine_in')}}
+                        <div class="flex-items">
+                            <button type="button"  data-type="dine-in"  data-on-text="Open"  data-off-text="Closed" class="ar-m-adjust switch-me btn-toggle btn-sm btn-outlet @if($outlet->is_contactless_dining=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->is_contactless_dining=="1") true @else false @endif" autocomplete="off">
+                                                <div class="handle"></div>
+                                            </button>{{__('label.accepting_dine_in')}}
+                        </div>
                    </div>
                    @endif
                </div>

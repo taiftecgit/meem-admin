@@ -20,6 +20,10 @@ app()->setLocale($lang);
         vertical-align: top;
         width: 900px;
     }
+    html[dir="rtl"]  .ar-m-adjust .page-title{
+        padding-right: 0;
+    }
+ 
 </style>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!-- Content Wrapper. Contains page content -->
@@ -28,16 +32,16 @@ app()->setLocale($lang);
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="d-flex align-items-center">
-                    <div class="me-auto">
+                    <div class="ar-m-adjust">
                         <h4 class="page-title">{{__('label.marketings')}}</h4>
-                        <div class="d-inline-block align-items-center">
+                        <!-- <div class="d-inline-block align-items-center">
                             <nav>
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="{!! env('APP_URL') !!}dashboard"><i class="mdi mdi-home-outline"></i></a></li>
                                     <li class="breadcrumb-item active" aria-current="page">{{__('label.marketings')}}</li>
                                 </ol>
                             </nav>
-                        </div>
+                        </div> -->
                     </div>
 
                 </div>
@@ -46,149 +50,151 @@ app()->setLocale($lang);
 
             <!-- Main content -->
             <section class="content">
-                <div class="col-12">
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h4 class="box-title">{{__('label.marketings')}}</h4>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body">
-                            <!-- Nav tabs -->
-                            <div class="vtabs customvtab">
-                                <ul class="nav nav-tabs tabs-vertical" role="tablist">
-                                    <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#home3" role="tab" aria-expanded="true" aria-selected="false"><span class="hidden-sm-up"><i class="mdi-facebook"></i></span> <span class="hidden-xs-down">{{__('label.facebook')}}</span> </a> </li>
-                                    <!-- <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#profile3" role="tab" aria-expanded="false" aria-selected="false"><span class="hidden-sm-up"><i class="ion-person"></i></span> <span class="hidden-xs-down">Whatsapp</span></a> </li> -->
-                                    <li class="nav-item"> <a class="nav-link " data-bs-toggle="tab" href="#messages3" role="tab" aria-expanded="false" aria-selected="true"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">{{__('label.instagram')}}</span></a> </li>
-                                    <li class="nav-item"> <a class="nav-link " data-bs-toggle="tab" href="#messages4" role="tab" aria-expanded="false" aria-selected="true"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">{{__('label.google_business')}}</span></a> </li>
-                                </ul>
-                                <!-- Tab panes -->
-                                <div class="tab-content">
-                                    <div class="tab-pane active" id="home3" role="tabpanel" aria-expanded="true">
-                                        <div class="p-15">
-                                            <h3>{{__('label.facebook_campaign_link')}}</h3>
-                                            <input type="hidden" name="campaign_type" value="facebook" />
-                                            <!-- <div class="row">
-                                                <div class="form-group">
-                                                    <label>Campaign Name</label>
-                                                    <input type="text" name="campaign_name" class="form-control" />
+                <div class="row m-0">
+                    <div class="col-12">
+                        <div class="box">
+                            <!-- <div class="box-header with-border">
+                                <h4 class="box-title">{{__('label.marketings')}}</h4>
+                            </div> -->
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <!-- Nav tabs -->
+                                <div class="vtabs customvtab">
+                                    <ul class="nav nav-tabs tabs-vertical" role="tablist">
+                                        <li class="nav-item"> <a class="nav-link active" data-bs-toggle="tab" href="#home3" role="tab" aria-expanded="true" aria-selected="false"><span class="hidden-sm-up"><i class="mdi-facebook"></i></span> <span class="hidden-xs-down">{{__('label.facebook')}}</span> </a> </li>
+                                        <!-- <li class="nav-item"> <a class="nav-link" data-bs-toggle="tab" href="#profile3" role="tab" aria-expanded="false" aria-selected="false"><span class="hidden-sm-up"><i class="ion-person"></i></span> <span class="hidden-xs-down">Whatsapp</span></a> </li> -->
+                                        <li class="nav-item"> <a class="nav-link " data-bs-toggle="tab" href="#messages3" role="tab" aria-expanded="false" aria-selected="true"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">{{__('label.instagram')}}</span></a> </li>
+                                        <li class="nav-item"> <a class="nav-link " data-bs-toggle="tab" href="#messages4" role="tab" aria-expanded="false" aria-selected="true"><span class="hidden-sm-up"><i class="ion-email"></i></span> <span class="hidden-xs-down">{{__('label.google_business')}}</span></a> </li>
+                                    </ul>
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="home3" role="tabpanel" aria-expanded="true">
+                                            <div class="p-15">
+                                                <h3>{{__('label.facebook_campaign_link')}}</h3>
+                                                <input type="hidden" name="campaign_type" value="facebook" />
+                                                <!-- <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Campaign Name</label>
+                                                        <input type="text" name="campaign_name" class="form-control" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group position-relative">
-                                                    <label>Campaign Date</label>
-                                                    <input type="text" name="campaign_date" class="form-control date" />
+                                                <div class="row">
+                                                    <div class="form-group position-relative">
+                                                        <label>Campaign Date</label>
+                                                        <input type="text" name="campaign_date" class="form-control date" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <a href="#!" class="btn btn-sm create btn-danger">Create Link</a>
-                                                </div>
-                                            </div> -->
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="#!" class="btn btn-sm create btn-danger">Create Link</a>
+                                                    </div>
+                                                </div> -->
 
-                                            <div class="row mt-3">
-                                                <div class="col-11">
-                                                    <input type="text"  readonly id="link1" value="{!!  env('QRCODE_HOST_ORDER').'fd/'.$resto->resto_unique_name !!}" class="link form-control input-lg" />
+                                                <div class="row mt-3">
+                                                    <div class="col-11">
+                                                        <input type="text"  readonly id="link1" value="{!!  env('QRCODE_HOST_ORDER').'fd/'.$resto->resto_unique_name !!}" class="link form-control input-lg" />
+                                                    </div>
+                                                    <div class="col-1"><button class="btn btn-sm  btn-primary" onclick="copyme1('link1')"><i class="fa  fa-copy"></i> </button> </div>
                                                 </div>
-                                                <div class="col-1"><button class="btn btn-sm  btn-primary" onclick="copyme1('link1')"><i class="fa  fa-copy"></i> </button> </div>
-                                            </div>
-                                             </div>
-                                    </div>
-                                    <div class="tab-pane" id="profile3" role="tabpanel" aria-expanded="false">
-                                        <div class="p-15">
-                                            <h3>{{__('label.whatsapp_campaign_link')}}</h3>
-                                            <input type="hidden" name="campaign_type" value="whatsapp" />
-                                           <!--  <div class="row">
-                                                <div class="form-group">
-                                                    <label>Campaign Name</label>
-                                                    <input type="text" name="campaign_name" class="form-control" />
+                                                 </div>
+                                        </div>
+                                        <div class="tab-pane" id="profile3" role="tabpanel" aria-expanded="false">
+                                            <div class="p-15">
+                                                <h3>{{__('label.whatsapp_campaign_link')}}</h3>
+                                                <input type="hidden" name="campaign_type" value="whatsapp" />
+                                               <!--  <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Campaign Name</label>
+                                                        <input type="text" name="campaign_name" class="form-control" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label>Campaign Date</label>
-                                                    <input type="text" name="campaign_date" class="form-control date" />
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Campaign Date</label>
+                                                        <input type="text" name="campaign_date" class="form-control date" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <a href="#!" class="btn btn-sm create btn-danger">Create Link</a>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="#!" class="btn btn-sm create btn-danger">Create Link</a>
+                                                    </div>
+                                                </div> -->
+                                                <div class="row mt-3">
+                                                    <div class="col-11">
+                                                        <input type="text"  readonly id="link2" value="{!!  env('QRCODE_HOST_ORDER').'d/'.$resto->resto_unique_name !!}?a=whatsapp" class="link form-control input-lg" />
+                                                    </div>
+                                                    <div class="col-1"><button class="btn btn-sm btn-primary" onclick="copyme2('link2')"><i class="fa  fa-copy"></i> </button> </div>
                                                 </div>
-                                            </div> -->
-                                            <div class="row mt-3">
-                                                <div class="col-11">
-                                                    <input type="text"  readonly id="link2" value="{!!  env('QRCODE_HOST_ORDER').'d/'.$resto->resto_unique_name !!}?a=whatsapp" class="link form-control input-lg" />
-                                                </div>
-                                                <div class="col-1"><button class="btn btn-sm btn-primary" onclick="copyme2('link2')"><i class="fa  fa-copy"></i> </button> </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tab-pane " id="messages3" role="tabpanel" aria-expanded="false">
-                                        <div class="p-15">
-                                            <h3>{{__('label.instagram_campaign_link')}}</h3>
-                                            <input type="hidden" name="campaign_type" value="instagram" />
-                                            <!-- <div class="row">
-                                                <div class="form-group">
-                                                    <label>Campaign Name</label>
-                                                    <input type="text" name="campaign_name" class="form-control" />
+                                        <div class="tab-pane " id="messages3" role="tabpanel" aria-expanded="false">
+                                            <div class="p-15">
+                                                <h3>{{__('label.instagram_campaign_link')}}</h3>
+                                                <input type="hidden" name="campaign_type" value="instagram" />
+                                                <!-- <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Campaign Name</label>
+                                                        <input type="text" name="campaign_name" class="form-control" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label>Campaign Date</label>
-                                                    <input type="text" name="campaign_date" class="form-control date" />
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Campaign Date</label>
+                                                        <input type="text" name="campaign_date" class="form-control date" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <a href="#!" class="btn btn-sm create btn-danger">Create Link</a>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="#!" class="btn btn-sm create btn-danger">Create Link</a>
+                                                    </div>
+                                                </div> -->
+                                                <div class="row mt-3">
+                                                    <div class="col-11">
+                                                        <input type="text"  readonly id="link3" value="{!!  env('QRCODE_HOST_ORDER').'id/'.$resto->resto_unique_name !!}" class="link form-control input-lg" />
+                                                    </div>
+                                                    <div class="col-1"><button class="btn btn-sm  btn-primary" onclick="copyme3('link3')"><i class="fa  fa-copy"></i> </button> </div>
                                                 </div>
-                                            </div> -->
-                                            <div class="row mt-3">
-                                                <div class="col-11">
-                                                    <input type="text"  readonly id="link3" value="{!!  env('QRCODE_HOST_ORDER').'id/'.$resto->resto_unique_name !!}" class="link form-control input-lg" />
-                                                </div>
-                                                <div class="col-1"><button class="btn btn-sm  btn-primary" onclick="copyme3('link3')"><i class="fa  fa-copy"></i> </button> </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div class="tab-pane " id="messages4" role="tabpanel" aria-expanded="false">
-                                        <div class="p-15">
-                                            <h3>{{__('label.google_campaign_link')}}</h3>
-                                            <input type="hidden" name="campaign_type" value="instagram" />
-                                            <!-- <div class="row">
-                                                <div class="form-group">
-                                                    <label>Campaign Name</label>
-                                                    <input type="text" name="campaign_name" class="form-control" />
+                                        <div class="tab-pane " id="messages4" role="tabpanel" aria-expanded="false">
+                                            <div class="p-15">
+                                                <h3>{{__('label.google_campaign_link')}}</h3>
+                                                <input type="hidden" name="campaign_type" value="instagram" />
+                                                <!-- <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Campaign Name</label>
+                                                        <input type="text" name="campaign_name" class="form-control" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label>Campaign Date</label>
-                                                    <input type="text" name="campaign_date" class="form-control date" />
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label>Campaign Date</label>
+                                                        <input type="text" name="campaign_date" class="form-control date" />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <a href="#!" class="btn btn-sm create btn-danger">Create Link</a>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="#!" class="btn btn-sm create btn-danger">Create Link</a>
+                                                    </div>
+                                                </div> -->
+                                                <div class="row mt-3">
+                                                    <div class="col-11">
+                                                        <input type="text"  readonly id="link4" value="{!!  env('QRCODE_HOST_ORDER').'gd/'.$resto->resto_unique_name !!}" class="link form-control input-lg" />
+                                                    </div>
+                                                    <div class="col-1"><button class="btn btn-sm  btn-primary" onclick="copyme4('link4')"><i class="fa  fa-copy"></i> </button> </div>
                                                 </div>
-                                            </div> -->
-                                            <div class="row mt-3">
-                                                <div class="col-11">
-                                                    <input type="text"  readonly id="link4" value="{!!  env('QRCODE_HOST_ORDER').'gd/'.$resto->resto_unique_name !!}" class="link form-control input-lg" />
-                                                </div>
-                                                <div class="col-1"><button class="btn btn-sm  btn-primary" onclick="copyme4('link4')"><i class="fa  fa-copy"></i> </button> </div>
                                             </div>
                                         </div>
+
+
                                     </div>
-
-
                                 </div>
                             </div>
+                            <!-- /.box-body -->
                         </div>
-                        <!-- /.box-body -->
+                        <!-- /.box -->
                     </div>
-                    <!-- /.box -->
                 </div>
             </section>
             <!-- /.content -->

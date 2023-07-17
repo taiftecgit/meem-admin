@@ -51,6 +51,15 @@
         {
             margin-right: 13px;
         }
+        html[dir="rtl"] .ar-pl-0{
+            padding-left: 0 !important;
+        }
+        html[dir="rtl"] .content{
+            padding-left: 15px !important;
+        }
+        html[dir="rtl"] .btn-toggle.btn-sm.btn-sm:after {
+            margin-right: 0;
+        }
     </style>
     <!-- Content Wrapper. Contains page content -->
 @php
@@ -76,7 +85,7 @@ app()->setLocale($lang);
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <a href="{!! env('APP_URL') !!}new/outlet" class="form-control btn btn-primary btn-md add-outlet text-center w-max">
+                        <a href="{!! env('APP_URL') !!}new/outlet" class="form-control btn btn-primary btn-md add-outlet text-center w-max sm-ml-10">
                             <i class="fa  fa-plus mr-2"></i>
                             <!-- <i class="mdi mdi-plus-circle"></i> --> {{__('label.add_outlet')}}
                         </a>
@@ -98,9 +107,9 @@ app()->setLocale($lang);
                 </div>
 
                 <div class="row m-0">
-                    <div class="col-12 mt-4 pr-0">
+                    <div class="col-12 mt-4 pr-0 ar-pl-0">
                         <div class="table-responsive">
-                            <table class="table table-striped">
+                            <table class="table table-striped outlet-table">
                                 <thead>
                                 <tr>
                                     <th scope="col">{{__('label.status')}}</th>
@@ -120,7 +129,7 @@ app()->setLocale($lang);
 
                                 <tr>
                                     <td>
-                                        <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn  btn-toggle btn-sm btn-success @if($outlet->active=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->active=="1") true @else false @endif" autocomplete="off" @if($outlet->active!='1') style="background-color:red !important;" @endif>
+                                        <button type="button"  data-on-text="Open"  data-off-text="Closed" class="btn sm-ml-0 btn-toggle btn-sm btn-success @if($outlet->active=="1") active @endif switch-me" data-id="{!! $outlet->id !!}" data-bs-toggle="button" aria-pressed="@if($outlet->active=="1") true @else false @endif" autocomplete="off" @if($outlet->active!='1') style="background-color:red !important;" @endif>
                                             <div class="handle"></div>
                                         </button> @if($outlet->active==1) {{__('label.active')}} @else {{__('label.deactive')}} @endif
                                     </td>
